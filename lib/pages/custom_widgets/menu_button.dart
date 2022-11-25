@@ -18,7 +18,6 @@ class MenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("height $height");
     return SizedBox(
       height: height,
       child: FittedBox(

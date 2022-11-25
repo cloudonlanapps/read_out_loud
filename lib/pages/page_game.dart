@@ -8,6 +8,7 @@ import 'page_main.dart';
 
 final gamePage = PageBuilder(
   name: 'game',
+  mainAreaProminence: 0.9,
   builder: (BuildContext context, BoxConstraints constraints) => DecoratedBox(
     decoration: BoxDecoration(color: Colors.blue, border: Border.all()),
     child: const Center(
@@ -59,15 +60,6 @@ final gamePage = PageBuilder(
           ],
         ),
       ),
-    ),
-  ),
-  bottomNavMenuBuilder: (BuildContext context, BoxConstraints constraints) =>
-      DecoratedBox(
-    decoration: BoxDecoration(color: Colors.yellow, border: Border.all()),
-    child: const SizedBox(
-      // height: constraints.maxHeight,
-      // width: constraints.maxWidth,
-      child: Center(child: Text("Bottom Menu")),
     ),
   ),
 );

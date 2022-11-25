@@ -33,35 +33,37 @@ class LandscapeScreen extends StatelessWidget {
           flex: 3,
           child: Column(
             children: [
-              Expanded(
-                child: SafeArea(
-                  bottom: false,
-                  left: false,
-                  minimum: padding,
-                  maintainBottomViewPadding: true,
-                  child: Padding(
-                    padding: EdgeInsets.zero,
-                    child:
-                        LayoutBuilder(builder: pageBuilder.topNavMenuBuilder),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: SafeArea(
-                  top: false,
-                  left: false,
-                  maintainBottomViewPadding: true,
-                  minimum: padding,
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
+              if (pageBuilder.topNavMenuBuilder != null)
+                Expanded(
+                  child: SafeArea(
+                    bottom: pageBuilder.bottomNavMenuBuilder == null,
+                    left: false,
+                    minimum: padding,
+                    maintainBottomViewPadding: true,
                     child: Padding(
                       padding: EdgeInsets.zero,
                       child: LayoutBuilder(
-                          builder: pageBuilder.bottomNavMenuBuilder),
+                          builder: pageBuilder.topNavMenuBuilder!),
                     ),
                   ),
                 ),
-              )
+              if (pageBuilder.bottomNavMenuBuilder != null)
+                Expanded(
+                  child: SafeArea(
+                    top: false,
+                    left: false,
+                    maintainBottomViewPadding: true,
+                    minimum: padding,
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: EdgeInsets.zero,
+                        child: LayoutBuilder(
+                            builder: pageBuilder.bottomNavMenuBuilder!),
+                      ),
+                    ),
+                  ),
+                )
             ],
           ),
         ),

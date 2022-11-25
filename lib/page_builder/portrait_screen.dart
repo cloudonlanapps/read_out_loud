@@ -19,38 +19,41 @@ class PortraitScreen extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Flexible(
-              child: SafeArea(
-                bottom: false,
-                minimum: padding,
-                child: Padding(
-                  padding: EdgeInsets.zero,
-                  child: LayoutBuilder(builder: pageBuilder.topNavMenuBuilder),
+            if (pageBuilder.topNavMenuBuilder != null)
+              Flexible(
+                child: SafeArea(
+                  bottom: false,
+                  minimum: padding,
+                  child: Padding(
+                    padding: EdgeInsets.zero,
+                    child:
+                        LayoutBuilder(builder: pageBuilder.topNavMenuBuilder!),
+                  ),
                 ),
               ),
-            ),
             SizedBox(
               height: constraints.maxHeight * pageBuilder.mainAreaProminence,
               //flex: (pageBuilder.mainAreaProminence * 100).round(),
               child: SafeArea(
                 top: false,
-                bottom: false,
+                bottom: (pageBuilder.bottomNavMenuBuilder == null),
                 minimum: padding,
                 child: LayoutBuilder(builder: pageBuilder.builder),
               ),
             ),
-            Flexible(
-              child: SafeArea(
-                top: false,
-                maintainBottomViewPadding: true,
-                minimum: padding,
-                child: Padding(
-                  padding: EdgeInsets.zero,
-                  child:
-                      LayoutBuilder(builder: pageBuilder.bottomNavMenuBuilder),
+            if (pageBuilder.bottomNavMenuBuilder != null)
+              Flexible(
+                child: SafeArea(
+                  top: false,
+                  maintainBottomViewPadding: true,
+                  minimum: padding,
+                  child: Padding(
+                    padding: EdgeInsets.zero,
+                    child: LayoutBuilder(
+                        builder: pageBuilder.bottomNavMenuBuilder!),
+                  ),
                 ),
               ),
-            ),
           ],
         );
       },
