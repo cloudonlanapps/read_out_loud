@@ -1,0 +1,22 @@
+name: read_out_loud
+description: A project that helps kids to read simple words
+
+publish_to: 'none' 
+version: 0.1.0
+
+environment:
+  sdk: '>=2.18.4 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
