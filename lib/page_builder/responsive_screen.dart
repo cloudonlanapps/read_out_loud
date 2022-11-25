@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../models/page_builder.dart';
+import 'page_builder.dart';
 import 'landscape_screen.dart';
 import 'portrait_screen.dart';
 

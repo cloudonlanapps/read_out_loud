@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-import '../../models/page_builder.dart';
+import 'page_builder.dart';
 
 class LandscapeScreen extends StatelessWidget {
   const LandscapeScreen({

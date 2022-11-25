@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'constants.dart';
-import 'helpers/debug/template.dart' as template;
+import 'page_builder/example_page_builder.dart';
+import 'pages/page_main.dart';
 
 class AppRouter extends StatelessWidget {
   const AppRouter({super.key});
@@ -12,7 +13,7 @@ class AppRouter extends StatelessWidget {
   Widget build(BuildContext context) {
     final router = GoRouter(
       routes: <GoRoute>[
-        ...[template.pageBuilder].map((e) => e.route).toList()
+        ...[examplePageBuilder, mainPage].map((e) => e.route).toList()
       ],
       redirect: (context, state) async => await redirector(state),
     );
@@ -30,7 +31,7 @@ class AppRouter extends StatelessWidget {
 
   Future<String?> redirector(GoRouterState state) async {
     if (state.subloc == '/' || state.subloc == '') {
-      return template.pageBuilder.path;
+      return mainPage.path;
     }
     return null;
   }

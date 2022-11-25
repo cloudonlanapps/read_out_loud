@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../models/page_builder.dart';
+import 'page_builder.dart';
 
 class PortraitScreen extends StatelessWidget {
   const PortraitScreen({

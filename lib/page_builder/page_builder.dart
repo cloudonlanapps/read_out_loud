@@ -3,9 +3,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../helpers/responsive_screen/responsive_screen.dart';
+import 'responsive_screen.dart';
 
 class PageBuilder {
+  static const double marginLeft = 2;
+  static const double marginTop = 2;
+  static const double marginRight = 2;
+  static const double marginBottom = 2;
+
+  static const double borderRadius = 15;
   final String name;
 
   final Widget Function(BuildContext context, BoxConstraints constraints)
@@ -37,8 +43,27 @@ class PageBuilder {
       name: name,
       pageBuilder: (context, state) => CustomTransitionPage<void>(
         key: state.pageKey,
-        child: Scaffold(
-          body: ResponsiveScreen(pageBuilder: this),
+        child: SafeArea(
+          child: Scaffold(
+            body: ClipRect(
+              clipBehavior: Clip.antiAlias,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                margin: const EdgeInsets.only(
+                    left: marginLeft,
+                    right: marginRight,
+                    top: marginTop,
+                    bottom: marginBottom),
+                padding: const EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surface,
+                    borderRadius: BorderRadius.circular(borderRadius),
+                    border: Border.all()),
+                child: ResponsiveScreen(pageBuilder: this),
+              ),
+            ),
+          ),
         ),
         transitionsBuilder: transitionBuilder,
       ),
