@@ -17,10 +17,10 @@ class PageBuilder {
   final Widget Function(BuildContext context, BoxConstraints constraints)
       builder;
   final Widget Function(BuildContext context, BoxConstraints constraints)?
-      _topNavMenuBuilder;
+      topNavMenuBuilder;
 
   final Widget Function(BuildContext context, BoxConstraints constraints)?
-      _bottomNavMenuBuilder;
+      bottomNavMenuBuilder;
 
   final double mainAreaProminence;
 
@@ -28,12 +28,8 @@ class PageBuilder {
       {required this.name,
       required this.builder,
       this.mainAreaProminence = 0.8,
-      Widget Function(BuildContext context, BoxConstraints constraints)?
-          topNavMenuBuilder,
-      Widget Function(BuildContext context, BoxConstraints constraints)?
-          bottomNavMenuBuilder})
-      : _topNavMenuBuilder = topNavMenuBuilder,
-        _bottomNavMenuBuilder = bottomNavMenuBuilder;
+      this.topNavMenuBuilder,
+      this.bottomNavMenuBuilder});
 
   String get path => "/$name";
 
@@ -108,12 +104,4 @@ class PageBuilder {
         return FadeTransition(opacity: animation, child: child);
     }
   }
-
-  Widget Function(BuildContext context, BoxConstraints constraints)
-      get topNavMenuBuilder =>
-          _topNavMenuBuilder ?? (_, __) => const SizedBox.shrink();
-
-  Widget Function(BuildContext context, BoxConstraints constraints)
-      get bottomNavMenuBuilder =>
-          _bottomNavMenuBuilder ?? (_, __) => const SizedBox.shrink();
 }
