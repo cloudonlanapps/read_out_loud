@@ -1,10 +1,12 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:read_out_loud/pages/page_game.dart';
 
 import 'constants.dart';
 import 'page_builder/example_page_builder.dart';
 import 'pages/page_main.dart';
+import 'pages/page_settings.dart';
 
 class AppRouter extends StatelessWidget {
   const AppRouter({super.key});
@@ -13,7 +15,9 @@ class AppRouter extends StatelessWidget {
   Widget build(BuildContext context) {
     final router = GoRouter(
       routes: <GoRoute>[
-        ...[examplePageBuilder, mainPage].map((e) => e.route).toList()
+        ...[examplePageBuilder, mainPage, settingsPage, gamePage]
+            .map((e) => e.route)
+            .toList()
       ],
       redirect: (context, state) async => await redirector(state),
     );

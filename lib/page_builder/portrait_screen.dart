@@ -16,7 +16,6 @@ class PortraitScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        print(constraints.maxHeight);
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

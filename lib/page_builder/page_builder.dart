@@ -45,6 +45,7 @@ class PageBuilder {
         key: state.pageKey,
         child: SafeArea(
           child: Scaffold(
+            backgroundColor: Colors.transparent,
             body: ClipRect(
               clipBehavior: Clip.antiAlias,
               child: Container(
@@ -75,7 +76,7 @@ class PageBuilder {
       Animation<double> animation,
       Animation<double> secondaryAnimation,
       Widget child) {
-    const String scheme = "scale";
+    const String scheme = "size";
     switch (scheme) {
       case "slide":
         return SlideTransition(

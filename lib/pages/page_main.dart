@@ -1,7 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../page_builder/page_builder.dart';
+import 'custom_widgets/menu_button.dart';
+import 'page_game.dart';
+import 'page_settings.dart';
 
 final mainPage = PageBuilder(
   name: 'main',
@@ -31,23 +35,53 @@ final mainPage = PageBuilder(
     child: SizedBox(
       // height: constraints.maxHeight,
       // width: constraints.maxWidth,
-      child: Row(
-        children: const [
-          Center(child: Text("Top Menu")),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.only(right: 8.0, left: 8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Flexible(
+              child: MenuButton(
+                height: constraints.maxHeight,
+                menuButtonItem: MenuButtonItem(
+                    icon: Icons.settings,
+                    onTap: () {
+                      context.goNamed(settingsPage.name);
+                    },
+                    title: "Settings"),
+              ),
+            ),
+            const SizedBox(
+              width: 4,
+            ),
+            Flexible(
+              child: MenuButton(
+                height: constraints.maxHeight,
+                menuButtonItem: MenuButtonItem(
+                    icon: Icons.volume_off, onTap: () {}, title: "Mute"),
+              ),
+            )
+          ],
+        ),
       ),
     ),
   ),
   bottomNavMenuBuilder: (BuildContext context, BoxConstraints constraints) =>
-      const DecoratedBox(
-    decoration: BoxDecoration(
-        //  color: Colors.yellow,
-        // border: Border.all(),
+      Padding(
+    padding: const EdgeInsets.only(bottom: 8.0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        MenuButton(
+          height: constraints.maxHeight,
+          menuButtonItem: MenuButtonItem(
+              icon: Icons.play_circle_filled_outlined,
+              onTap: () {
+                context.goNamed(gamePage.name);
+              },
+              title: "Play"),
         ),
-    child: SizedBox(
-      // height: constraints.maxHeight,
-      // width: constraints.maxWidth,
-      child: Center(child: Text("Bottom Menu")),
+      ],
     ),
   ),
 );
