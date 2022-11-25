@@ -1,7 +1,7 @@
 import 'package:device_preview/device_preview.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'app_router.dart';
 
@@ -15,8 +15,8 @@ void main() {
   ]);
   return runApp(
     DevicePreview(
-      enabled: !kReleaseMode,
-      builder: (context) => const AppRouter(),
+      enabled: false, //!kReleaseMode,
+      builder: (context) => const ProviderScope(child: AppRouter()),
     ),
   );
 }

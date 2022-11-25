@@ -5,22 +5,18 @@ import 'package:go_router/go_router.dart';
 import '../page_builder/page_builder.dart';
 import 'custom_widgets/menu_button.dart';
 import 'page_main.dart';
+import 'games/say_aloud.dart';
 
 final gamePage = PageBuilder(
   name: 'game',
   mainAreaProminence: 0.9,
-  builder: (BuildContext context, BoxConstraints constraints) => DecoratedBox(
-    decoration: BoxDecoration(color: Colors.blue, border: Border.all()),
-    child: const Center(
-      child: Text(
-        'Ready to Play?',
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          fontSize: 55,
-          height: 1,
+  builder: (BuildContext context, BoxConstraints constraints) =>
+      const DecoratedBox(
+    decoration: BoxDecoration(
+        //color: Colors.blue,
+        //  border: Border.all(),
         ),
-      ),
-    ),
+    child: SayAloud(),
   ),
   topNavMenuBuilder: (BuildContext context, BoxConstraints constraints) =>
       DecoratedBox(
