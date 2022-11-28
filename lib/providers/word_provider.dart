@@ -15,6 +15,14 @@ class WordsNotifier extends StateNotifier<AsyncValue<Words>> {
   load() async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
+      //final json = await rootBundle.loadString(assetFile);
+      //return Words.fromJson(json);
+
+      /* final list = (const LineSplitter())
+          .convert(await rootBundle.loadString("$assetFile.txt"));
+      
+      return Words.fromList(list); */
+
       final json = await rootBundle.loadString(assetFile);
       return Words.fromJson(json);
     });

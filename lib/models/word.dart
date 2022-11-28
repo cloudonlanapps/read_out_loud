@@ -14,6 +14,12 @@ class Word {
       required this.succeeded,
       required this.giveup});
 
+  Word.fromString(this.original)
+      : utterred = "",
+        attempts = 0,
+        succeeded = false,
+        giveup = false;
+
   Word copyWith({
     String? original,
     String? utterred,

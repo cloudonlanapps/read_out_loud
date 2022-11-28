@@ -46,6 +46,13 @@ class Words {
       index: (map.containsKey('index')) ? map['index'] as int : 0,
     );
   }
+  factory Words.fromList(List list, {String title = "Unknown List"}) {
+    return Words(
+      words: list.map((e) => Word.fromString(e)).toList(),
+      title: title,
+      index: 0,
+    );
+  }
 
   String toJson() => json.encode(toMap());
 

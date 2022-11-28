@@ -1,10 +1,9 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, unused_element
 import 'dart:io';
 
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-import 'package:read_out_loud/models/speech_recogn.dart';
 
 enum TTSState { playing, stopped, paused, continued }
 
@@ -48,16 +47,15 @@ class TTSpeech {
     await flutterTts.setSharedInstance(true); //ios
 
     await flutterTts.setLanguage('en-US');
-    //print(await _getDefaultEngine());
-    // print(await _getDefaultVoice());
-    print(await _getLanguages());
+
+    //print(await _getLanguages());
     // print(await _getEngines());
     registerCallbacks(
       startHandler: () {
-        print("started");
+        // print("started");
       },
       completionHandler: () {
-        print("Completed");
+        //print("Completed");
       },
     );
   }
@@ -69,14 +67,14 @@ class TTSpeech {
   Future _getDefaultEngine() async {
     var engine = await flutterTts.getDefaultEngine;
     if (engine != null) {
-      print(engine);
+      //  print(engine);
     }
   }
 
   Future _getDefaultVoice() async {
     var voice = await flutterTts.getDefaultVoice;
     if (voice != null) {
-      print(voice);
+      // print(voice);
     }
   }
 
@@ -144,12 +142,13 @@ class TTSpeechNotifier extends StateNotifier<TTSpeech> {
   }
 
   Future<void> speak(String newVoiceText) async {
-    SpeechRecog speechRecog = ref.read(speechRecogProvider);
-    if (speechRecog.isListening) {
+    // SpeechRecog speechRecog = ref.read(speechRecogProvider);
+    /* if (speechRecog.isListening) {
       await ref.read(speechRecogProvider.notifier).stop();
       await state.speak(newVoiceText);
       await ref.read(speechRecogProvider.notifier).listen();
-    } else {
+    } else */
+    {
       await state.speak(newVoiceText);
     }
   }
