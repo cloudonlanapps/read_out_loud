@@ -21,7 +21,7 @@ class LandscapeScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Expanded(
-          flex: isLarge ? 7 : 5,
+          flex: isLarge ? 10 : 10,
           child: SafeArea(
             right: false,
             maintainBottomViewPadding: true,

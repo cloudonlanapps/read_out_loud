@@ -38,13 +38,15 @@ class MainWord extends ConsumerWidget {
                       width: double.infinity,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 4, vertical: 32),
-                        child: Text(
-                          words.currentWord.original,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                              color: Colors.blueGrey,
-                              fontWeight: FontWeight.bold),
+                            horizontal: 4, vertical: 4),
+                        child: FittedBox(
+                          child: Text(
+                            words.currentWord.original,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                                color: Colors.blueGrey,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ))),
             )));

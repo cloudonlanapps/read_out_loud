@@ -83,23 +83,31 @@ class SayAloudState extends ConsumerState<SayAloud> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.max,
         children: [
-          const Padding(
-            padding: EdgeInsets.only(bottom: 32.0),
-            child: Text(
-              "Can you read this word?",
-              textAlign: TextAlign.center,
+          const Flexible(
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 32.0),
+              child: Text(
+                "Can you read this word?",
+                textAlign: TextAlign.center,
+              ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 32.0, left: 8.0, right: 8.0),
-            child: MainWord(wordListFile: widget.wordListFile),
+          Flexible(
+            child: Padding(
+              padding:
+                  const EdgeInsets.only(bottom: 8.0, left: 8.0, right: 8.0),
+              child: MainWord(wordListFile: widget.wordListFile),
+            ),
           ),
-          UtterredWord(
-            wordListFile: widget.wordListFile,
+          Flexible(
+            child: UtterredWord(
+              wordListFile: widget.wordListFile,
+            ),
           ),
-          const Spacer(),
-          const SizedBox(
-            height: 32,
+          const Flexible(
+            child: SizedBox(
+              height: 32,
+            ),
           ),
           BottomMenu(
               wordListFile: widget.wordListFile,
