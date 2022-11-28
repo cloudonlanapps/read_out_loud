@@ -1,19 +1,26 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:read_out_loud/pages/custom_widgets/circular_button.dart';
+import 'package:read_out_loud/pages/games/widgets/bottom_menu.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
+import '../../providers/word_provider.dart';
 import 'widgets/main_word.dart';
+import 'widgets/utterred_word.dart';
 
 class SayAloud extends ConsumerStatefulWidget {
-  const SayAloud({super.key});
+  final String wordListFile;
+  const SayAloud({
+    super.key,
+    this.wordListFile = 'assets/wordlist1.json',
+  });
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _PlayGameState();
+  ConsumerState<ConsumerStatefulWidget> createState() => SayAloudState();
 }
 
-class _PlayGameState extends ConsumerState<SayAloud> {
+class SayAloudState extends ConsumerState<SayAloud> {
   final SpeechToText _speechToText = SpeechToText();
   bool _speechEnabled = false;
   String _lastWords = '';
@@ -32,7 +39,8 @@ class _PlayGameState extends ConsumerState<SayAloud> {
 
   /// Each time to start a speech recognition session
   void _startListening() async {
-    await _speechToText.listen(onResult: _onSpeechResult);
+    await _speechToText.listen(
+        onResult: (result) => _onSpeechResult(ref, result));
     setState(() {});
   }
 
@@ -47,14 +55,24 @@ class _PlayGameState extends ConsumerState<SayAloud> {
 
   /// This is the callback that the SpeechToText plugin calls when
   /// the platform returns recognized words.
-  void _onSpeechResult(SpeechRecognitionResult result) {
+  void _onSpeechResult(WidgetRef ref, SpeechRecognitionResult result) {
     final words = result.recognizedWords.split(' ');
+    ref.read(wordsProvider(widget.wordListFile).notifier).recognizedWords(
+        spokenText: words.last,
+        onSuccess: () {
+          _speechToText.stop();
+        });
     setState(() {
       _lastWords = words.last;
       if (_lastWords.toLowerCase() == "water") {
         _speechToText.stop();
       }
     });
+    /* ref.read(wordsProvider.notifier).recognizedWords(
+        spokenText: result.recognizedWords,
+        onSuccess: () {
+          _speechToText.stop();
+        }); */
   }
 
   @override
@@ -72,53 +90,31 @@ class _PlayGameState extends ConsumerState<SayAloud> {
               textAlign: TextAlign.center,
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.only(bottom: 32.0, left: 8.0, right: 8.0),
-            child: MainWord(),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 32.0, left: 8.0, right: 8.0),
+            child: MainWord(wordListFile: widget.wordListFile),
           ),
-          if (_lastWords != '')
-            if (_lastWords.toLowerCase() == "water")
-              Text(
-                "Well Done",
-                style: TextStyle(color: Colors.greenAccent.shade400),
-              )
-            else ...[
-              const Text("Did you say:"),
-              Text(
-                _lastWords,
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.redAccent.shade400),
-              )
-            ],
+          UtterredWord(
+            wordListFile: widget.wordListFile,
+          ),
           const Spacer(),
-          if (_speechEnabled)
-            CircularButton(
-              height: 20,
-              backgroundColor:
-                  _speechToText.isListening ? Colors.red.shade400 : null,
-              menuButtonItem: CircularButtonItem(
-                  icon:
-                      _speechToText.isNotListening ? Icons.mic_off : Icons.mic,
-                  onTap: _speechToText.isNotListening
-                      ? _startListening
-                      : _stopListening,
-                  title: _speechToText.isListening ? "Done" : "Talk"),
-            )
-          else
-            CircleAvatar(
-              backgroundColor:
-                  _speechToText.isListening ? Colors.red.shade400 : null,
-              child: const CircularProgressIndicator(),
-            ),
           const SizedBox(
             height: 32,
           ),
+          BottomMenu(
+              wordListFile: widget.wordListFile,
+              speechEnabled: _speechEnabled,
+              speechToText: _speechToText,
+              onTapRecord: _speechToText.isNotListening
+                  ? _startListening
+                  : _stopListening)
         ],
       ),
     );
   }
 }
 
+//Unused
 class Interact extends ConsumerWidget {
   final String utteredWord;
   const Interact({super.key, required this.utteredWord});

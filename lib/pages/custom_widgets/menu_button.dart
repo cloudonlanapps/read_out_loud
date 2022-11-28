@@ -18,40 +18,34 @@ class MenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: height,
-      child: FittedBox(
-        fit: BoxFit.none,
-        child: InkWell(
-          splashColor: const Color.fromARGB(128, 255, 0, 0),
-          onTap: menuButtonItem.onTap,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Icon(
-                menuButtonItem.icon,
-                size: 25,
-                color: menuButtonItem.onTap == null
-                    ? Colors.grey.shade300
-                    : Colors.black,
-              ),
-              if (menuButtonItem.title != null)
-                Container(
-                  margin: const EdgeInsets.only(top: 2),
-                  child: Text(
-                    menuButtonItem.title!,
-                    style: TextStyle(
-                        color: menuButtonItem.onTap == null
-                            ? Colors.grey.shade300
-                            : Colors.black,
-                        fontSize: 12),
-                  ),
-                ),
-            ],
+    return InkWell(
+      splashColor: const Color.fromARGB(128, 255, 0, 0),
+      onTap: menuButtonItem.onTap,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Icon(
+            menuButtonItem.icon,
+            size: 35,
+            color: menuButtonItem.onTap == null
+                ? Colors.grey.shade300
+                : Colors.black,
           ),
-        ),
+          if (menuButtonItem.title != null)
+            Container(
+              margin: const EdgeInsets.only(top: 2),
+              child: Text(
+                menuButtonItem.title!,
+                style: TextStyle(
+                    color: menuButtonItem.onTap == null
+                        ? Colors.grey.shade300
+                        : Colors.black,
+                    fontSize: 12),
+              ),
+            ),
+        ],
       ),
     );
   }
