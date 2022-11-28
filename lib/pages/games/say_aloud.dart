@@ -2,18 +2,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:read_out_loud/pages/games/widgets/bottom_menu.dart';
-import 'package:speech_to_text/speech_recognition_result.dart';
-import 'package:speech_to_text/speech_to_text.dart';
 
-import '../../providers/word_provider.dart';
 import 'widgets/main_word.dart';
 import 'widgets/utterred_word.dart';
 
 class SayAloud extends ConsumerStatefulWidget {
-  final String wordListFile;
   const SayAloud({
     super.key,
-    this.wordListFile = 'assets/wordlist1.json',
   });
 
   @override
@@ -21,60 +16,6 @@ class SayAloud extends ConsumerStatefulWidget {
 }
 
 class SayAloudState extends ConsumerState<SayAloud> {
-  final SpeechToText _speechToText = SpeechToText();
-  bool _speechEnabled = false;
-  String _lastWords = '';
-
-  @override
-  void initState() {
-    super.initState();
-    _initSpeech();
-  }
-
-  /// This has to happen only once per app
-  void _initSpeech() async {
-    _speechEnabled = await _speechToText.initialize();
-    setState(() {});
-  }
-
-  /// Each time to start a speech recognition session
-  void _startListening() async {
-    await _speechToText.listen(
-        onResult: (result) => _onSpeechResult(ref, result));
-    setState(() {});
-  }
-
-  /// Manually stop the active speech recognition session
-  /// Note that there are also timeouts that each platform enforces
-  /// and the SpeechToText plugin supports setting timeouts on the
-  /// listen method.
-  void _stopListening() async {
-    await _speechToText.stop();
-    setState(() {});
-  }
-
-  /// This is the callback that the SpeechToText plugin calls when
-  /// the platform returns recognized words.
-  void _onSpeechResult(WidgetRef ref, SpeechRecognitionResult result) {
-    final words = result.recognizedWords.split(' ');
-    ref.read(wordsProvider(widget.wordListFile).notifier).recognizedWords(
-        spokenText: words.last,
-        onSuccess: () {
-          _speechToText.stop();
-        });
-    setState(() {
-      _lastWords = words.last;
-      if (_lastWords.toLowerCase() == "water") {
-        _speechToText.stop();
-      }
-    });
-    /* ref.read(wordsProvider.notifier).recognizedWords(
-        spokenText: result.recognizedWords,
-        onSuccess: () {
-          _speechToText.stop();
-        }); */
-  }
-
   @override
   Widget build(BuildContext context) {
     return DefaultTextStyle(
@@ -82,8 +23,8 @@ class SayAloudState extends ConsumerState<SayAloud> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.max,
-        children: [
-          const Flexible(
+        children: const [
+          Flexible(
             child: Padding(
               padding: EdgeInsets.only(bottom: 32.0),
               child: Text(
@@ -94,28 +35,19 @@ class SayAloudState extends ConsumerState<SayAloud> {
           ),
           Flexible(
             child: Padding(
-              padding:
-                  const EdgeInsets.only(bottom: 8.0, left: 8.0, right: 8.0),
-              child: MainWord(wordListFile: widget.wordListFile),
+              padding: EdgeInsets.only(bottom: 8.0, left: 8.0, right: 8.0),
+              child: MainWord(),
             ),
           ),
           Flexible(
-            child: UtterredWord(
-              wordListFile: widget.wordListFile,
-            ),
+            child: UtterredWord(),
           ),
-          const Flexible(
+          Flexible(
             child: SizedBox(
               height: 32,
             ),
           ),
-          BottomMenu(
-              wordListFile: widget.wordListFile,
-              speechEnabled: _speechEnabled,
-              speechToText: _speechToText,
-              onTapRecord: _speechToText.isNotListening
-                  ? _startListening
-                  : _stopListening)
+          BottomMenu()
         ],
       ),
     );

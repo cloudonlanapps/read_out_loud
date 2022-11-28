@@ -1,8 +1,9 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'page_builder.dart';
 
-class LandscapeScreen extends StatelessWidget {
+class LandscapeScreen extends ConsumerWidget {
   const LandscapeScreen({
     Key? key,
     required this.padding,
@@ -16,7 +17,7 @@ class LandscapeScreen extends StatelessWidget {
   final bool isLarge;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -26,7 +27,9 @@ class LandscapeScreen extends StatelessWidget {
             right: false,
             maintainBottomViewPadding: true,
             minimum: padding,
-            child: LayoutBuilder(builder: pageBuilder.builder),
+            child: LayoutBuilder(
+                builder: (context, constraints) =>
+                    pageBuilder.builder(context, constraints, ref)),
           ),
         ),
         Expanded(
@@ -43,7 +46,8 @@ class LandscapeScreen extends StatelessWidget {
                     child: Padding(
                       padding: EdgeInsets.zero,
                       child: LayoutBuilder(
-                          builder: pageBuilder.topNavMenuBuilder!),
+                          builder: (context, constraints) => pageBuilder
+                              .topNavMenuBuilder!(context, constraints, ref)),
                     ),
                   ),
                 ),
@@ -59,7 +63,9 @@ class LandscapeScreen extends StatelessWidget {
                       child: Padding(
                         padding: EdgeInsets.zero,
                         child: LayoutBuilder(
-                            builder: pageBuilder.bottomNavMenuBuilder!),
+                            builder: (context, constraints) =>
+                                pageBuilder.bottomNavMenuBuilder!(
+                                    context, constraints, ref)),
                       ),
                     ),
                   ),

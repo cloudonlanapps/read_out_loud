@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../page_builder/page_builder.dart';
@@ -10,7 +11,7 @@ import 'games/say_aloud.dart';
 final gamePage = PageBuilder(
   name: 'game',
   mainAreaProminence: 0.9,
-  builder: (BuildContext context, BoxConstraints constraints) =>
+  builder: (BuildContext context, BoxConstraints constraints, WidgetRef ref) =>
       const DecoratedBox(
     decoration: BoxDecoration(
         //color: Colors.blue,
@@ -18,8 +19,9 @@ final gamePage = PageBuilder(
         ),
     child: SayAloud(),
   ),
-  topNavMenuBuilder: (BuildContext context, BoxConstraints constraints) =>
-      DecoratedBox(
+  topNavMenuBuilder:
+      (BuildContext context, BoxConstraints constraints, WidgetRef ref) =>
+          DecoratedBox(
     decoration: const BoxDecoration(
         //color: Colors.red,
         //border: Border.all(),

@@ -35,7 +35,7 @@ class AppRouter extends StatelessWidget {
 
   Future<String?> redirector(GoRouterState state) async {
     if (state.subloc == '/' || state.subloc == '') {
-      return gamePage.path;
+      return mainPage.path;
     }
     return null;
   }

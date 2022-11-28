@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'page_builder.dart';
 
-class PortraitScreen extends StatelessWidget {
+class PortraitScreen extends ConsumerWidget {
   const PortraitScreen({
     Key? key,
     required this.padding,
@@ -13,7 +14,7 @@ class PortraitScreen extends StatelessWidget {
   final PageBuilder pageBuilder;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return LayoutBuilder(
       builder: (context, constraints) {
         return Column(
@@ -26,8 +27,9 @@ class PortraitScreen extends StatelessWidget {
                   minimum: padding,
                   child: Padding(
                     padding: EdgeInsets.zero,
-                    child:
-                        LayoutBuilder(builder: pageBuilder.topNavMenuBuilder!),
+                    child: LayoutBuilder(
+                        builder: (context, constraints) => pageBuilder
+                            .topNavMenuBuilder!(context, constraints, ref)),
                   ),
                 ),
               ),
@@ -38,7 +40,9 @@ class PortraitScreen extends StatelessWidget {
                 top: false,
                 bottom: (pageBuilder.bottomNavMenuBuilder == null),
                 minimum: padding,
-                child: LayoutBuilder(builder: pageBuilder.builder),
+                child: LayoutBuilder(
+                    builder: (context, constraints) =>
+                        pageBuilder.builder(context, constraints, ref)),
               ),
             ),
             if (pageBuilder.bottomNavMenuBuilder != null)
@@ -50,7 +54,8 @@ class PortraitScreen extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.zero,
                     child: LayoutBuilder(
-                        builder: pageBuilder.bottomNavMenuBuilder!),
+                        builder: (context, constraints) => pageBuilder
+                            .bottomNavMenuBuilder!(context, constraints, ref)),
                   ),
                 ),
               ),

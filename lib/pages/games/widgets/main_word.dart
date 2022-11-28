@@ -6,12 +6,11 @@ import '../../../models/words.dart';
 import '../../../providers/word_provider.dart';
 
 class MainWord extends ConsumerWidget {
-  final String wordListFile;
-  const MainWord({super.key, required this.wordListFile});
+  const MainWord({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    AsyncValue<Words> wordsAsync = ref.watch(wordsProvider(wordListFile));
+    AsyncValue<Words> wordsAsync = ref.watch(wordsProvider);
     return wordsAsync.when(
         loading: () => const CircularProgressIndicator(),
         error: (error, stackTrace) => Center(

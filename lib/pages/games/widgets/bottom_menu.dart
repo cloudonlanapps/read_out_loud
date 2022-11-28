@@ -1,27 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:speech_to_text/speech_to_text.dart';
 
+import '../../../models/speech_recogn.dart';
 import '../../../models/words.dart';
 import '../../../providers/word_provider.dart';
 import '../../custom_widgets/circular_button.dart';
 import '../../custom_widgets/menu_button.dart';
 
-class BottomMenu extends ConsumerWidget {
-  final Function() onTapRecord;
-  final SpeechToText speechToText;
-  final bool speechEnabled;
-  final String wordListFile;
-  const BottomMenu(
-      {super.key,
-      required this.onTapRecord,
-      required this.speechEnabled,
-      required this.speechToText,
-      required this.wordListFile});
+class BottomMenu extends ConsumerStatefulWidget {
+  const BottomMenu({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    AsyncValue<Words> wordsAsync = ref.watch(wordsProvider(wordListFile));
+  ConsumerState<ConsumerStatefulWidget> createState() => _BottomMenuState();
+}
+
+class _BottomMenuState extends ConsumerState<BottomMenu> {
+  @override
+  Widget build(BuildContext context) {
+    SpeechRecog speechRecog = ref.watch(speechRecogProvider);
+    AsyncValue<Words> wordsAsync = ref.watch(wordsProvider);
     return wordsAsync.when(
         loading: () => const CircularProgressIndicator(),
         error: (error, stackTrace) => const Center(
@@ -38,28 +35,30 @@ class BottomMenu extends ConsumerWidget {
                         icon: Icons.arrow_circle_left,
                         onTap: () async {
                           await ref
-                              .read(wordsProvider(wordListFile).notifier)
+                              .read(wordsProvider.notifier)
                               .previous(words);
                         },
                         title: 'Prev'),
                   ),
                 ),
-                if (speechEnabled)
+                if (speechRecog.speechEnabled)
                   CircularButton(
                     height: 20,
                     backgroundColor:
-                        speechToText.isListening ? Colors.red.shade400 : null,
+                        speechRecog.isListening ? Colors.red.shade400 : null,
                     menuButtonItem: CircularButtonItem(
-                        icon: speechToText.isNotListening
+                        icon: speechRecog.isNotListening
                             ? Icons.mic
                             : Icons.mic_off,
-                        onTap: onTapRecord,
-                        title: speechToText.isListening ? "Done" : "Talk"),
+                        onTap: () => ref
+                            .read(speechRecogProvider.notifier)
+                            .toggleListening(),
+                        title: speechRecog.isListening ? "Done" : "Talk"),
                   )
                 else
                   CircleAvatar(
                     backgroundColor:
-                        speechToText.isListening ? Colors.red.shade400 : null,
+                        speechRecog.isListening ? Colors.red.shade400 : null,
                     child: const CircularProgressIndicator(),
                   ),
                 Padding(
@@ -69,9 +68,7 @@ class BottomMenu extends ConsumerWidget {
                     menuButtonItem: MenuButtonItem(
                         icon: Icons.arrow_circle_right,
                         onTap: () async {
-                          await ref
-                              .read(wordsProvider(wordListFile).notifier)
-                              .next(words);
+                          await ref.read(wordsProvider.notifier).next(words);
                         },
                         title: 'Next'),
                   ),

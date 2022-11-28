@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/words.dart';
+import 'selected_list.dart';
 
 class WordsNotifier extends StateNotifier<AsyncValue<Words>> {
   final String assetFile;
@@ -59,9 +60,11 @@ class WordsNotifier extends StateNotifier<AsyncValue<Words>> {
 
         return words.copyWith(words: wordList);
       });
-      state.whenData((Words words) {
+      state.whenData((Words words) async {
         if (words.words[words.index].succeeded) {
-          onSuccess();
+          await onSuccess();
+          await Future.delayed(const Duration(seconds: 3));
+          await next(words);
         }
       });
     }
@@ -84,5 +87,7 @@ class WordsNotifier extends StateNotifier<AsyncValue<Words>> {
 }
 
 final wordsProvider =
-    StateNotifierProvider.family<WordsNotifier, AsyncValue<Words>, String>(
-        (ref, wordListFile) => WordsNotifier(wordListFile));
+    StateNotifierProvider<WordsNotifier, AsyncValue<Words>>((ref) {
+  final String wordListFile = ref.watch(selectedListProvider);
+  return WordsNotifier(wordListFile);
+});

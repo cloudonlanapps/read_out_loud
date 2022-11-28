@@ -1,15 +1,17 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../page_builder/page_builder.dart';
+import '../providers/selected_list.dart';
 import 'custom_widgets/menu_button.dart';
 import 'page_game.dart';
 import 'page_settings.dart';
 
 final mainPage = PageBuilder(
   name: 'main',
-  builder: (BuildContext context, BoxConstraints constraints) =>
+  builder: (BuildContext context, BoxConstraints constraints, WidgetRef ref) =>
       const DecoratedBox(
     decoration: BoxDecoration(
         //  color: Colors.blue,
@@ -26,8 +28,9 @@ final mainPage = PageBuilder(
       ),
     ),
   ),
-  topNavMenuBuilder: (BuildContext context, BoxConstraints constraints) =>
-      DecoratedBox(
+  topNavMenuBuilder:
+      (BuildContext context, BoxConstraints constraints, WidgetRef ref) =>
+          DecoratedBox(
     decoration: const BoxDecoration(
         //color: Colors.red,
         //border: Border.all(),
@@ -66,8 +69,9 @@ final mainPage = PageBuilder(
       ),
     ),
   ),
-  bottomNavMenuBuilder: (BuildContext context, BoxConstraints constraints) =>
-      Padding(
+  bottomNavMenuBuilder:
+      (BuildContext context, BoxConstraints constraints, WidgetRef ref) =>
+          Padding(
     padding: const EdgeInsets.only(bottom: 8.0),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -77,6 +81,9 @@ final mainPage = PageBuilder(
           menuButtonItem: MenuButtonItem(
               icon: Icons.play_circle_filled_outlined,
               onTap: () {
+                ref
+                    .read(selectedListProvider.notifier)
+                    .newAsset('assets/wordlist1.json');
                 context.goNamed(gamePage.name);
               },
               title: "Play"),

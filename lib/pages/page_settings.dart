@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:read_out_loud/pages/page_main.dart';
 
@@ -9,7 +10,8 @@ import 'custom_widgets/menu_button.dart';
 final settingsPage = PageBuilder(
   name: 'settings',
   mainAreaProminence: 0.9,
-  builder: (BuildContext context, BoxConstraints constraints) => const Center(
+  builder: (BuildContext context, BoxConstraints constraints, WidgetRef ref) =>
+      const Center(
     child: Text(
       'Settings',
       textAlign: TextAlign.center,
@@ -19,8 +21,9 @@ final settingsPage = PageBuilder(
       ),
     ),
   ),
-  topNavMenuBuilder: (BuildContext context, BoxConstraints constraints) =>
-      DecoratedBox(
+  topNavMenuBuilder:
+      (BuildContext context, BoxConstraints constraints, WidgetRef ref) =>
+          DecoratedBox(
     decoration: const BoxDecoration(
         //color: Colors.red,
         //border: Border.all(),

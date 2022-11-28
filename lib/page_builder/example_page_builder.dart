@@ -1,11 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'page_builder.dart';
 
 final examplePageBuilder = PageBuilder(
   name: 'template',
-  builder: (BuildContext context, BoxConstraints constraints) => DecoratedBox(
+  builder: (BuildContext context, BoxConstraints constraints, WidgetRef ref) =>
+      DecoratedBox(
     decoration: BoxDecoration(color: Colors.blue, border: Border.all()),
     child: const Center(
       child: Text(
@@ -18,8 +20,9 @@ final examplePageBuilder = PageBuilder(
       ),
     ),
   ),
-  topNavMenuBuilder: (BuildContext context, BoxConstraints constraints) =>
-      DecoratedBox(
+  topNavMenuBuilder:
+      (BuildContext context, BoxConstraints constraints, WidgetRef ref) =>
+          DecoratedBox(
     decoration: BoxDecoration(color: Colors.red, border: Border.all()),
     child: const SizedBox(
       // height: constraints.maxHeight,
@@ -27,8 +30,9 @@ final examplePageBuilder = PageBuilder(
       child: Center(child: Text("Top Menu")),
     ),
   ),
-  bottomNavMenuBuilder: (BuildContext context, BoxConstraints constraints) =>
-      DecoratedBox(
+  bottomNavMenuBuilder:
+      (BuildContext context, BoxConstraints constraints, WidgetRef ref) =>
+          DecoratedBox(
     decoration: BoxDecoration(color: Colors.yellow, border: Border.all()),
     child: const SizedBox(
       // height: constraints.maxHeight,

@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'responsive_screen.dart';
@@ -14,12 +15,14 @@ class PageBuilder {
   static const double borderRadius = 15;
   final String name;
 
-  final Widget Function(BuildContext context, BoxConstraints constraints)
-      builder;
-  final Widget Function(BuildContext context, BoxConstraints constraints)?
+  final Widget Function(
+      BuildContext context, BoxConstraints constraints, WidgetRef ref) builder;
+  final Widget Function(
+          BuildContext context, BoxConstraints constraints, WidgetRef ref)?
       topNavMenuBuilder;
 
-  final Widget Function(BuildContext context, BoxConstraints constraints)?
+  final Widget Function(
+          BuildContext context, BoxConstraints constraints, WidgetRef ref)?
       bottomNavMenuBuilder;
 
   final double mainAreaProminence;
