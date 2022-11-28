@@ -29,7 +29,11 @@ class SpeechRecog {
   bool get isNotListening => speechToText.isNotListening;
 
   listen(Function(SpeechRecognitionResult) callback) async {
-    await speechToText.listen(onResult: callback);
+    await speechToText.listen(
+      onResult: callback,
+      // partialResults: false,
+      // cancelOnError: true,
+    );
   }
 
   stop() async {
@@ -50,8 +54,7 @@ class SpeechRecogNotifier extends StateNotifier<SpeechRecog> {
   }
 
   Future<void> listen() async {
-    await state.listen((SpeechRecognitionResult speechRecognitionResult) =>
-        onResult(speechRecognitionResult));
+    await state.listen(onResult);
   }
 
   Future<void> stop() async {
