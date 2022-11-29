@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../models/speech_recogn.dart';
 import '../page_builder/page_builder.dart';
 import 'custom_widgets/menu_button.dart';
 import 'page_main.dart';
@@ -40,6 +41,7 @@ final gamePage = PageBuilder(
                 menuButtonItem: MenuButtonItem(
                     icon: Icons.home,
                     onTap: () {
+                      ref.read(speechRecogProvider.notifier).stop();
                       context.goNamed(mainPage.name);
                     },
                     title: "Home"),

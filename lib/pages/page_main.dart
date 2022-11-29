@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../models/speech_recogn.dart';
 import '../page_builder/page_builder.dart';
 import '../providers/selected_list.dart';
 import 'custom_widgets/menu_button.dart';
@@ -84,6 +85,7 @@ final mainPage = PageBuilder(
                 ref
                     .read(selectedListProvider.notifier)
                     .newAsset('assets/wordlist1.json');
+                ref.read(speechRecogProvider.notifier).listen();
                 context.goNamed(gamePage.name);
               },
               title: "Play"),

@@ -36,7 +36,7 @@ class WordsNotifier extends StateNotifier<AsyncValue<Words>> {
       }
       return words;
     });
-    await resetCurrentWord();
+    //await resetCurrentWord();
   }
 
   next(Words words) async {
@@ -51,7 +51,10 @@ class WordsNotifier extends StateNotifier<AsyncValue<Words>> {
   }
 
   recognizedWords(
-      {required String spokenText, required Function() onSuccess}) async {
+      {required String spokenText,
+      required Function() onSuccess,
+      required Function() onFail,
+      required Function() introNextWord}) async {
     Words? words = state.whenOrNull(data: (Words words) => words);
     if (words != null && !words.currentWord.succeeded) {
       state = const AsyncValue.loading();
@@ -71,9 +74,11 @@ class WordsNotifier extends StateNotifier<AsyncValue<Words>> {
       state.whenData((Words words) async {
         if (words.words[words.index].succeeded) {
           await onSuccess();
-          await Future.delayed(const Duration(seconds: 3));
-
+          //await Future.delayed(const Duration(seconds: 3));
           await next(words);
+          await introNextWord();
+        } else {
+          //await onFail();
         }
       });
     }

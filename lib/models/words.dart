@@ -79,4 +79,7 @@ class Words {
   bool get isFirst => (index == 0);
 
   bool get isLast => (index == words.length - 1);
+
+  int get successCount =>
+      words.where((Word e) => e.succeeded == true).toList().length;
 }

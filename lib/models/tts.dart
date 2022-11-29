@@ -5,6 +5,8 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
+import 'speech_recogn.dart';
+
 enum TTSState { playing, stopped, paused, continued }
 
 enum OSSupported { android, ios }
@@ -24,7 +26,7 @@ class TTSpeech {
   //late final dynamic engine;
   //late final dynamic voice;
   final bool ready;
-  final double volume = 0.5;
+  final double volume = 1.0;
   final double pitch = 1.0;
   final double rate = 0.5;
 
@@ -142,15 +144,14 @@ class TTSpeechNotifier extends StateNotifier<TTSpeech> {
   }
 
   Future<void> speak(String newVoiceText) async {
-    // SpeechRecog speechRecog = ref.read(speechRecogProvider);
-    /* if (speechRecog.isListening) {
-      await ref.read(speechRecogProvider.notifier).stop();
-      await state.speak(newVoiceText);
-      await ref.read(speechRecogProvider.notifier).listen();
-    } else */
-    {
-      await state.speak(newVoiceText);
-    }
+    SpeechRecog speechRecog = ref.read(speechRecogProvider);
+    print("speechRecog.isListening = ${speechRecog.isListening}");
+
+    await ref.read(speechRecogProvider.notifier).pause();
+    print("speaking $newVoiceText");
+    await state.speak(newVoiceText);
+    await ref.read(speechRecogProvider.notifier).resume();
+    //await ref.read(speechRecogProvider.notifier).listen();
   }
 }
 
