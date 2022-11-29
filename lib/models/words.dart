@@ -82,4 +82,6 @@ class Words {
 
   int get successCount =>
       words.where((Word e) => e.succeeded == true).toList().length;
+
+  bool get isNotEmpty => words.isNotEmpty;
 }

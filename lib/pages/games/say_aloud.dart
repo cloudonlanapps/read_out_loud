@@ -67,30 +67,8 @@ class Score extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    AsyncValue<Words> wordsAsync = ref.watch(wordsProvider);
-    return wordsAsync.when(
-        loading: () => const CircularProgressIndicator(),
-        error: (error, stackTrace) => Center(
-              child: Column(
-                children: [
-                  const Text(
-                      "Unable to start the application, contact developer"),
-                  Text(error.toString())
-                ],
-              ),
-            ),
-        data: (Words words) => _Score(
-              words: words,
-            ));
-  }
-}
-
-class _Score extends ConsumerWidget {
-  final Words words;
-  const _Score({required this.words});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
+    Words? words = ref.watch(wordsProvider);
+    if (words == null) return Container();
     return Text.rich(TextSpan(children: [
       const TextSpan(text: "Score: "),
       if (words.successCount > 0)
