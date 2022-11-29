@@ -8,37 +8,27 @@ import '../providers/word_provider.dart';
 class SpeechRecog {
   late final SpeechToText speechToText;
   final bool speechEnabled;
+  final bool isListening;
 
   SpeechRecog({
     SpeechToText? speechToText,
     this.speechEnabled = false,
+    this.isListening = false,
   }) {
     this.speechToText = speechToText ?? SpeechToText();
   }
 
   SpeechRecog copyWith({
     bool? speechEnabled,
+    bool? isListening,
   }) {
     return SpeechRecog(
-      speechToText: speechToText,
-      speechEnabled: speechEnabled ?? this.speechEnabled,
-    );
+        speechToText: speechToText,
+        speechEnabled: speechEnabled ?? this.speechEnabled,
+        isListening: isListening ?? this.isListening);
   }
 
-  bool get isListening => speechToText.isListening;
-  bool get isNotListening => speechToText.isNotListening;
-
-  listen(Function(SpeechRecognitionResult) callback) async {
-    await speechToText.listen(
-      onResult: callback,
-      // partialResults: false,
-      // cancelOnError: true,
-    );
-  }
-
-  stop() async {
-    await speechToText.stop();
-  }
+  bool get isNotListening => !isListening;
 }
 
 class SpeechRecogNotifier extends StateNotifier<SpeechRecog> {
@@ -54,11 +44,13 @@ class SpeechRecogNotifier extends StateNotifier<SpeechRecog> {
   }
 
   Future<void> listen() async {
-    await state.listen(onResult);
+    await state.speechToText.listen(onResult: onResult);
+    state = state.copyWith(isListening: state.speechToText.isListening);
   }
 
   Future<void> stop() async {
-    await state.stop();
+    await state.speechToText.stop();
+    state = state.copyWith(isListening: state.speechToText.isListening);
   }
 
   Future<void> toggleListening() async {
