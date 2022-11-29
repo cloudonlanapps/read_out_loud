@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:read_out_loud/models/tts.dart';
 
 import '../../../models/speech_recogn.dart';
 import '../../../models/words.dart';
@@ -18,8 +19,9 @@ class _BottomMenuState extends ConsumerState<BottomMenu> {
   @override
   Widget build(BuildContext context) {
     SpeechRecog speechRecog = ref.watch(speechRecogProvider);
+    TTSpeech ttSpeech = ref.watch(ttspeechProvider);
     Words? words = ref.watch(wordsProvider);
-    if (words == null) return Container();
+    if (words == null || ttSpeech.isSpeaking) return Container();
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -30,7 +32,7 @@ class _BottomMenuState extends ConsumerState<BottomMenu> {
             menuButtonItem: MenuButtonItem(
                 icon: Icons.arrow_circle_left,
                 onTap: () {
-                  ref.read(wordsProvider.notifier).previous(words);
+                  ref.read(speechRecogProvider.notifier).previous();
                 },
                 title: 'Prev'),
           ),
@@ -42,8 +44,7 @@ class _BottomMenuState extends ConsumerState<BottomMenu> {
                 speechRecog.isListening ? Colors.red.shade400 : null,
             menuButtonItem: CircularButtonItem(
                 icon: speechRecog.isNotListening ? Icons.mic : Icons.mic_off,
-                onTap: () =>
-                    ref.read(speechRecogProvider.notifier).toggleListening(),
+                onTap: () {},
                 title: speechRecog.isListening ? "Done" : "Talk"),
           )
         else
@@ -59,7 +60,7 @@ class _BottomMenuState extends ConsumerState<BottomMenu> {
             menuButtonItem: MenuButtonItem(
                 icon: Icons.arrow_circle_right,
                 onTap: () {
-                  ref.read(wordsProvider.notifier).next(words);
+                  ref.read(speechRecogProvider.notifier).next();
                 },
                 title: 'Next'),
           ),

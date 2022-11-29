@@ -21,18 +21,20 @@ class WordsNotifier extends StateNotifier<Words?> {
     state = Words.fromJson(json);
   }
 
-  previous(Words words) {
+  previous() {
     if (state != null) {
-      if (state!.isNotEmpty && !state!.isFirst) {
-        state = state!.copyWith(index: words.index - 1);
+      final obj = state!;
+      if (obj.isNotEmpty && !obj.isFirst) {
+        state = obj.copyWith(index: obj.index - 1);
       }
     }
   }
 
-  next(Words words) {
+  next() {
     if (state != null) {
-      if (state!.isNotEmpty && !state!.isLast) {
-        state = state!.copyWith(index: words.index + 1);
+      final obj = state!;
+      if (obj.isNotEmpty && !obj.isLast) {
+        state = obj.copyWith(index: obj.index + 1);
       }
     }
   }

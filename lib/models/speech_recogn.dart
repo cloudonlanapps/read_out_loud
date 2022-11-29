@@ -75,38 +75,28 @@ class SpeechRecogNotifier extends StateNotifier<SpeechRecog> {
     state = state.copyWith(isListening: state.speechToText.isListening);
   }
 
-  Future<void> toggleListening() async {
-    if (state.isListening) {
-      await stop();
-    } else {
-      await listen();
-    }
-  }
-
   Future<void> pause() async {
     if (!state.paused) {
-      print("pause");
       state = state.copyWith(paused: true);
     }
   }
 
   Future<void> resume() async {
-    if (state.paused && state.isListening) {
-      print("resume");
-
-      await state.speechToText.cancel();
-      await stop();
-      await listen();
+    if (state.paused) {
+      //await state.speechToText.cancel();
+      if (state.isListening) {
+        await stop();
+        await listen();
+      }
       state = state.copyWith(paused: false);
     }
   }
 
   Future<void> onResult(SpeechRecognitionResult speechRecognitionResult) async {
-    print("On Result isPaused : ${state.paused}");
     if (!state.paused) {
       state = state.copyWith(paused: true);
       final recognizedWords = speechRecognitionResult.recognizedWords;
-      print("Received word: ${recognizedWords.split(' ').last}");
+
       await ref.read(wordsProvider.notifier).recognizedWords(
           spokenText: recognizedWords.split(' ').last,
           onSuccess: () async {
@@ -133,6 +123,26 @@ class SpeechRecogNotifier extends StateNotifier<SpeechRecog> {
   reset() async {
     await stop();
     await listen();
+  }
+
+  previous() async {
+    await pause();
+    ref.read(wordsProvider.notifier).previous();
+    await ref.read(ttspeechProvider.notifier).speak('Can you reads this word?');
+    await Future.delayed(const Duration(microseconds: 1000));
+    await resume();
+    await reset();
+  }
+
+  next() async {
+    await pause();
+    ref.read(wordsProvider.notifier).next();
+
+    await ref.read(ttspeechProvider.notifier).speak('Can you reads this word?');
+    await resume();
+    if (!state.isListening) {
+      await reset();
+    }
   }
 }
 

@@ -5,8 +5,6 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
-import 'speech_recogn.dart';
-
 enum TTSState { playing, stopped, paused, continued }
 
 enum OSSupported { android, ios }
@@ -26,20 +24,27 @@ class TTSpeech {
   //late final dynamic engine;
   //late final dynamic voice;
   final bool ready;
+  final bool isSpeaking;
   final double volume = 1.0;
   final double pitch = 1.0;
   final double rate = 0.5;
 
-  TTSpeech({FlutterTts? flutterTts, this.ready = false}) {
+  TTSpeech({
+    FlutterTts? flutterTts,
+    this.ready = false,
+    this.isSpeaking = false,
+  }) {
     this.flutterTts = flutterTts ?? FlutterTts();
   }
 
   TTSpeech copyWith({
     bool? ready,
+    bool? isSpeaking,
   }) {
     return TTSpeech(
       flutterTts: flutterTts,
       ready: ready ?? this.ready,
+      isSpeaking: isSpeaking ?? this.isSpeaking,
     );
   }
 
@@ -54,10 +59,10 @@ class TTSpeech {
     // print(await _getEngines());
     registerCallbacks(
       startHandler: () {
-        // print("started");
+        print("started");
       },
       completionHandler: () {
-        //print("Completed");
+        print("Completed");
       },
     );
   }
@@ -86,6 +91,7 @@ class TTSpeech {
     await flutterTts.setPitch(pitch);
 
     if (newVoiceText.isNotEmpty) {
+      print("Speaking $newVoiceText");
       await flutterTts.speak(newVoiceText);
     }
   }
@@ -139,19 +145,20 @@ class TTSpeechNotifier extends StateNotifier<TTSpeech> {
   }
 
   Future<void> init() async {
-    state.init();
+    await state.init();
     state = state.copyWith(ready: true);
   }
 
   Future<void> speak(String newVoiceText) async {
-    SpeechRecog speechRecog = ref.read(speechRecogProvider);
-    print("speechRecog.isListening = ${speechRecog.isListening}");
-
-    await ref.read(speechRecogProvider.notifier).pause();
-    print("speaking $newVoiceText");
+    if (!state.ready) {
+      await init();
+      if (!state.ready) {
+        return;
+      }
+    }
+    state = state.copyWith(isSpeaking: true);
     await state.speak(newVoiceText);
-    await ref.read(speechRecogProvider.notifier).resume();
-    //await ref.read(speechRecogProvider.notifier).listen();
+    state = state.copyWith(isSpeaking: false);
   }
 }
 
