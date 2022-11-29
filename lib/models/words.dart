@@ -10,10 +10,12 @@ class Words {
   final String title;
   final int index;
   Words({
-    required this.words,
-    required this.title,
-    required this.index,
-  });
+    List<Word>? words,
+    String? title,
+    int? index,
+  })  : words = words ?? [],
+        title = title ?? "",
+        index = index ?? ((words == null) ? -1 : 0);
 
   Words copyWith({
     List<Word>? words,
@@ -74,11 +76,12 @@ class Words {
   @override
   int get hashCode => words.hashCode ^ title.hashCode ^ index.hashCode;
 
-  Word get currentWord => words[index];
+  Word? get currentWord =>
+      (words.length > index && index >= 0) ? words[index] : null;
 
-  bool get isFirst => (index == 0);
+  bool get isFirst => (index == 0) || (index == -1);
 
-  bool get isLast => (index == words.length - 1);
+  bool get isLast => (index == words.length - 1) || (index == -1);
 
   int get successCount =>
       words.where((Word e) => e.succeeded == true).toList().length;
