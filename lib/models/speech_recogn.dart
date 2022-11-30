@@ -85,14 +85,14 @@ class SpeechRecogNotifier extends StateNotifier<SpeechRecog> {
 
   Future<void> pause() async {
     if (!state.paused) {
-      print("pause");
+      // print("pause");
       state = state.copyWith(paused: true);
     }
   }
 
   Future<void> resume() async {
     if (state.paused && state.isListening) {
-      print("resume");
+      // print("resume");
 
       await state.speechToText.cancel();
       await stop();
@@ -102,15 +102,15 @@ class SpeechRecogNotifier extends StateNotifier<SpeechRecog> {
   }
 
   Future<void> onResult(SpeechRecognitionResult speechRecognitionResult) async {
-    print("On Result isPaused : ${state.paused}");
+    // print("On Result isPaused : ${state.paused}");
     if (!state.paused) {
       state = state.copyWith(paused: true);
       final recognizedWords = speechRecognitionResult.recognizedWords;
-      print("Received word: ${recognizedWords.split(' ').last}");
+      // print("Received word: ${recognizedWords.split(' ').last}");
       await ref.read(wordsProvider.notifier).recognizedWords(
           spokenText: recognizedWords.split(' ').last,
           onSuccess: () async {
-            await reset();
+            //await reset();
             await ref.read(ttspeechProvider.notifier).speak('Well Done');
           },
           onFail: onFail,

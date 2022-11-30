@@ -26,7 +26,7 @@ class TTSpeech {
   //late final dynamic engine;
   //late final dynamic voice;
   final bool ready;
-  final double volume = 1.0;
+  final double volume = 0.5;
   final double pitch = 1.0;
   final double rate = 0.5;
 
@@ -139,18 +139,18 @@ class TTSpeechNotifier extends StateNotifier<TTSpeech> {
   }
 
   Future<void> init() async {
-    state.init();
+    await state.init();
     state = state.copyWith(ready: true);
   }
 
   Future<void> speak(String newVoiceText) async {
     SpeechRecog speechRecog = ref.read(speechRecogProvider);
-    print("speechRecog.isListening = ${speechRecog.isListening}");
+    //print("speechRecog.isListening = ${speechRecog.isListening}");
 
-    await ref.read(speechRecogProvider.notifier).pause();
-    print("speaking $newVoiceText");
+    //await ref.read(speechRecogProvider.notifier).pause();
+    //print("speaking $newVoiceText");
     await state.speak(newVoiceText);
-    await ref.read(speechRecogProvider.notifier).resume();
+    //await ref.read(speechRecogProvider.notifier).resume();
     //await ref.read(speechRecogProvider.notifier).listen();
   }
 }
