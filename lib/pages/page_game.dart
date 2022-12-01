@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../models/speech_recogn.dart';
 import '../page_builder/page_builder.dart';
 import 'custom_widgets/menu_button.dart';
 import 'page_main.dart';
@@ -33,21 +32,21 @@ final gamePage = PageBuilder(
       child: Padding(
         padding: const EdgeInsets.only(right: 8.0, left: 8),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Flexible(
               child: MenuButton(
                 height: constraints.maxHeight,
                 menuButtonItem: MenuButtonItem(
-                    icon: Icons.home,
-                    onTap: () {
-                      ref.read(speechRecogProvider.notifier).stop();
-                      context.goNamed(mainPage.name);
-                    },
-                    title: "Home"),
+                  icon: Icons.arrow_back,
+                  onTap: () {
+                    //ref.read(speechRecogProvider.notifier).stop();
+                    context.goNamed(mainPage.name);
+                  },
+                ),
               ),
             ),
-            const SizedBox(
+            /* const SizedBox(
               width: 4,
             ),
             Flexible(
@@ -56,7 +55,7 @@ final gamePage = PageBuilder(
                 menuButtonItem: MenuButtonItem(
                     icon: Icons.volume_off, onTap: () {}, title: "Mute"),
               ),
-            )
+            ) */
           ],
         ),
       ),

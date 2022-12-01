@@ -13,6 +13,7 @@ void main() {
     DeviceOrientation.landscapeLeft,
     DeviceOrientation.landscapeRight,
   ]);
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   return runApp(
     DevicePreview(
       enabled: false, //!kReleaseMode,

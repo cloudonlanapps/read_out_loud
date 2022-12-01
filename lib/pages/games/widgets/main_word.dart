@@ -2,7 +2,6 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../models/tts.dart';
 import '../../../models/words.dart';
 import '../../../providers/word_provider.dart';
 
@@ -12,7 +11,7 @@ class MainWord extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     AsyncValue<Words> wordsAsync = ref.watch(wordsProvider);
-    final TTSpeech ttspeech = ref.watch(ttspeechProvider);
+    //final TTSpeech ttspeech = ref.watch(ttspeechProvider);
     return wordsAsync.when(
         loading: () => const CircularProgressIndicator(),
         error: (error, stackTrace) => Center(
@@ -25,11 +24,12 @@ class MainWord extends ConsumerWidget {
               ),
             ),
         data: ((Words words) => InkWell(
-              onTap: ttspeech.ready
+              onTap: /* ttspeech.ready
                   ? () => ref
                       .read(ttspeechProvider.notifier)
                       .speak(words.currentWord.original)
-                  : null,
+                  :  */
+                  null,
               child: DottedBorder(
                   //dashPattern: const [6, 3, 2, 3],
                   borderType: BorderType.RRect,

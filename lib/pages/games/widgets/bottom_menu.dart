@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../models/speech_recogn.dart';
 import '../../../models/words.dart';
 import '../../../providers/word_provider.dart';
-import '../../custom_widgets/circular_button.dart';
 import '../../custom_widgets/menu_button.dart';
 
 class BottomMenu extends ConsumerStatefulWidget {
@@ -17,7 +15,7 @@ class BottomMenu extends ConsumerStatefulWidget {
 class _BottomMenuState extends ConsumerState<BottomMenu> {
   @override
   Widget build(BuildContext context) {
-    SpeechRecog speechRecog = ref.watch(speechRecogProvider);
+    //SpeechRecog speechRecog = ref.watch(speechRecogProvider);
     AsyncValue<Words> wordsAsync = ref.watch(wordsProvider);
     return wordsAsync.when(
         loading: () => const CircularProgressIndicator(),
@@ -41,7 +39,7 @@ class _BottomMenuState extends ConsumerState<BottomMenu> {
                         title: 'Prev'),
                   ),
                 ),
-                if (speechRecog.speechEnabled)
+                /* if (speechRecog.speechEnabled)
                   CircularButton(
                     height: 20,
                     backgroundColor:
@@ -55,12 +53,12 @@ class _BottomMenuState extends ConsumerState<BottomMenu> {
                             .toggleListening(),
                         title: speechRecog.isListening ? "Done" : "Talk"),
                   )
-                else
-                  CircleAvatar(
-                    backgroundColor:
-                        speechRecog.isListening ? Colors.red.shade400 : null,
-                    child: const CircularProgressIndicator(),
-                  ),
+                else */
+                const CircleAvatar(
+                  /* backgroundColor:
+                      speechRecog.isListening ? Colors.red.shade400 : null, */
+                  child: CircularProgressIndicator(),
+                ),
                 Padding(
                   padding: const EdgeInsets.only(right: 32.0),
                   child: MenuButton(
