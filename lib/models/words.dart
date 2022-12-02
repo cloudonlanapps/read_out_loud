@@ -9,13 +9,10 @@ class Words {
   final List<Word> words;
   final String title;
   final int index;
-  Words({
-    List<Word>? words,
-    String? title,
-    int? index,
-  })  : words = words ?? [],
-        title = title ?? "",
-        index = index ?? ((words == null) ? -1 : 0);
+  Words({required this.words, required this.title, int? index})
+      : index = ((index != null) && (index >= 0) && (index > words.length))
+            ? index
+            : 0;
 
   Words copyWith({
     List<Word>? words,
@@ -33,7 +30,6 @@ class Words {
     return <String, dynamic>{
       'words': words.map((x) => x.toMap()).toList(),
       'title': title,
-      'index': index,
     };
   }
 
@@ -45,7 +41,6 @@ class Words {
         ),
       ),
       title: map['title'] as String,
-      index: (map.containsKey('index')) ? map['index'] as int : 0,
     );
   }
   factory Words.fromList(List list, {String title = "Unknown List"}) {
@@ -79,9 +74,9 @@ class Words {
   Word? get currentWord =>
       (words.length > index && index >= 0) ? words[index] : null;
 
-  bool get isFirst => (index == 0) || (index == -1);
+  bool get isFirst => (index == 0);
 
-  bool get isLast => (index == words.length - 1) || (index == -1);
+  bool get isLast => (index == words.length - 1);
 
   int get successCount =>
       words.where((Word e) => e.succeeded == true).toList().length;

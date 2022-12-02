@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../page_builder/page_builder.dart';
 import '../providers/selected_list.dart';
-import 'custom_widgets/menu_button.dart';
+import 'custom_widgets/custom_menu.dart';
 import 'page_game.dart';
 import 'page_settings.dart';
 
@@ -44,9 +44,8 @@ final mainPage = PageBuilder(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Flexible(
-              child: MenuButton(
-                height: constraints.maxHeight,
-                menuButtonItem: MenuButtonItem(
+              child: CustomMenuButton(
+                menuItem: CustomMenuItem(
                     icon: Icons.settings,
                     onTap: () {
                       context.goNamed(settingsPage.name);
@@ -58,9 +57,8 @@ final mainPage = PageBuilder(
               width: 4,
             ),
             Flexible(
-              child: MenuButton(
-                height: constraints.maxHeight,
-                menuButtonItem: MenuButtonItem(
+              child: CustomMenuButton(
+                menuItem: CustomMenuItem(
                     icon: Icons.volume_off, onTap: () {}, title: "Mute"),
               ),
             )
@@ -76,9 +74,8 @@ final mainPage = PageBuilder(
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        MenuButton(
-          height: constraints.maxHeight,
-          menuButtonItem: MenuButtonItem(
+        CustomMenuButton(
+          menuItem: CustomMenuItem(
               icon: Icons.play_circle_filled_outlined,
               onTap: () {
                 ref

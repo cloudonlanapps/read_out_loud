@@ -21,42 +21,40 @@ class PortraitScreen extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             if (pageBuilder.topNavMenuBuilder != null)
-              Flexible(
-                child: SafeArea(
-                  bottom: false,
-                  minimum: padding,
-                  child: Padding(
-                    padding: EdgeInsets.zero,
-                    child: LayoutBuilder(
-                        builder: (context, constraints) => pageBuilder
-                            .topNavMenuBuilder!(context, constraints, ref)),
-                  ),
+              SafeArea(
+                bottom: false,
+                minimum: padding,
+                child: Padding(
+                  padding: EdgeInsets.zero,
+                  child: LayoutBuilder(
+                      builder: (context, constraints) => pageBuilder
+                          .topNavMenuBuilder!(context, constraints, ref)),
                 ),
               ),
-            SizedBox(
-              height: constraints.maxHeight * pageBuilder.mainAreaProminence,
-              //flex: (pageBuilder.mainAreaProminence * 100).round(),
-              child: SafeArea(
-                top: false,
-                bottom: (pageBuilder.bottomNavMenuBuilder == null),
-                minimum: padding,
-                child: LayoutBuilder(
-                    builder: (context, constraints) =>
-                        pageBuilder.builder(context, constraints, ref)),
+            Expanded(
+              child: SizedBox(
+                height: constraints.maxHeight * pageBuilder.mainAreaProminence,
+                //flex: (pageBuilder.mainAreaProminence * 100).round(),
+                child: SafeArea(
+                  top: false,
+                  bottom: (pageBuilder.bottomNavMenuBuilder == null),
+                  minimum: padding,
+                  child: LayoutBuilder(
+                      builder: (context, constraints) =>
+                          pageBuilder.builder(context, constraints, ref)),
+                ),
               ),
             ),
             if (pageBuilder.bottomNavMenuBuilder != null)
-              Flexible(
-                child: SafeArea(
-                  top: false,
-                  maintainBottomViewPadding: true,
-                  minimum: padding,
-                  child: Padding(
-                    padding: EdgeInsets.zero,
-                    child: LayoutBuilder(
-                        builder: (context, constraints) => pageBuilder
-                            .bottomNavMenuBuilder!(context, constraints, ref)),
-                  ),
+              SafeArea(
+                top: false,
+                maintainBottomViewPadding: true,
+                minimum: padding,
+                child: Padding(
+                  padding: EdgeInsets.zero,
+                  child: LayoutBuilder(
+                      builder: (context, constraints) => pageBuilder
+                          .bottomNavMenuBuilder!(context, constraints, ref)),
                 ),
               ),
           ],
