@@ -5,8 +5,8 @@ import 'package:go_router/go_router.dart';
 
 import '../page_builder/page_builder.dart';
 import 'custom_widgets/custom_menu.dart';
-import 'page_main.dart';
 import 'games/say_aloud.dart';
+import 'page_main.dart';
 
 final gamePage = PageBuilder(
     name: 'game',
@@ -22,44 +22,19 @@ final gamePage = PageBuilder(
             ),
     topNavMenuBuilder:
         (BuildContext context, BoxConstraints constraints, WidgetRef ref) =>
-            DecoratedBox(
-              decoration: const BoxDecoration(
-                  //color: Colors.red,
-                  //border: Border.all(),
-                  ),
-              child: SizedBox(
-                // height: constraints.maxHeight,
-                // width: constraints.maxWidth,
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 8.0, left: 8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Flexible(
-                        child: CustomMenuButton(
-                          menuItem: CustomMenuItem(
-                            icon: Icons.arrow_back,
-                            onTap: () {
-                              //ref.read(speechRecogProvider.notifier).stop();
-                              context.goNamed(mainPage.name);
-                            },
-                          ),
-                        ),
-                      ),
-                      /* const SizedBox(
-              width: 4,
-            ),
-            Flexible(
-              child: MenuButton(
-                height: constraints.maxHeight,
-                menuButtonItem: MenuButtonItem(
-                    icon: Icons.volume_off, onTap: () {}, title: "Mute"),
-              ),
-            ) */
-                    ],
-                  ),
+            SafeArea(
+              top: false,
+              child: CustomMenu(menuItems: [
+                CustomMenuItem(
+                  alignment: Alignment.centerLeft,
+                  icon: Icons.arrow_back,
+                  onTap: () async {
+                    context.goNamed(mainPage.name);
+                  },
                 ),
-              ),
+                null,
+                null
+              ]),
             ),
     bottomNavMenuBuilder:
         (BuildContext context, BoxConstraints constraints, WidgetRef ref) =>
@@ -81,3 +56,5 @@ final gamePage = PageBuilder(
                     title: 'Next')
               ]),
             ));
+
+ //

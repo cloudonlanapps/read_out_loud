@@ -3,8 +3,13 @@ import 'package:flutter/material.dart';
 class CustomMenuItem {
   String? title;
   IconData icon;
+  final AlignmentGeometry alignment;
   void Function()? onTap;
-  CustomMenuItem({this.title, required this.icon, this.onTap});
+  CustomMenuItem(
+      {this.title,
+      required this.icon,
+      this.onTap,
+      this.alignment = Alignment.center});
 }
 
 class CustomMenuButton extends StatelessWidget {
@@ -47,6 +52,7 @@ class CustomMenuButton extends StatelessWidget {
 
 class CustomMenu extends StatelessWidget {
   final List<CustomMenuItem?> menuItems;
+
   const CustomMenu({super.key, required this.menuItems});
 
   @override
@@ -55,7 +61,8 @@ class CustomMenu extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: menuItems
             .map((e) => Expanded(
-                  child: Center(
+                  child: Align(
+                    alignment: (e == null) ? Alignment.center : e.alignment,
                     child: (e == null)
                         ? Container()
                         : CustomMenuButton(menuItem: e),
