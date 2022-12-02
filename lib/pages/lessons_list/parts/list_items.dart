@@ -95,8 +95,8 @@ class ListItemsState extends ConsumerState<ListItems> {
               Row(
                 children: [
                   Container(
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.only(
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(50.0),
                           bottomLeft: Radius.circular(50.0)),
                       // color: Colors.blue.shade100,
@@ -153,15 +153,15 @@ class ListItemsState extends ConsumerState<ListItems> {
                     ),
                   ),
                   Container(
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.only(
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.only(
                           topRight: Radius.circular(50.0),
                           bottomRight: Radius.circular(50.0)),
                       //  color: Colors.blue.shade100,
                     ),
                     width: 50,
                     height: widget.size.height - 8 - 2,
-                    child: Icon(Icons.settings_backup_restore_outlined),
+                    child: const Icon(Icons.settings_backup_restore_outlined),
                   ),
                 ],
               ),
