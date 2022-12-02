@@ -13,12 +13,12 @@ final lessonsListPage = PageBuilder(
     mainAreaProminence: 0.9,
     builder: (BuildContext context, BoxConstraints constraints, WidgetRef ref,
             Size size) =>
-        const DecoratedBox(
-          decoration: BoxDecoration(
+        DecoratedBox(
+          decoration: const BoxDecoration(
               //color: Colors.blue,
               //  border: Border.all(),
               ),
-          child: LessonListView(),
+          child: LessonListView(key: ValueKey(size.toString()), size: size),
         ),
     topNavMenuBuilder:
         (BuildContext context, BoxConstraints constraints, WidgetRef ref) =>

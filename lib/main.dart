@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,7 +19,7 @@ void main() {
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   return runApp(
     DevicePreview(
-      enabled: false, //!kReleaseMode,
+      enabled: Platform.isMacOS ? !kReleaseMode : false, //,
       builder: (context) => const ProviderScope(child: AppRouter()),
     ),
   );

@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class LessonListView extends ConsumerWidget {
-  const LessonListView({super.key});
+  final Size size;
+  const LessonListView({super.key, required this.size});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    print("$size");
     return Container();
   }
 }
-
 
 /*
 
