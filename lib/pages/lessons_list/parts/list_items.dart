@@ -44,7 +44,7 @@ class ListItemsState extends ConsumerState<ListItems> {
     return Container(
       //decoration: BoxDecoration(border: Border.all()),
       height: widget.tileHeight,
-      alignment: Alignment.centerLeft,
+      alignment: Alignment.topLeft,
       padding: const EdgeInsets.all(8.0),
       child: Text(lesson, style: const TextStyle()),
     );
