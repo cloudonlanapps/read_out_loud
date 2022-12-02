@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 
 class CustomMenuItem {
   String? title;
-  IconData icon;
+  IconData? icon;
   final AlignmentGeometry alignment;
   void Function()? onTap;
   CustomMenuItem(
-      {this.title,
-      required this.icon,
-      this.onTap,
-      this.alignment = Alignment.center});
+      {this.title, this.icon, this.onTap, this.alignment = Alignment.center});
 }
 
 class CustomMenuButton extends StatelessWidget {
@@ -27,18 +24,20 @@ class CustomMenuButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Icon(
-            menuItem.icon,
-            size: 40,
-            color: menuItem.onTap == null ? Colors.grey.shade300 : Colors.black,
-          ),
+          if (menuItem.icon != null)
+            Icon(
+              menuItem.icon!,
+              size: 40,
+              color:
+                  menuItem.onTap == null ? Colors.grey.shade300 : Colors.black,
+            ),
           if (menuItem.title != null)
             Padding(
               padding: const EdgeInsets.only(top: 2),
               child: Text(
                 menuItem.title!,
                 style: TextStyle(
-                    color: menuItem.onTap == null
+                    color: (menuItem.onTap == null)
                         ? Colors.grey.shade300
                         : Colors.black,
                     fontSize: 12),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../shared/providers/size_provider.dart';
+
 class SizeGetter extends ConsumerStatefulWidget {
   final Widget Function(BuildContext context, BoxConstraints constraints,
       WidgetRef ref, Size size) builder;
@@ -24,6 +26,7 @@ class SizeGetterState extends ConsumerState<SizeGetter> {
     try {
       setState(() {
         size = renderBox.size;
+        ref.read(sizeProvider.notifier).size = size;
       });
       //print(size);
     } catch (e) {

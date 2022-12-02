@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../page_builder/page_builder.dart';
 import '../custom_widgets/custom_menu.dart';
 import '../page_main.dart';
+import 'bottom_menu.dart';
 import 'view.dart';
 
 final lessonsListPage = PageBuilder(
@@ -37,24 +38,11 @@ final lessonsListPage = PageBuilder(
               ]),
             ),
     bottomNavMenuBuilder:
-        (BuildContext context, BoxConstraints constraints, WidgetRef ref) =>
-            SafeArea(
-              top: false,
-              child: CustomMenu(menuItems: [
-                CustomMenuItem(
-                    icon: Icons.arrow_circle_left,
-                    onTap: () async {
-                      //await ref.read(wordsProvider.notifier).previous();
-                    },
-                    title: 'Prev'),
-                null,
-                CustomMenuItem(
-                    icon: Icons.arrow_circle_right,
-                    onTap: () async {
-                      //await ref.read(wordsProvider.notifier).previous();
-                    },
-                    title: 'Next')
-              ]),
-            ));
+        (BuildContext context, BoxConstraints constraints, WidgetRef ref) {
+      return const SafeArea(
+        top: false,
+        child: BottomMenu(),
+      );
+    });
 
  //

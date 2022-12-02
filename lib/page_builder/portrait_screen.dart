@@ -37,7 +37,7 @@ class PortraitScreen extends ConsumerWidget {
                 height: constraints.maxHeight * pageBuilder.mainAreaProminence,
                 //flex: (pageBuilder.mainAreaProminence * 100).round(),
                 child: SafeArea(
-                  top: false,
+                  top: (pageBuilder.topNavMenuBuilder == null),
                   bottom: (pageBuilder.bottomNavMenuBuilder == null),
                   minimum: padding,
                   child: SizeGetter(builder: pageBuilder.builder),
