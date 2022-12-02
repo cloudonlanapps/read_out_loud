@@ -1,5 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'dart:convert';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -15,16 +17,10 @@ class WordsNotifier extends StateNotifier<AsyncValue<Words>> {
   load() async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      //final json = await rootBundle.loadString(assetFile);
-      //return Words.fromJson(json);
-
-      /* final list = (const LineSplitter())
+      final list = (const LineSplitter())
           .convert(await rootBundle.loadString("$assetFile.txt"));
-      
-      return Words.fromList(list); */
 
-      final json = await rootBundle.loadString(assetFile);
-      return Words.fromJson(json);
+      return Words.fromList(list);
     });
   }
 
