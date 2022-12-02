@@ -6,7 +6,8 @@ import 'page_builder.dart';
 
 final examplePageBuilder = PageBuilder(
   name: 'template',
-  builder: (BuildContext context, BoxConstraints constraints, WidgetRef ref) =>
+  builder: (BuildContext context, BoxConstraints constraints, WidgetRef ref,
+          Size size) =>
       DecoratedBox(
     decoration: BoxDecoration(color: Colors.blue, border: Border.all()),
     child: const Center(

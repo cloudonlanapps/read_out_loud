@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:read_out_loud/page_builder/size_getter.dart';
 
 import 'page_builder.dart';
 
@@ -39,9 +40,7 @@ class PortraitScreen extends ConsumerWidget {
                   top: false,
                   bottom: (pageBuilder.bottomNavMenuBuilder == null),
                   minimum: padding,
-                  child: LayoutBuilder(
-                      builder: (context, constraints) =>
-                          pageBuilder.builder(context, constraints, ref)),
+                  child: SizeGetter(builder: pageBuilder.builder),
                 ),
               ),
             ),
@@ -51,7 +50,7 @@ class PortraitScreen extends ConsumerWidget {
                 maintainBottomViewPadding: true,
                 minimum: padding,
                 child: Padding(
-                  padding: EdgeInsets.zero,
+                  padding: const EdgeInsets.only(bottom: 16),
                   child: LayoutBuilder(
                       builder: (context, constraints) => pageBuilder
                           .bottomNavMenuBuilder!(context, constraints, ref)),

@@ -18,8 +18,8 @@ class PageBuilder {
   static const double borderRadius = 15;
   final String name;
 
-  final Widget Function(
-      BuildContext context, BoxConstraints constraints, WidgetRef ref) builder;
+  final Widget Function(BuildContext context, BoxConstraints constraints,
+      WidgetRef ref, Size size) builder;
   final Widget Function(
           BuildContext context, BoxConstraints constraints, WidgetRef ref)?
       topNavMenuBuilder;

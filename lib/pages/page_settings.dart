@@ -10,7 +10,8 @@ import 'custom_widgets/custom_menu.dart';
 final settingsPage = PageBuilder(
   name: 'settings',
   mainAreaProminence: 0.9,
-  builder: (BuildContext context, BoxConstraints constraints, WidgetRef ref) =>
+  builder: (BuildContext context, BoxConstraints constraints, WidgetRef ref,
+          Size size) =>
       const Center(
     child: Text(
       'Settings',

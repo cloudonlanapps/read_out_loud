@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:read_out_loud/page_builder/size_getter.dart';
 
 import 'page_builder.dart';
 
@@ -27,9 +28,7 @@ class LandscapeScreen extends ConsumerWidget {
             right: false,
             maintainBottomViewPadding: true,
             minimum: padding,
-            child: LayoutBuilder(
-                builder: (context, constraints) =>
-                    pageBuilder.builder(context, constraints, ref)),
+            child: SizeGetter(builder: pageBuilder.builder),
           ),
         ),
         Expanded(

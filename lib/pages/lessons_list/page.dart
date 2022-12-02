@@ -3,23 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../page_builder/page_builder.dart';
-import 'custom_widgets/custom_menu.dart';
-import 'games/say_aloud.dart';
-import 'page_main.dart';
+import '../../page_builder/page_builder.dart';
+import '../custom_widgets/custom_menu.dart';
+import '../page_main.dart';
+import 'view.dart';
 
-final gamePage = PageBuilder(
+final lessonsListPage = PageBuilder(
     name: 'game',
     mainAreaProminence: 0.9,
-    builder:
-        (BuildContext context, BoxConstraints constraints, WidgetRef ref) =>
-            const DecoratedBox(
-              decoration: BoxDecoration(
-                  //color: Colors.blue,
-                  //  border: Border.all(),
-                  ),
-              child: SayAloud(),
-            ),
+    builder: (BuildContext context, BoxConstraints constraints, WidgetRef ref,
+            Size size) =>
+        const DecoratedBox(
+          decoration: BoxDecoration(
+              //color: Colors.blue,
+              //  border: Border.all(),
+              ),
+          child: LessonListView(),
+        ),
     topNavMenuBuilder:
         (BuildContext context, BoxConstraints constraints, WidgetRef ref) =>
             SafeArea(

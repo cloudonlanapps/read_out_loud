@@ -7,7 +7,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/word.dart';
 import '../models/words.dart';
-import 'selected_list.dart';
 
 class WordsNotifier extends StateNotifier<Words?> {
   final String assetFile;
@@ -65,6 +64,6 @@ class WordsNotifier extends StateNotifier<Words?> {
 }
 
 final wordsProvider = StateNotifierProvider<WordsNotifier, Words?>((ref) {
-  final String wordListFile = ref.watch(selectedListProvider);
+  const String wordListFile = "Test"; //ref.watch(selectedListProvider);
   return WordsNotifier(wordListFile);
 });

@@ -4,14 +4,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../page_builder/page_builder.dart';
-import '../providers/selected_list.dart';
 import 'custom_widgets/custom_menu.dart';
-import 'page_game.dart';
+import 'lessons_list/page.dart';
 import 'page_settings.dart';
 
 final mainPage = PageBuilder(
   name: 'main',
-  builder: (BuildContext context, BoxConstraints constraints, WidgetRef ref) =>
+  builder: (BuildContext context, BoxConstraints constraints, WidgetRef ref,
+          Size size) =>
       const DecoratedBox(
     decoration: BoxDecoration(
         //  color: Colors.blue,
@@ -78,11 +78,7 @@ final mainPage = PageBuilder(
           menuItem: CustomMenuItem(
               icon: Icons.play_circle_filled_outlined,
               onTap: () {
-                ref
-                    .read(selectedListProvider.notifier)
-                    .newAsset('assets/wordlist1.json');
-                //ref.read(speechRecogProvider.notifier).listen();
-                context.goNamed(gamePage.name);
+                context.goNamed(lessonsListPage.name);
               },
               title: "Play"),
         ),

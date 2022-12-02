@@ -1,14 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SelectedListNotifier extends StateNotifier<String> {
-  SelectedListNotifier() : super("");
+final currentLesson = StateProvider<String?>((ref) {
+  return null;
+});
 
-  newAsset(String assetName) {
-    state = assetName;
-  }
-}
-
-final selectedListProvider =
-    StateNotifierProvider<SelectedListNotifier, String>((ref) {
-  return SelectedListNotifier();
+final lessonsProvider = StateProvider<List<String>>((ref) {
+  return [
+    "wordlist1",
+    "wordlist2",
+    "wordlist3",
+  ];
 });

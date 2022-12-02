@@ -1,10 +1,10 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:read_out_loud/pages/page_game.dart';
 
 import 'constants.dart';
 import 'page_builder/example_page_builder.dart';
+import 'pages/lessons_list/page.dart';
 import 'pages/page_main.dart';
 import 'pages/page_settings.dart';
 
@@ -15,7 +15,7 @@ class AppRouter extends StatelessWidget {
   Widget build(BuildContext context) {
     final router = GoRouter(
       routes: <GoRoute>[
-        ...[examplePageBuilder, mainPage, settingsPage, gamePage]
+        ...[examplePageBuilder, mainPage, settingsPage, lessonsListPage]
             .map((e) => e.route)
             .toList()
       ],
@@ -35,7 +35,7 @@ class AppRouter extends StatelessWidget {
 
   Future<String?> redirector(GoRouterState state) async {
     if (state.subloc == '/' || state.subloc == '') {
-      return gamePage.path;
+      return lessonsListPage.path;
     }
     return null;
   }

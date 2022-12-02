@@ -2,18 +2,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SayAloud extends ConsumerStatefulWidget {
-  const SayAloud({
-    super.key,
-  });
+class LessonListView extends ConsumerWidget {
+  const LessonListView({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => SayAloudState();
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Container();
+  }
 }
 
-class SayAloudState extends ConsumerState<SayAloud> {
-  Size? size;
-  int currentIndex = 5;
+
+/*
+
+int currentIndex = 5;
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   final List<Widget> lessons = [];
   final Tween<Offset> _offset =
@@ -96,4 +97,4 @@ class SayAloudState extends ConsumerState<SayAloud> {
       ],
     );
   }
-}
+*/

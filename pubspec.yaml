@@ -29,4 +29,6 @@ flutter:
   uses-material-design: true
   assets:
     - assets/wordlist1.txt
+    - assets/wordlist2.txt
+    - assets/wordlist3.txt
     
