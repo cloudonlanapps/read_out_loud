@@ -13,7 +13,7 @@ class ListItemsState extends ConsumerState<ListItems> {
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   final List<Widget> items = [];
   final Tween<Offset> _offset =
-      Tween(begin: const Offset(1, 0), end: const Offset(0, 0));
+      Tween(begin: const Offset(-1, 0), end: const Offset(0, 0));
 
   @override
   void initState() {
@@ -32,7 +32,7 @@ class ListItemsState extends ConsumerState<ListItems> {
   void addItems() async {
     ref.read(isAnimatingProvider.notifier).isAnimating = true;
     for (var item in widget.items) {
-      await Future.delayed(const Duration(milliseconds: 200), () {
+      await Future.delayed(const Duration(milliseconds: 100), () {
         items.add(_buildTile(item));
         _listKey.currentState!.insertItem(items.length - 1);
       });
@@ -41,12 +41,22 @@ class ListItemsState extends ConsumerState<ListItems> {
   }
 
   Widget _buildTile(String lesson) {
-    return Container(
-      //decoration: BoxDecoration(border: Border.all()),
+    return SizedBox(
       height: widget.tileHeight,
-      alignment: Alignment.topLeft,
-      padding: const EdgeInsets.all(8.0),
-      child: Text(lesson, style: const TextStyle()),
+      child: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Container(
+          decoration: BoxDecoration(
+              border: Border.all(color: Colors.amberAccent),
+              borderRadius: BorderRadius.circular(50)),
+          height: widget.tileHeight,
+          alignment: Alignment.center,
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: FittedBox(
+              fit: BoxFit.fitWidth,
+              child: Text(lesson, style: const TextStyle(fontSize: 30))),
+        ),
+      ),
     );
   }
 

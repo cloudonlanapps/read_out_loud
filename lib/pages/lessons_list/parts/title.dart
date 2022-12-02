@@ -9,9 +9,9 @@ class _LessonsListTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Center(
       child: Text(
-        "Select one to play",
+        "Select one",
         style: TextStyle(
-          fontSize: 30.0,
+          fontSize: 40.0,
           fontWeight: FontWeight.bold,
           fontFamily: 'Horizon',
         ),

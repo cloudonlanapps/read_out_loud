@@ -9,13 +9,14 @@ class LessonsList extends ItemList<String> {
             lessons: lessons,
             itemsPerPage: itemsPerPage,
             currentPage: currentPage,
-            numPages: (lessons.length + itemsPerPage) ~/ itemsPerPage) {
+            numPages: (lessons.length + itemsPerPage - 1) ~/ itemsPerPage) {
     if (lessons.isEmpty) {
-      throw Exception("No lessons found");
+      //   throw Exception("No lessons found");
     }
-
-    if (currentPage < 0 || currentPage >= numPages) {
-      throw Exception("Invalid value for currentPage");
+    if (numPages > 0) {
+      if (currentPage < 0 || currentPage >= numPages) {
+        throw Exception("Invalid value for currentPage");
+      }
     }
   }
 

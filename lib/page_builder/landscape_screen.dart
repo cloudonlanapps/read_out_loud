@@ -23,7 +23,7 @@ class LandscapeScreen extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Expanded(
-          flex: isLarge ? 10 : 10,
+          flex: isLarge ? 7 : 5,
           child: SafeArea(
             right: false,
             maintainBottomViewPadding: true,

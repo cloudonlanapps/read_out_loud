@@ -10,19 +10,30 @@ class LessonListView extends ConsumerWidget {
         .watch(lessonsListProvider.select((value) => value?.getcurrentPage()));
     final sizeProperties = ref.watch(sizeProvider);
 
+    if (lessons != null && lessons.isEmpty) {
+      return const Center(
+        child: Text(
+          "Nothing to show here",
+          style: TextStyle(
+            fontSize: 40.0,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Horizon',
+          ),
+        ),
+      );
+    }
     return Column(
       children: [
         SizedBox(
             height: sizeProperties.titleHeight,
             child: const _LessonsListTitle()),
-        if (lessons != null)
-          Expanded(
-            child: ListItems(
-              key: ValueKey(lessons.toString()),
-              items: lessons,
-              tileHeight: sizeProperties.tileHeight,
-            ),
+        Expanded(
+          child: ListItems(
+            key: ValueKey(lessons.toString()),
+            items: lessons!,
+            tileHeight: sizeProperties.tileHeight,
           ),
+        )
       ],
     );
   }

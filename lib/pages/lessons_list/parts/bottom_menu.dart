@@ -9,7 +9,7 @@ class BottomMenu extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final LessonsList? lessonsList = ref.watch(lessonsListProvider);
     final bool isAnimating = ref.watch(isAnimatingProvider);
-
+    if ((lessonsList?.numPages ?? 0) == 0) return Container();
     return CustomMenu(menuItems: [
       ((lessonsList?.isFirst ?? true) || isAnimating)
           ? null

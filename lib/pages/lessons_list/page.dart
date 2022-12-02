@@ -33,7 +33,7 @@ final lessonsListPage = PageBuilder(
     topNavMenuBuilder:
         (BuildContext context, BoxConstraints constraints, WidgetRef ref) =>
             SafeArea(
-              top: false,
+              bottom: false,
               child: CustomMenu(menuItems: [
                 CustomMenuItem(
                   alignment: Alignment.centerLeft,
@@ -42,8 +42,6 @@ final lessonsListPage = PageBuilder(
                     context.goNamed(mainPage.name);
                   },
                 ),
-                null,
-                null
               ]),
             ),
     bottomNavMenuBuilder:
