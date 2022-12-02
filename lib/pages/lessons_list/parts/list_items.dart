@@ -40,133 +40,23 @@ class ListItemsState extends ConsumerState<ListItems> {
     ref.read(isAnimatingProvider.notifier).isAnimating = false;
   }
 
+  double get pad => 4.0;
+  double get widthMinusPad => widget.size.width - (2 * pad);
+  double get heightMinusPad => widget.size.height - (2 * pad);
+  Size get size => Size(widthMinusPad, heightMinusPad);
   Widget _buildTile(String lesson) {
     var rng = Random();
     double percentageCompleted = rng.nextDouble();
     //percentageCompleted = .03;
     return Padding(
-      padding: const EdgeInsets.all(4.0),
-      child: ClipRect(
-        child: Container(
-          decoration: BoxDecoration(
-              color: Colors.red,
-              border: Border.all(color: Colors.amberAccent),
-              borderRadius: BorderRadius.circular(50)),
-          alignment: Alignment.center,
-          // padding: const EdgeInsets.symmetric(horizontal: 8),
-          width: widget.size.width - 8,
-          height: widget.size.height - 8,
-
-          child: Stack(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(50),
-                child: Row(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        /* borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(50.0),
-                            bottomLeft: Radius.circular(50.0)), */
-                        color: Colors.green.shade300,
-                      ),
-                      child: SizedBox(
-                        width:
-                            (widget.size.width - 8 - 2) * percentageCompleted,
-                        height: widget.size.height - 8 - 2,
-                      ),
-                    ),
-                    Container(
-                      decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(50.0),
-                            bottomRight: Radius.circular(50.0)),
-                        color: Colors.white,
-                      ),
-                      child: SizedBox(
-                        width: (widget.size.width - 8 - 2) *
-                            (1 - percentageCompleted),
-                        height: widget.size.height - 8 - 2,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Row(
-                children: [
-                  Container(
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(50.0),
-                          bottomLeft: Radius.circular(50.0)),
-                      // color: Colors.blue.shade100,
-                    ),
-                    width: 50,
-                    height: widget.size.height - 8 - 2,
-                    child: FittedBox(
-                      fit: BoxFit.contain,
-                      child: Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Transform.rotate(
-                              angle: -pi / 6.0,
-                              child: FittedBox(
-                                  fit: BoxFit.fitWidth,
-                                  child: Text(
-                                    (percentageCompleted < 0.05)
-                                        ? "new"
-                                        : "${(percentageCompleted * 100).toInt()}%",
-                                    style:
-                                        TextStyle(color: Colors.blue.shade800),
-                                  ))),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    color: Colors.transparent,
-                    //  color: Colors.blue.shade100,
-                    width: (widget.size.width - 8) - 100 - 2,
-                    height: widget.size.height - 8 - 2,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 4.0, vertical: 2.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            flex: 60,
-                            child: FittedBox(
-                              fit: BoxFit.fitWidth,
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(lesson,
-                                    textAlign: TextAlign.start,
-                                    style: const TextStyle(fontSize: 30)),
-                              ),
-                            ),
-                          ),
-                          // const Expanded(flex: 40, child: Text("Not attempted yet"))
-                        ],
-                      ),
-                    ),
-                  ),
-                  Container(
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(50.0),
-                          bottomRight: Radius.circular(50.0)),
-                      //  color: Colors.blue.shade100,
-                    ),
-                    width: 50,
-                    height: widget.size.height - 8 - 2,
-                    child: const Icon(Icons.settings_backup_restore_outlined),
-                  ),
-                ],
-              ),
-            ],
-          ),
+      padding: EdgeInsets.all(pad),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(50),
+        child: Stack(
+          children: [
+            ProgressBar(size: size, progress: percentageCompleted),
+            ItemTile(text: lesson, size: size, progress: percentageCompleted),
+          ],
         ),
       ),
     );
@@ -191,17 +81,3 @@ class ListItemsState extends ConsumerState<ListItems> {
     );
   }
 }
-/*
-
-const Icon(
-              Icons.arrow_forward_ios,
-              color: Colors.amberAccent,
-            )
-
-const CircleAvatar(
-                radius: 18,
-                child: Padding(
-                  padding: EdgeInsets.all(3.0),
-                  child: FittedBox(fit: BoxFit.fitWidth, child: Text("NEW")),
-                )),
-                 */
