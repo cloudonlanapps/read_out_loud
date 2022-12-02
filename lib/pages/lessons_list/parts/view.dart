@@ -31,7 +31,7 @@ class LessonListView extends ConsumerWidget {
           child: ListItems(
             key: ValueKey(lessons.toString()),
             items: lessons!,
-            tileHeight: sizeProperties.tileHeight,
+            size: Size(sizeProperties.size!.width, sizeProperties.tileHeight),
           ),
         )
       ],
