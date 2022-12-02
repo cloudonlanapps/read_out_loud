@@ -1,50 +1,15 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:read_out_loud/pages/lessons_list/provider.dart';
-import 'package:read_out_loud/shared/providers/size_provider.dart';
+part of '../page.dart';
 
-import '../../shared/providers/animating.dart';
-import 'title.dart';
-
-class LessonListView extends ConsumerWidget {
-  final Size size;
-  const LessonListView({super.key, required this.size});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final List<String>? lessons = ref
-        .watch(lessonsListProvider.select((value) => value?.getcurrentPage()));
-    final sizeProperties = ref.watch(sizeProvider);
-
-    return Column(
-      children: [
-        SizedBox(
-            height: sizeProperties.titleHeight,
-            child: const LessonsListTitle()),
-        if (lessons != null)
-          Expanded(
-            child: _ListItems(
-              key: ValueKey(lessons.toString()),
-              items: lessons,
-              tileHeight: sizeProperties.tileHeight,
-            ),
-          ),
-      ],
-    );
-  }
-}
-
-class _ListItems extends ConsumerStatefulWidget {
+class ListItems extends ConsumerStatefulWidget {
   final List<String> items;
   final double tileHeight;
-  const _ListItems({super.key, required this.items, required this.tileHeight});
+  const ListItems({super.key, required this.items, required this.tileHeight});
 
   @override
-  ConsumerState<_ListItems> createState() => _ListItemsState();
+  ConsumerState<ListItems> createState() => ListItemsState();
 }
 
-class _ListItemsState extends ConsumerState<_ListItems> {
+class ListItemsState extends ConsumerState<ListItems> {
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   final List<Widget> items = [];
   final Tween<Offset> _offset =

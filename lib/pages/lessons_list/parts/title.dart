@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
+part of '../page.dart';
 
-class LessonsListTitle extends StatelessWidget {
-  const LessonsListTitle({
+class _LessonsListTitle extends StatelessWidget {
+  const _LessonsListTitle({
     Key? key,
   }) : super(key: key);
 

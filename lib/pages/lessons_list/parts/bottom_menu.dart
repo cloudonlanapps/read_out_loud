@@ -1,9 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../shared/providers/animating.dart';
-import '../custom_widgets/custom_menu.dart';
-import 'model.dart';
-import 'provider.dart';
+part of '../page.dart';
 
 class BottomMenu extends ConsumerWidget {
   const BottomMenu({
