@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class SizeGetter extends StatefulWidget {
-  final GoRouterState state;
-  final Widget Function(BuildContext context, GoRouterState state, Size size)
-      builder;
-  const SizeGetter({super.key, required this.builder, required this.state});
+  final Widget Function(BuildContext context, Size size) builder;
+  const SizeGetter({super.key, required this.builder});
 
   @override
   State<StatefulWidget> createState() => SizeGetterState();
@@ -29,7 +26,7 @@ class SizeGetterState extends State<SizeGetter> {
 
     try {
       setState(() {
-        size = renderBox.size;
+        // size = renderBox.size;
       });
       print(renderBox.size);
     } catch (e) {
@@ -58,7 +55,7 @@ class SizeGetterState extends State<SizeGetter> {
         ),
       );
     } else {
-      return widget.builder(context, widget.state, size!);
+      return widget.builder(context, size!);
     }
   }
 }
