@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'page_desc.dart';
+import 'size.dart';
 
 class RouteManager extends StatefulWidget {
   final String appName;
@@ -33,7 +34,10 @@ class _RouteManagerState extends State<RouteManager> {
                 pageBuilder: (context, state) => CustomTransitionPage<void>(
                     key: state.pageKey,
                     transitionsBuilder: transitionBuilder,
-                    child: e.builder(context, state))))
+                    child: SizeGetter(
+                      state: state,
+                      builder: e.builder,
+                    ))))
             .toList()
       ],
       redirect: (context, state) async => await redirector(state),

@@ -10,10 +10,10 @@ class ContentListPage implements AppRoute {
   String get path => "/$name";
 
   @override
-  Widget Function(BuildContext context, GoRouterState state) get builder =>
-      (BuildContext context, GoRouterState state) {
-        return _ContentListPage(queryParams: state.queryParametersAll);
-      };
+  Widget Function(BuildContext context, GoRouterState state, Size size)
+      get builder => (BuildContext context, GoRouterState state, Size size) {
+            return _ContentListPage(queryParams: state.queryParametersAll);
+          };
 }
 
 class _ContentListPage extends StatelessWidget {
