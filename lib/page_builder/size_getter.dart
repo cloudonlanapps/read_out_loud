@@ -34,7 +34,7 @@ class SizeGetterState extends ConsumerState<SizeGetter> {
         size = renderBox.size;
         ref.read(sizeProvider.notifier).size = size;
       });
-      //print(size);
+      print(size);
     } catch (e) {
       //print('catch: $e');
     }
