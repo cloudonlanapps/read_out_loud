@@ -17,6 +17,14 @@ class ResponsiveScreen extends StatelessWidget {
     this.bottomMenubuilder,
   });
 
+  static double contentHeight(
+      {required Size size, required bool isBottom, required bool isTop}) {
+    return size.height - topHeight(isTop) - bottomHeight(isBottom);
+  }
+
+  static double topHeight(bool isTop) => isTop ? 50 : 0;
+  static double bottomHeight(bool isBottom) => isBottom ? 50 : 0;
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(

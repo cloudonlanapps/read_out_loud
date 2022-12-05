@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../responsive_screen.dart';
+
 class PortraitScreen extends StatelessWidget {
   final Size size;
   final Widget Function(BuildContext context, Size size) contentBuilder;
@@ -13,9 +15,13 @@ class PortraitScreen extends StatelessWidget {
     this.bottomMenubuilder,
   });
 
-  double get hTop => topMenuBuilder == null ? 0 : 50;
-  double get hBottom => bottomMenubuilder == null ? 0 : 50;
-  double get hContent => size.height - hTop - hBottom;
+  double get hTop => ResponsiveScreen.topHeight(topMenuBuilder != null);
+  double get hBottom =>
+      ResponsiveScreen.bottomHeight(bottomMenubuilder != null);
+  double get hContent => ResponsiveScreen.contentHeight(
+      size: size,
+      isBottom: bottomMenubuilder != null,
+      isTop: topMenuBuilder != null);
 
   @override
   Widget build(BuildContext context) {
