@@ -24,11 +24,9 @@ class MainPage implements AppRoute {
               size: size,
               filename: state.queryParams['content list'] ?? 'index',
               onSettings: () {
-                print("Opening ${SettingsPage().name}");
                 context.goNamed(SettingsPage().name);
               },
               onPlay: () {
-                print("Opening ${ContentListPage().name}");
                 context.goNamed(ContentListPage().name);
               },
             );

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'list_items.dart';
-import 'page.dart';
 import 'state_provider.dart';
 
 class MainContent extends ConsumerWidget {
@@ -33,7 +32,7 @@ class MainContent extends ConsumerWidget {
           return ListItems(
               key: ObjectKey(currPage),
               items: currPage,
-              size: Size(size.width, ContentListPage.tileHeight));
+              size: Size(size.width, ListItems.tileHeight));
         },
         error: (error, stackTrace) => Container(),
         loading: () => const CircularProgressIndicator());

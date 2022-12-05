@@ -12,7 +12,7 @@ class ListItems extends ConsumerStatefulWidget {
   final List<Chapter> items;
   final Size size;
   const ListItems({super.key, required this.items, required this.size});
-
+  static double get tileHeight => 75;
   @override
   ConsumerState<ListItems> createState() => ListItemsState();
 }
@@ -82,14 +82,21 @@ class ListItemsState extends ConsumerState<ListItems> {
 
   @override
   Widget build(BuildContext context) {
+    final titleHeight = size.height - (items.length * ListItems.tileHeight);
     return Column(
       children: [
-        const Text(
-          "Select one",
-          style: TextStyle(
-            fontSize: 40.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'Horizon',
+        SizedBox(
+          height: titleHeight,
+          width: size.width,
+          child: const Center(
+            child: Text(
+              "Select one",
+              style: TextStyle(
+                fontSize: 40.0,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Horizon',
+              ),
+            ),
           ),
         ),
         Expanded(

@@ -28,7 +28,7 @@ class SizeGetterState extends State<SizeGetter> {
       setState(() {
         size = renderBox.size;
       });
-      print(renderBox.size);
+      //print(renderBox.size);
     } catch (e) {
       //print('catch: $e');
     }

@@ -6,6 +6,7 @@ import 'package:route_manager/route_manager.dart';
 
 import '../main/page.dart';
 import 'bottom_menu.dart';
+import 'list_items.dart';
 import 'main.dart';
 import 'state_provider.dart';
 import 'top_menu.dart';
@@ -33,9 +34,9 @@ class ContentListPage implements AppRoute {
               },
             );
           };
-  static double get tileHeight => 75;
 
-  int itemsPerPage(double totalHeight) => (totalHeight - 75.0) ~/ tileHeight;
+  static int itemsPerPage(double totalHeight) =>
+      (totalHeight - 75.0) ~/ ListItems.tileHeight;
 }
 
 class _ContentListPage extends StatelessWidget {

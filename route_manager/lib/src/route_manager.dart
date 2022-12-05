@@ -55,7 +55,6 @@ class _RouteManagerState extends State<RouteManager> {
   }
 
   Future<String?> redirector(GoRouterState state) async {
-    print("subloc : ${state.subloc}");
     if (state.subloc == '/' || state.subloc == '') {
       return widget.pageRoutes[widget.defaultIndex].path;
     }
