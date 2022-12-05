@@ -33,14 +33,14 @@ class ListItemsState extends ConsumerState<ListItems> {
     items.clear();
     ref.read(isAnimatingProvider.notifier).isAnimating = true;
     for (var item in widget.items) {
-      if (_listKey.currentState == null)
+      if (_listKey.currentState == null) {
         return;
-      else {
+      } else {
         await Future.delayed(const Duration(milliseconds: 100), () {
           items.add(_buildTile(item));
-          if (_listKey.currentState == null)
+          if (_listKey.currentState == null) {
             return;
-          else {
+          } else {
             _listKey.currentState!.insertItem(items.length - 1);
           }
         });
