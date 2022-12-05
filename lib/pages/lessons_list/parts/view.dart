@@ -6,7 +6,7 @@ class LessonListView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final List<String>? lessons = ref
+    final List<Chapter>? lessons = ref
         .watch(lessonsListProvider.select((value) => value?.getcurrentPage()));
     final sizeProperties = ref.watch(sizeProvider);
 

@@ -1,16 +1,18 @@
+import 'package:manage_content/manage_content.dart';
+
 import '../../shared/models/item_list.dart';
 
-class LessonsList extends ItemList<String> {
+class LessonsList extends ItemList<Chapter> {
   LessonsList({
-    required List<String> lessons,
+    required List<Chapter> items,
     int itemsPerPage = 5,
     int currentPage = 0,
   }) : super(
-            lessons: lessons,
+            items: items,
             itemsPerPage: itemsPerPage,
             currentPage: currentPage,
-            numPages: (lessons.length + itemsPerPage - 1) ~/ itemsPerPage) {
-    if (lessons.isEmpty) {
+            numPages: (items.length + itemsPerPage - 1) ~/ itemsPerPage) {
+    if (items.isEmpty) {
       //   throw Exception("No lessons found");
     }
     if (numPages > 0) {
@@ -21,12 +23,12 @@ class LessonsList extends ItemList<String> {
   }
 
   LessonsList copyWith({
-    List<String>? lessons,
+    List<Chapter>? items,
     int? itemsPerPage,
     int? currentPage,
   }) {
     return LessonsList(
-      lessons: lessons ?? this.lessons,
+      items: items ?? this.items,
       itemsPerPage: itemsPerPage ?? this.itemsPerPage,
       currentPage: currentPage ?? this.currentPage,
     );

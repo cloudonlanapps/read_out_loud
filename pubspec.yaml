@@ -18,6 +18,8 @@ dependencies:
   dotted_border: ^2.0.0+3
   #flutter_tts: ^3.6.2
   animated_text_kit: ^4.2.2
+  manage_content:
+    path: ./manage_content
 
 dev_dependencies:
   flutter_test:
@@ -31,4 +33,5 @@ flutter:
     - assets/wordlist1.txt
     - assets/wordlist2.txt
     - assets/wordlist3.txt
+    - assets/index.json
     

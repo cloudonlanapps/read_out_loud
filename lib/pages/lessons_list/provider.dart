@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:manage_content/manage_content.dart';
 
 import '../../shared/providers/size_provider.dart';
 import 'model.dart';
-import 'repo.dart';
 
 class LessonsListNotifier extends StateNotifier<LessonsList?> {
   LessonsListNotifier(LessonsList? lessonsList) : super(lessonsList);
@@ -16,7 +16,9 @@ final lessonsListProvider =
     StateNotifierProvider<LessonsListNotifier, LessonsList?>((ref) {
   final itemsPerPage =
       ref.watch(sizeProvider.select((value) => value.tileCount));
+  print("itemsPerPage : $itemsPerPage");
 
+  Repository repository = ref.watch(repositoryProvider);
   return LessonsListNotifier(
-      LessonsList(lessons: lessonsListRepo, itemsPerPage: itemsPerPage));
+      LessonsList(items: repository.chapters, itemsPerPage: itemsPerPage));
 });

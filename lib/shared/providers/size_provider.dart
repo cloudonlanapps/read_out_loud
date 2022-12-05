@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SizeProperties {
-  double tileHeight = 75;
-  Size? size;
+  final double tileHeight = 75;
+  final Size? size;
   int get tileCount =>
       ((size == null) ? 1 : (size!.height - 75.0) / tileHeight).toInt();
 
@@ -14,7 +14,9 @@ class SizeProperties {
     return h;
   }
 
-  SizeProperties(this.size);
+  SizeProperties(this.size) {
+    print("size: $size");
+  }
 }
 
 class SizeNotifier extends StateNotifier<SizeProperties> {

@@ -8,8 +8,11 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
+  collection: ^1.16.0
   flutter:
     sdk: flutter
+  flutter_riverpod: ^2.1.1
+  path_provider: ^2.0.11
 
 dev_dependencies:
   flutter_test:

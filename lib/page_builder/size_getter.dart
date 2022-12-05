@@ -16,8 +16,14 @@ class SizeGetterState extends ConsumerState<SizeGetter> {
   Size? size;
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback(getSize);
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    print("Did change dependencty?");
+    WidgetsBinding.instance.addPostFrameCallback(getSize);
+    super.didChangeDependencies();
   }
 
   void getSize(_) {

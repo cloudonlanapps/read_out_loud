@@ -6,6 +6,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:manage_content/manage_content.dart';
 
 import '../../page_builder/page_builder.dart';
 import '../custom_widgets/custom_menu.dart';

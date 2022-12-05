@@ -1,12 +1,12 @@
 import 'dart:math' show min;
 
 abstract class ItemList<T> {
-  final List<T> lessons;
+  final List<T> items;
   final int itemsPerPage; // Can this be modified by screen size?
   final int currentPage;
   late int numPages;
   ItemList({
-    required this.lessons,
+    required this.items,
     required this.itemsPerPage,
     required this.currentPage,
     required this.numPages,
@@ -19,7 +19,7 @@ abstract class ItemList<T> {
   bool get isLast => currentPage == (numPages - 1);
 
   List<T> getcurrentPage() {
-    return lessons.sublist(currentPage * itemsPerPage,
-        min(lessons.length, (currentPage + 1) * itemsPerPage));
+    return items.sublist(currentPage * itemsPerPage,
+        min(items.length, (currentPage + 1) * itemsPerPage));
   }
 }

@@ -1,7 +1,7 @@
 part of '../page.dart';
 
 class ListItems extends ConsumerStatefulWidget {
-  final List<String> items;
+  final List<Chapter> items;
   final Size size;
   const ListItems({super.key, required this.items, required this.size});
 
@@ -30,12 +30,21 @@ class ListItemsState extends ConsumerState<ListItems> {
   }
 
   void addItems() async {
+    items.clear();
     ref.read(isAnimatingProvider.notifier).isAnimating = true;
     for (var item in widget.items) {
-      await Future.delayed(const Duration(milliseconds: 100), () {
-        items.add(_buildTile(item));
-        _listKey.currentState!.insertItem(items.length - 1);
-      });
+      if (_listKey.currentState == null)
+        return;
+      else {
+        await Future.delayed(const Duration(milliseconds: 100), () {
+          items.add(_buildTile(item));
+          if (_listKey.currentState == null)
+            return;
+          else {
+            _listKey.currentState!.insertItem(items.length - 1);
+          }
+        });
+      }
     }
     ref.read(isAnimatingProvider.notifier).isAnimating = false;
   }
@@ -44,7 +53,7 @@ class ListItemsState extends ConsumerState<ListItems> {
   double get widthMinusPad => widget.size.width - (2 * pad);
   double get heightMinusPad => widget.size.height - (2 * pad);
   Size get size => Size(widthMinusPad, heightMinusPad);
-  Widget _buildTile(String lesson) {
+  Widget _buildTile(Chapter chapter) {
     var rng = Random();
     double percentageCompleted = rng.nextDouble();
     //percentageCompleted = .03;
@@ -55,7 +64,8 @@ class ListItemsState extends ConsumerState<ListItems> {
         child: Stack(
           children: [
             ProgressBar(size: size, progress: percentageCompleted),
-            ItemTile(text: lesson, size: size, progress: percentageCompleted),
+            ItemTile(
+                text: chapter.title, size: size, progress: percentageCompleted),
           ],
         ),
       ),
