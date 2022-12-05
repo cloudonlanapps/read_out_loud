@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
+import 'size.dart';
+
 class ScreenBackground extends StatelessWidget {
   final double? borderRadius;
   final EdgeInsets? marigin;
@@ -15,8 +17,7 @@ class ScreenBackground extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     final padding = MediaQuery.of(context).size.shortestSide * 0.01;
-    final double borderRadius =
-        this.borderRadius ?? MediaQuery.of(context).size.shortestSide / 8;
+    final double borderRadius = this.borderRadius ?? padding;
     return SafeArea(
       child: ClipRRect(
         borderRadius: BorderRadius.circular(borderRadius),
@@ -33,9 +34,9 @@ class ScreenBackground extends StatelessWidget {
               ),
           //padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
-              color: Colors.white,
+              //color: Colors.white,
               borderRadius: BorderRadius.circular(borderRadius),
-              border: Border.all(),
+              // border: Border.all(),
               gradient: const LinearGradient(
                   begin: Alignment.bottomCenter,
                   end: Alignment.topCenter,
@@ -55,18 +56,18 @@ class ScreenBackground extends StatelessWidget {
                 ),
               ),
               Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(borderRadius),
-                    border: Border.all(),
-                  ),
-                  padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.shortestSide * 0.01,
-                      left: MediaQuery.of(context).size.shortestSide * 0.01,
-                      right: MediaQuery.of(context).size.shortestSide * 0.01,
-                      bottom: MediaQuery.of(context).size.shortestSide * 0.01),
-                  child: Container() // SizeGetter(builder: builder),
-                  )
+                decoration: BoxDecoration(
+                  //color: Colors.white,
+                  borderRadius: BorderRadius.circular(borderRadius),
+                  // border: Border.all(),
+                ),
+                margin: EdgeInsets.only(
+                    top: padding,
+                    left: padding,
+                    right: padding,
+                    bottom: padding),
+                child: SizeGetter(builder: builder),
+              )
             ],
           ),
         ),

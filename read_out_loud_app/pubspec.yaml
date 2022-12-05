@@ -40,6 +40,8 @@ dependencies:
   device_preview: ^1.1.0
   route_manager:
     path: ../route_manager
+  responsive_screen:
+    path: ../responsive_screen
 
 dev_dependencies:
   flutter_test:

@@ -245,6 +245,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.0.4"
+  responsive_screen:
+    dependency: "direct main"
+    description:
+      path: "../responsive_screen"
+      relative: true
+    source: path
+    version: "0.0.1"
   riverpod:
     dependency: transitive
     description:

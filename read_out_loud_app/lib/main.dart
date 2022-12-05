@@ -8,8 +8,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:route_manager/route_manager.dart';
 
-import 'src/constants.dart';
-import 'src/pages/content_list.dart';
+import 'src/pages/content_list/page.dart';
+import 'src/pages/main/page.dart';
+import 'src/pages/settings/page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,8 +26,8 @@ void main() {
       enabled: Platform.isMacOS ? !kReleaseMode : false,
       builder: (context) => ProviderScope(
           child: RouteManager(
-        appName: Constants.appName,
-        pageRoutes: [ContentListPage()],
+        appName: "Read Out Loud",
+        pageRoutes: [MainPage(), ContentListPage(), SettingsPage()],
       )),
     ),
   );
