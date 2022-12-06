@@ -10,7 +10,7 @@ import 'top_menu.dart';
 
 class SettingsPage implements AppRoute {
   @override
-  String get name => "settings";
+  String get name => "words";
 
   @override
   String get path => "/$name";

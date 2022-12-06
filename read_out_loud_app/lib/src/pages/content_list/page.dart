@@ -26,7 +26,7 @@ class ContentListPage implements AppRoute {
             ContentListConfig contentListConfig = ContentListConfig(
                 repoPath: state.queryParams['content list'] ?? 'index',
                 itemsPerPage: itemsPerPage(hContent));
-            return _ContentListPage(
+            return PageView(
               size: size,
               contentListConfig: contentListConfig,
               onClose: () {
@@ -39,12 +39,13 @@ class ContentListPage implements AppRoute {
       (totalHeight - 75.0) ~/ ListItems.tileHeight;
 }
 
-class _ContentListPage extends StatelessWidget {
+class PageView extends StatelessWidget {
   final Size size;
   final ContentListConfig contentListConfig;
   final Function() onClose;
 
-  const _ContentListPage({
+  const PageView({
+    super.key,
     required this.contentListConfig,
     required this.size,
     required this.onClose,
