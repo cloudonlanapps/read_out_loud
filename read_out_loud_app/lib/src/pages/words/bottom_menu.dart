@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manage_content/manage_content.dart';
 
 import '../../custom_widgets/custom_menu.dart';
+import '../../tts/tts_speaker.dart';
 import 'state_provider.dart';
 
 class BottomMenu extends ConsumerWidget {
@@ -14,6 +15,8 @@ class BottomMenu extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     Words? words = ref.watch(wordsProvider(contentListConfig.filename));
+    final bool isSpeaking =
+        ref.watch(ttsSpeakerProvider.select((value) => value.isPlaying));
     if (words == null) {
       return Container();
     }
@@ -24,23 +27,38 @@ class BottomMenu extends ConsumerWidget {
           : CustomMenuItem(
               alignment: Alignment.bottomCenter,
               icon: Icons.arrow_circle_left,
-              onTap: () async {
-                await ref
-                    .read(wordsProvider(contentListConfig.filename).notifier)
-                    .prev();
-              },
+              onTap: isSpeaking
+                  ? null
+                  : () async {
+                      await ref
+                          .read(wordsProvider(contentListConfig.filename)
+                              .notifier)
+                          .prev();
+                    },
               title: 'Prev'),
-      null,
+      if (isSpeaking)
+        CustomMenuItem(
+            alignment: Alignment.bottomCenter,
+            icon: Icons.stop,
+            onTap: () async {
+              await ref.watch(ttsSpeakerProvider.notifier).stop();
+            },
+            title: 'Stop')
+      else
+        null,
       (words.isLast || isAnimating)
           ? null
           : CustomMenuItem(
               alignment: Alignment.bottomCenter,
               icon: Icons.arrow_circle_right,
-              onTap: () async {
-                await ref
-                    .read(wordsProvider(contentListConfig.filename).notifier)
-                    .next();
-              },
+              onTap: isSpeaking
+                  ? null
+                  : () async {
+                      await ref
+                          .read(wordsProvider(contentListConfig.filename)
+                              .notifier)
+                          .next();
+                    },
               title: 'Next')
     ]);
   }

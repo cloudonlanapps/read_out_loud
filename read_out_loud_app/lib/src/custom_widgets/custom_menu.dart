@@ -28,8 +28,7 @@ class CustomMenuButton extends StatelessWidget {
             Icon(
               menuItem.icon!,
               size: 40,
-              color:
-                  menuItem.onTap == null ? Colors.grey.shade300 : Colors.black,
+              color: menuItem.onTap == null ? Colors.grey : Colors.white,
             ),
           if (menuItem.title != null)
             Padding(
@@ -37,9 +36,8 @@ class CustomMenuButton extends StatelessWidget {
               child: Text(
                 menuItem.title!,
                 style: TextStyle(
-                    color: (menuItem.onTap == null)
-                        ? Colors.grey.shade300
-                        : Colors.black,
+                    color:
+                        (menuItem.onTap == null) ? Colors.grey : Colors.white,
                     fontSize: 12),
               ),
             ),

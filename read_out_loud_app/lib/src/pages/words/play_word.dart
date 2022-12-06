@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manage_content/manage_content.dart';
 
+import '../../tts/tts_speaker.dart';
 import 'main_word.dart';
 
-enum PlayState { asking, listening, idle, done }
+enum PlayState { asking, listening, idle, done, reading }
 
 class PlayWord extends ConsumerStatefulWidget {
   final Word word;
@@ -16,11 +17,13 @@ class PlayWord extends ConsumerStatefulWidget {
 }
 
 class _PlayWordState extends ConsumerState<PlayWord> {
-  PlayState playState = PlayState.idle;
+  late PlayState playState;
 
   @override
   void initState() {
-    actions();
+    playState = PlayState.idle;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => speak());
     super.initState();
   }
 
@@ -29,47 +32,57 @@ class _PlayWordState extends ConsumerState<PlayWord> {
     super.dispose();
   }
 
-  actions() async {
-    Duration duration = const Duration(seconds: 2);
-    playState = PlayState.asking;
-    while (playState != PlayState.done) {
-      if (!mounted) break;
-      switch (playState) {
-        case PlayState.idle:
-          await Future.delayed(duration, () {
-            if (mounted) {
-              setState(() {
-                playState = PlayState.asking;
-              });
-            }
-          });
-          break;
-        case PlayState.asking:
-          await Future.delayed(duration, () {
-            if (mounted) {
-              setState(() {
-                playState = PlayState.listening;
-              });
-            }
-          });
-          break;
-        case PlayState.listening:
-          await Future.delayed(duration, () {
-            if (mounted) {
-              setState(() {
-                playState = PlayState.idle;
-              });
-            }
-          });
-          break;
-        case PlayState.done:
-          break;
+  speak() async {
+    if (playState != PlayState.idle) return;
+    setState(() {
+      playState = PlayState.asking;
+    });
+
+    await ref
+        .read(ttsSpeakerProvider.notifier)
+        .play("Can you read this word for me?", onComplete: () async {
+      if (mounted) {
+        setState(() {
+          playState = PlayState.idle;
+        });
+
+        listen();
+      } else {
+        return;
       }
+    }, onCancel: () {
+      if (mounted) {
+        setState(() {
+          playState = PlayState.idle;
+        });
+      } else {}
+    });
+  }
+
+  listen() async {
+    if (playState != PlayState.idle) return;
+    if (mounted) {
+      setState(() {
+        playState = PlayState.listening;
+      });
     }
+    await Future.delayed(const Duration(seconds: 5));
+    if (mounted) {
+      setState(() {
+        playState = PlayState.idle;
+      });
+    }
+  }
+
+  done() async {
+    setState(() {
+      playState = PlayState.idle;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    // final TTSSpeaker speaker = ref.watch(ttsSpeakerProvider);
     return Stack(
       children: [
         SizedBox.fromSize(
@@ -81,6 +94,24 @@ class _PlayWordState extends ConsumerState<PlayWord> {
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: MainWord(
               word: widget.word.original,
+              onTap: (playState != PlayState.idle)
+                  ? null
+                  : () {
+                      setState(() {
+                        playState = PlayState.reading;
+                      });
+                      ref
+                          .watch(ttsSpeakerProvider.notifier)
+                          .play(widget.word.original, onCancel: () {
+                        setState(() {
+                          playState = PlayState.idle;
+                        });
+                      }, onComplete: () {
+                        setState(() {
+                          playState = PlayState.idle;
+                        });
+                      });
+                    },
             ),
           ),
         ),
@@ -91,11 +122,29 @@ class _PlayWordState extends ConsumerState<PlayWord> {
 
   showState() {
     switch (playState) {
+      case PlayState.reading:
+        return Container();
+
       case PlayState.idle:
-        return const Icon(
-          Icons.mic_rounded,
-          size: 100,
-          color: Colors.blue,
+        return GestureDetector(
+          onTap: () {
+            listen();
+          },
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: const [
+              Icon(
+                Icons.mic_rounded,
+                size: 100,
+                color: Colors.blue,
+              ),
+              Text("Try again ",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20))
+            ],
+          ),
         );
 
       case PlayState.asking:

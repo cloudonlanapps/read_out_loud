@@ -4,7 +4,6 @@ import 'package:manage_content/manage_content.dart';
 
 import 'play_word.dart';
 import 'state_provider.dart';
-import 'tts_config.dart';
 
 class MainContent extends ConsumerWidget {
   final Size size;
@@ -27,7 +26,7 @@ class MainContent extends ConsumerWidget {
         ),
       );
     }
-    return TTSConfig(size: size);
+
     return PlayWord(
         key: ObjectKey(words.currentWord!),
         size: size,

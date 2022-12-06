@@ -1,54 +1,35 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: avoid_print
 
-import 'dart:io' show Platform;
-
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'tts_speaker.dart';
+import '../../tts/tts_speaker.dart';
 
-class TTSConfig extends StatefulWidget {
+class TTSConfig extends ConsumerWidget {
   final Size size;
   const TTSConfig({super.key, required this.size});
 
   @override
-  TTSConfigState createState() => TTSConfigState();
-}
-
-class TTSConfigState extends State<TTSConfig> {
-  late TTSSpeaker speaker;
-  bool get isIOS => !kIsWeb && Platform.isIOS;
-  bool get isAndroid => !kIsWeb && Platform.isAndroid;
-  bool get isWindows => !kIsWeb && Platform.isWindows;
-  bool get isWeb => kIsWeb;
-
-  @override
-  initState() {
-    super.initState();
-    speaker = TTSSpeaker();
-    speaker.init(isAndroid: isAndroid);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    speaker.flutterTts.stop();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(ttsSpeakerProvider);
     return SizedBox.fromSize(
-      size: widget.size,
+      size: size,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _buildButtonColumn(Colors.green, Colors.greenAccent, Icons.play_arrow,
-              'PLAY', () => speaker.speak("Can you read this word?")),
           _buildButtonColumn(
-              Colors.red, Colors.redAccent, Icons.stop, 'STOP', speaker.stop),
-          _buildButtonColumn(Colors.blue, Colors.blueAccent, Icons.pause,
-              'PAUSE', speaker.pause),
+              Colors.green,
+              Colors.greenAccent,
+              Icons.play_arrow,
+              'PLAY',
+              () => ref
+                  .read(ttsSpeakerProvider.notifier)
+                  .play("Can you read this word?")),
+          _buildButtonColumn(Colors.red, Colors.redAccent, Icons.stop, 'STOP',
+              ref.read(ttsSpeakerProvider.notifier).stop),
+          /* _buildButtonColumn(Colors.blue, Colors.blueAccent, Icons.pause,
+              'PAUSE', ref.read(ttsSpeakerProvider.notifier).pause), */
         ],
       ),
     );
