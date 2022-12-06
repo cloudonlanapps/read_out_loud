@@ -5,16 +5,16 @@ import '../../custom_widgets/custom_menu.dart';
 
 class TopMenu extends ConsumerWidget {
   final Size size;
-  final Function() onSettings;
-  const TopMenu({super.key, required this.onSettings, required this.size});
+  final Function() onClose;
+  const TopMenu({super.key, required this.onClose, required this.size});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return CustomMenu(menuItems: [
       CustomMenuItem(
-        alignment: Alignment.centerRight,
-        icon: Icons.home,
-        onTap: onSettings,
+        alignment: Alignment.centerLeft,
+        icon: Icons.arrow_back,
+        onTap: onClose,
       ),
     ]);
   }

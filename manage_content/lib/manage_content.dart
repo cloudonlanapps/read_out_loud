@@ -3,3 +3,7 @@ library manage_content;
 export 'src/models/chapter.dart';
 export 'src/models/repository.dart';
 export 'src/providers/repository.dart';
+
+export 'src/models/word.dart';
+export 'src/models/words.dart';
+export 'src/providers/words.dart';

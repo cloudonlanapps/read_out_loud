@@ -4,8 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:responsive_screen/responsive_screen.dart';
 import 'package:route_manager/route_manager.dart';
 
-import '../main/page.dart';
+import '../content_list/page.dart';
+import 'bottom_menu.dart';
 import 'main.dart';
+import 'state_provider.dart';
 import 'top_menu.dart';
 
 class WordsPage implements AppRoute {
@@ -22,11 +24,13 @@ class WordsPage implements AppRoute {
               throw Exception(
                   "WordsPage is invoked without providing a filename");
             }
+            ContentListConfig contentListConfig =
+                ContentListConfig(filename: state.queryParams['filename']!);
             return PageView(
               size: size,
-              filename: state.queryParams['filename'],
+              contentListConfig: contentListConfig,
               onClose: () {
-                context.goNamed(MainPage().name);
+                context.goNamed(ContentListPage().name);
               },
             );
           };
@@ -34,12 +38,12 @@ class WordsPage implements AppRoute {
 
 class PageView extends StatelessWidget {
   final Size size;
-  final String? filename;
+  final ContentListConfig contentListConfig;
   final Function() onClose;
 
   const PageView({
     super.key,
-    required this.filename,
+    required this.contentListConfig,
     required this.size,
     required this.onClose,
   });
@@ -49,9 +53,10 @@ class PageView extends StatelessWidget {
     return ResponsiveScreen(
       size: size,
       contentBuilder: (context, size) =>
-          MainContent(filename: filename, size: size),
-      topMenuBuilder: (context, size) =>
-          TopMenu(onSettings: onClose, size: size),
+          MainContent(contentListConfig: contentListConfig, size: size),
+      topMenuBuilder: (context, size) => TopMenu(onClose: onClose, size: size),
+      bottomMenubuilder: (context, size) =>
+          BottomMenu(contentListConfig: contentListConfig, size: size),
     );
   }
 }
