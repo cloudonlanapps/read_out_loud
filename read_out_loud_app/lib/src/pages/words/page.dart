@@ -8,7 +8,7 @@ import '../main/page.dart';
 import 'main.dart';
 import 'top_menu.dart';
 
-class SettingsPage implements AppRoute {
+class WordsPage implements AppRoute {
   @override
   String get name => "words";
 
@@ -18,9 +18,13 @@ class SettingsPage implements AppRoute {
   @override
   Widget Function(BuildContext context, GoRouterState state, Size size)
       get builder => (BuildContext context, GoRouterState state, Size size) {
+            if (state.queryParams['filename'] == null) {
+              throw Exception(
+                  "WordsPage is invoked without providing a filename");
+            }
             return PageView(
               size: size,
-              filename: state.queryParams['content list'] ?? 'index',
+              filename: state.queryParams['filename'],
               onClose: () {
                 context.goNamed(MainPage().name);
               },

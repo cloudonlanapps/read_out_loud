@@ -31,6 +31,7 @@ class MainContent extends ConsumerWidget {
           final currPage = currState.getcurrentPage();
           return ListItems(
               key: ObjectKey(currPage),
+              repository: currState.repository,
               items: currPage,
               size: Size(size.width, ListItems.tileHeight));
         },

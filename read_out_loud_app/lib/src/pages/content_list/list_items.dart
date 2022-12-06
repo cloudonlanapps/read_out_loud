@@ -1,17 +1,23 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:manage_content/manage_content.dart';
 
 import '../../custom_widgets/progress_bar.dart';
+import '../words/page.dart';
 import 'animate_state.dart';
 import 'item_tile.dart';
 
 class ListItems extends ConsumerStatefulWidget {
+  final Repository repository;
   final List<Chapter> items;
   final Size size;
-  const ListItems({super.key, required this.items, required this.size});
+  const ListItems({
+    super.key,
+    required this.repository,
+    required this.items,
+    required this.size,
+  });
   static double get tileHeight => 75;
   @override
   ConsumerState<ListItems> createState() => ListItemsState();
@@ -22,6 +28,7 @@ class ListItemsState extends ConsumerState<ListItems> {
   final List<Widget> items = [];
   final Tween<Offset> _offset =
       Tween(begin: const Offset(-1, 0), end: const Offset(0, 0));
+  bool itemSelected = false;
 
   @override
   void initState() {
@@ -62,27 +69,42 @@ class ListItemsState extends ConsumerState<ListItems> {
   double get heightMinusPad => widget.size.height - (2 * pad);
   Size get size => Size(widthMinusPad, heightMinusPad);
   Widget _buildTile(Chapter chapter) {
-    var rng = Random();
-    double percentageCompleted = rng.nextDouble();
-    //percentageCompleted = .03;
-    return Padding(
-      padding: EdgeInsets.all(pad),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(50),
-        child: Stack(
-          children: [
-            ProgressBar(size: size, progress: percentageCompleted),
-            ItemTile(
-                text: chapter.title, size: size, progress: percentageCompleted),
-          ],
+    return InkWell(
+      onTap: () => onSelectItem(chapter),
+      child: Padding(
+        padding: EdgeInsets.all(pad),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(50),
+          child: Stack(
+            children: [
+              ProgressBar(size: size, progress: chapter.percentageCompleted),
+              ItemTile(
+                text: chapter.title,
+                size: size,
+                progress: chapter.percentageCompleted,
+                onSelectItem: () => onSelectItem(chapter),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
+  onSelectItem(Chapter chapter) {
+    setState(() {
+      itemSelected = true;
+    });
+    context
+        .goNamed(WordsPage().name, queryParams: {"filename": chapter.filename});
+  }
+
   @override
   Widget build(BuildContext context) {
     final titleHeight = size.height - (items.length * ListItems.tileHeight);
+    if (itemSelected) {
+      return const CircularProgressIndicator();
+    }
     return Column(
       children: [
         SizedBox(

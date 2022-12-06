@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
+
+import '../models/chapter.dart';
 import '../models/repository.dart';
 
 class RepositoryNotifier extends StateNotifier<AsyncValue<Repository>> {
@@ -40,6 +42,9 @@ class RepositoryNotifier extends StateNotifier<AsyncValue<Repository>> {
     }
     return file;
   }
+
+  onClearProgress(Repository repository, Chapter chapter) {}
+  onSelectItem(Repository repository, Chapter chapter) {}
 }
 
 final repositoryProvider = StateNotifierProvider.family<RepositoryNotifier,

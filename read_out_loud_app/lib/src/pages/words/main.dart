@@ -8,11 +8,11 @@ class MainContent extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const Center(
+    return Center(
       child: Text(
-        'TODO: Settings here',
+        'Words from $filename displayed here',
         textAlign: TextAlign.center,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 55,
           height: 1,
         ),

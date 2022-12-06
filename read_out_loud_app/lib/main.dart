@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:read_out_loud_app/src/pages/words/page.dart';
 
 import 'package:route_manager/route_manager.dart';
 
@@ -27,7 +28,13 @@ void main() {
       builder: (context) => ProviderScope(
           child: RouteManager(
         appName: "Read Out Loud",
-        pageRoutes: [MainPage(), ContentListPage(), SettingsPage()],
+        pageRoutes: [
+          MainPage(),
+          ContentListPage(),
+          SettingsPage(),
+          WordsPage()
+        ],
+        defaultIndex: 0,
       )),
     ),
   );
