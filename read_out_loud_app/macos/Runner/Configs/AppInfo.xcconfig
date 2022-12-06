@@ -8,7 +8,7 @@
 PRODUCT_NAME = read_out_loud_app
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.readOutLoudApp
+PRODUCT_BUNDLE_IDENTIFIER = com.cloudonlanapps.readOutLoudApp
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2022 com.example. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2022 com.cloudonlanapps. All rights reserved.
