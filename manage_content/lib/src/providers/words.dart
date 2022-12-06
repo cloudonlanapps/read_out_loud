@@ -17,7 +17,6 @@ class WordsNotifier extends StateNotifier<Words?> {
   }
 
   load() async {
-    print("load: $filename");
     final String json = await loadString(filename);
     state = Words.fromJson(json);
   }
@@ -47,23 +46,18 @@ class WordsNotifier extends StateNotifier<Words?> {
   }
 
   prev() async {
-    print("<prev: index: ${state?.index}");
     if (state == null) return;
     final words = state!;
     if (!words.isFirst) {
       state = words.copyWith(index: words.index - 1);
-      print(">prev: index: ${state?.index}");
     }
   }
 
   next() async {
-    print("<next: index: ${state?.index}");
     if (state == null) return;
     final words = state!;
     if (!words.isLast) {
       state = words.copyWith(index: words.index + 1);
-      print(">next: index: ${state?.index}");
-      print("words.length = ${words.words.length}");
     }
   }
 
@@ -96,6 +90,5 @@ class WordsNotifier extends StateNotifier<Words?> {
 final wordsProvider =
     StateNotifierProvider.family<WordsNotifier, Words?, String>(
         (ref, filename) {
-  print("Provider: $filename");
   return WordsNotifier(filename);
 });

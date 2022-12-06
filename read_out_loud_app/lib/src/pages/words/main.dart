@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manage_content/manage_content.dart';
 
+import 'play_word.dart';
 import 'state_provider.dart';
 
 class MainContent extends ConsumerWidget {
@@ -25,15 +26,9 @@ class MainContent extends ConsumerWidget {
         ),
       );
     }
-    return Center(
-      child: Text(
-        words.currentWord!.original,
-        textAlign: TextAlign.center,
-        style: const TextStyle(
-          fontSize: 55,
-          height: 1,
-        ),
-      ),
-    );
+    return PlayWord(
+        key: ObjectKey(words.currentWord!),
+        size: size,
+        word: words.currentWord!);
   }
 }

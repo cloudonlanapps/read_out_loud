@@ -12,9 +12,7 @@ class Words {
   Words({required this.words, required this.title, int? index})
       : index = ((index != null) && (index >= 0) && (index < words.length))
             ? index
-            : 0 {
-    print("index = $index");
-  }
+            : 0;
 
   Words copyWith({
     List<Word>? words,
