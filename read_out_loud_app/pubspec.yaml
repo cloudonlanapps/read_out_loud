@@ -27,6 +27,7 @@ dependencies:
   dotted_border: ^2.0.0+3
   flutter_tts: ^3.6.2
   speech_to_text: ^6.1.1
+  lottie: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -40,3 +41,4 @@ flutter:
     - assets/wordlist2.txt
     - assets/wordlist3.txt
     - assets/index.json
+    - assets/42193-hand-pointing-icon.json

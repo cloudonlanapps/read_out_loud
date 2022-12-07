@@ -32,10 +32,16 @@ class PortraitScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           if (topMenuBuilder != null)
-            topMenuBuilder!(context, Size(size.width, hTop)),
-          Flexible(child: contentBuilder(context, Size(size.width, hContent))),
+            SizedBox.fromSize(
+                size: Size(size.width, hTop),
+                child: topMenuBuilder!(context, Size(size.width, hTop))),
+          SizedBox.fromSize(
+              size: Size(size.width, hContent),
+              child: contentBuilder(context, Size(size.width, hContent))),
           if (bottomMenubuilder != null)
-            bottomMenubuilder!(context, Size(size.width, hBottom)),
+            SizedBox.fromSize(
+                size: Size(size.width, hBottom),
+                child: bottomMenubuilder!(context, Size(size.width, hBottom))),
         ],
       ),
     );

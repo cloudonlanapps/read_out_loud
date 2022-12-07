@@ -192,6 +192,10 @@ class STTRecordNotifier extends StateNotifier<STTRecord> {
     state.logEvent('STT Result: words: ${result.recognizedWords}');
     state = state.copyWith(lastWords: result.recognizedWords);
   }
+
+  void clearWord() {
+    state = state.copyWith(lastWords: '');
+  }
 }
 
 final sttRecordProvider =

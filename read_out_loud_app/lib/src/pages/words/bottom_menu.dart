@@ -20,20 +20,20 @@ class BottomMenu extends ConsumerWidget {
     }
     const bool isAnimating = false;
     return CustomMenu(menuItems: [
-      (words.isFirst || isAnimating)
+      (words.isFirst || playState != PlayState.idle)
           ? null
-          : CustomMenuItem(
-              alignment: Alignment.bottomCenter,
-              icon: Icons.arrow_circle_left,
-              onTap: playState != PlayState.idle
-                  ? null
-                  : () async {
-                      await ref
-                          .read(wordsProvider(contentListConfig.filename)
-                              .notifier)
-                          .prev();
-                    },
-              title: 'Prev'),
+          : playState != PlayState.idle
+              ? null
+              : CustomMenuItem(
+                  alignment: Alignment.bottomCenter,
+                  icon: Icons.arrow_circle_left,
+                  onTap: () async {
+                    await ref
+                        .read(
+                            wordsProvider(contentListConfig.filename).notifier)
+                        .prev();
+                  },
+                  title: 'Prev'),
       /* if ([PlayState.intro, PlayState.reading].contains(playState))
         CustomMenuItem(
             alignment: Alignment.bottomCenter,
@@ -46,18 +46,18 @@ class BottomMenu extends ConsumerWidget {
       null,
       (words.isLast || isAnimating)
           ? null
-          : CustomMenuItem(
-              alignment: Alignment.bottomCenter,
-              icon: Icons.arrow_circle_right,
-              onTap: playState != PlayState.idle
-                  ? null
-                  : () async {
-                      await ref
-                          .read(wordsProvider(contentListConfig.filename)
-                              .notifier)
-                          .next();
-                    },
-              title: 'Next')
+          : playState != PlayState.idle
+              ? null
+              : CustomMenuItem(
+                  alignment: Alignment.bottomCenter,
+                  icon: Icons.arrow_circle_right,
+                  onTap: () async {
+                    await ref
+                        .read(
+                            wordsProvider(contentListConfig.filename).notifier)
+                        .next();
+                  },
+                  title: 'Next')
     ]);
   }
 }

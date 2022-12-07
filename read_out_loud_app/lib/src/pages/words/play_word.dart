@@ -5,6 +5,7 @@ import 'package:read_out_loud_app/src/tts/stt_record.dart';
 
 import 'intro_widget.dart';
 import 'main_word.dart';
+import 'record_button.dart';
 import 'state_provider.dart';
 import 'stt_result.dart';
 
@@ -36,6 +37,8 @@ class _PlayWordState extends ConsumerState<PlayWord> {
         // print("Listener: status changed to ${curr.lastStatus}");
         if (["doneNoResult", "done"].contains(curr.lastStatus)) {
           //ref.read(ttsSpeakerProvider.notifier).unmute();
+          // Done, to clear level
+          ref.read(sttRecordProvider.notifier).stopListening();
           ref.read(playWordStateProvider.notifier).newState = PlayState.idle;
         }
         if (["listening"].contains(curr.lastStatus)) {
@@ -73,71 +76,40 @@ class _PlayWordState extends ConsumerState<PlayWord> {
           left: 0,
           right: 0,
           child: DecoratedBox(
-            decoration: BoxDecoration(border: Border.all()),
+            decoration: const BoxDecoration(),
             child: Column(
-              mainAxisSize: MainAxisSize.min,
+              //mainAxisSize: MainAxisSize.min,
               children: [
                 if (playState == PlayState.intro)
                   SizedBox(
-                    height: 100,
+                    height: 200,
                     width: widget.size.width,
-                    child: FittedBox(
-                      fit: BoxFit.contain,
-                      child: IntroWidget(introText: introText),
-                    ),
+                    child: Align(
+                        alignment: Alignment.topCenter,
+                        child: IntroWidget(introText: introText)),
                   )
-                else
+                else ...[
                   SizedBox(
                       height: 100,
                       width: widget.size.width,
-                      child: const STTResult()),
-                const TriggerSTT(),
+                      child: const Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: STTResult(),
+                      )),
+                  SizedBox(
+                      height: 100,
+                      width: widget.size.width,
+                      child: const Padding(
+                        padding: EdgeInsets.all(15.0),
+                        child: FittedBox(
+                            fit: BoxFit.fitHeight, child: RecordButton()),
+                      )),
+                ]
               ],
             ),
           ),
         )
       ],
-    );
-  }
-}
-
-class TriggerSTT extends ConsumerWidget {
-  const TriggerSTT({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final sttRecord = ref.watch(sttRecordProvider);
-    return SizedBox(
-      height: 100,
-      child: Column(
-        children: <Widget>[
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              width: 40,
-              height: 40,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                      blurRadius: .26,
-                      spreadRadius: sttRecord.level * 1.5,
-                      color: Colors.amber.withOpacity(.05))
-                ],
-                color: Colors.white,
-                borderRadius: const BorderRadius.all(Radius.circular(50)),
-              ),
-              child: IconButton(
-                  icon: const Icon(Icons.mic),
-                  onPressed: () {
-                    ref.read(playWordStateProvider.notifier).sttListen();
-                  }),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
