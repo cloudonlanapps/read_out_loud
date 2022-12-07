@@ -82,7 +82,11 @@ class TTSSpeakerNotifier extends StateNotifier<TTSSpeaker> {
   // Return only if
   Future play(String text,
       {Function()? onComplete, Function()? onCancel}) async {
-    if (state.isMuted) return;
+    if (state.isMuted) {
+      onCancel?.call();
+      cancelling = false;
+      return;
+    }
     if (state.isPlaying) {
       await stop();
     }
@@ -94,14 +98,15 @@ class TTSSpeakerNotifier extends StateNotifier<TTSSpeaker> {
         updateState(TTSState.stopped);
         if (cancelling) {
           onCancel?.call();
-          cancelling = false;
         } else {
           onComplete?.call();
         }
+        cancelling = false;
       });
       state.flutterTts.setCancelHandler(() {
         updateState(TTSState.stopped);
         onCancel?.call();
+        cancelling = false;
       });
       await state.flutterTts.setVolume(state.config.volume);
       await state.flutterTts.setSpeechRate(state.config.rate);
@@ -111,11 +116,13 @@ class TTSSpeakerNotifier extends StateNotifier<TTSSpeaker> {
   }
 
   Future stop({Function()? callback}) async {
-    cancelling = true;
-    if (!state.isStopped) {
-      var result = await state.flutterTts.stop();
-      if (result == 1) {
-        updateState(TTSState.stopped);
+    if (!state.isMuted) {
+      cancelling = true;
+      if (!state.isStopped) {
+        var result = await state.flutterTts.stop();
+        if (result == 1) {
+          updateState(TTSState.stopped);
+        }
       }
     }
     callback?.call();
