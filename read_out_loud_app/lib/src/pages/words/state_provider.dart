@@ -27,7 +27,7 @@ class PlayWordStateNotifier extends StateNotifier<PlayState> {
   PlayWordStateNotifier(this.ref) : super(PlayState.idle);
 
   set newState(PlayState val) {
-    print("State changed to $val");
+    // print("State changed to $val");
     state = val;
   }
 

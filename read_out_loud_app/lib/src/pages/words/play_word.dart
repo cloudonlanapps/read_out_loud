@@ -33,7 +33,7 @@ class _PlayWordState extends ConsumerState<PlayWord> {
   listener() {
     ref.listen(sttRecordProvider, (STTRecord? prev, STTRecord curr) {
       if (curr.lastStatus != prev?.lastStatus) {
-        print("Listener: status changed to ${curr.lastStatus}");
+        // print("Listener: status changed to ${curr.lastStatus}");
         if (["doneNoResult", "done"].contains(curr.lastStatus)) {
           //ref.read(ttsSpeakerProvider.notifier).unmute();
           ref.read(playWordStateProvider.notifier).newState = PlayState.idle;
