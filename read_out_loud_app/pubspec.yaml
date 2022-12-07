@@ -26,6 +26,7 @@ dependencies:
     path: ../manage_content
   dotted_border: ^2.0.0+3
   flutter_tts: ^3.6.2
+  speech_to_text: ^6.1.1
 
 dev_dependencies:
   flutter_test:

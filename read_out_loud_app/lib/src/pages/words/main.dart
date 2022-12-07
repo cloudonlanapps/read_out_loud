@@ -4,6 +4,7 @@ import 'package:manage_content/manage_content.dart';
 
 import 'play_word.dart';
 import 'state_provider.dart';
+import 'stt_test.dart';
 
 class MainContent extends ConsumerWidget {
   final Size size;
@@ -26,7 +27,7 @@ class MainContent extends ConsumerWidget {
         ),
       );
     }
-
+    return const SpeechSampleApp();
     return PlayWord(
         key: ObjectKey(words.currentWord!),
         size: size,
