@@ -28,8 +28,10 @@ class MainContent extends ConsumerWidget {
     }
 
     return PlayWord(
-        key: ObjectKey(words.currentWord!),
-        size: size,
-        word: words.currentWord!);
+      key: ObjectKey(words.currentWord!),
+      size: size,
+      word: words.currentWord!,
+      words: words,
+    );
   }
 }

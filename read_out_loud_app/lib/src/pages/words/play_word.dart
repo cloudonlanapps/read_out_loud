@@ -6,13 +6,16 @@ import 'package:read_out_loud_app/src/tts/stt_record.dart';
 import 'intro_widget.dart';
 import 'main_word.dart';
 import 'record_button.dart';
+import 'score.dart';
 import 'state_provider.dart';
 import 'stt_result.dart';
 
 class PlayWord extends ConsumerStatefulWidget {
   final Word word;
   final Size size;
-  const PlayWord({super.key, required this.word, required this.size});
+  final Words words;
+  const PlayWord(
+      {super.key, required this.word, required this.size, required this.words});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _PlayWordState();
@@ -59,17 +62,10 @@ class _PlayWordState extends ConsumerState<PlayWord> {
         SizedBox.fromSize(
           size: widget.size,
         ),
-        Center(
-          child: Container(
-            height: 100,
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: MainWord(
-              word: widget.word.original,
-              onTap: () => ref
-                  .read(playWordStateProvider.notifier)
-                  .speak(text: widget.word.original),
-            ),
-          ),
+        Positioned(
+          top: 16,
+          right: 16,
+          child: Score(words: widget.words),
         ),
         Positioned(
           bottom: 40,
@@ -80,6 +76,16 @@ class _PlayWordState extends ConsumerState<PlayWord> {
             child: Column(
               //mainAxisSize: MainAxisSize.min,
               children: [
+                Container(
+                  height: 100,
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: MainWord(
+                    word: widget.word.original,
+                    onTap: () => ref
+                        .read(playWordStateProvider.notifier)
+                        .speak(text: widget.word.original),
+                  ),
+                ),
                 if (playState == PlayState.intro)
                   SizedBox(
                     height: 200,
@@ -104,7 +110,7 @@ class _PlayWordState extends ConsumerState<PlayWord> {
                         child: FittedBox(
                             fit: BoxFit.fitHeight, child: RecordButton()),
                       )),
-                ]
+                ],
               ],
             ),
           ),
