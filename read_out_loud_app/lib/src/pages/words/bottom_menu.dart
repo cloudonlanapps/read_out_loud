@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manage_content/manage_content.dart';
+import 'package:read_out_loud_app/src/tts/stt_record.dart';
 
 import '../../custom_widgets/custom_menu.dart';
 import 'state_provider.dart';
@@ -28,6 +29,7 @@ class BottomMenu extends ConsumerWidget {
                   alignment: Alignment.bottomCenter,
                   icon: Icons.arrow_circle_left,
                   onTap: () async {
+                    ref.read(sttRecordProvider.notifier).clearWord();
                     await ref
                         .read(
                             wordsProvider(contentListConfig.filename).notifier)
@@ -52,6 +54,7 @@ class BottomMenu extends ConsumerWidget {
                   alignment: Alignment.bottomCenter,
                   icon: Icons.arrow_circle_right,
                   onTap: () async {
+                    ref.read(sttRecordProvider.notifier).clearWord();
                     await ref
                         .read(
                             wordsProvider(contentListConfig.filename).notifier)

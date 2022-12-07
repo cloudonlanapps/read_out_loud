@@ -85,6 +85,14 @@ class WordsNotifier extends StateNotifier<Words?> {
       state = state!.copyWith(words: wordList);
     }
   }
+
+  success(Word word) {
+    final wordList = state!.words;
+    wordList[wordList.indexOf(word)] =
+        word.copyWith(succeeded: true, attempts: word.attempts + 1);
+
+    state = state!.copyWith(words: wordList);
+  }
 }
 
 final wordsProvider =

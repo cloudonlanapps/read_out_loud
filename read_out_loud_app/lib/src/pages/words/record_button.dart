@@ -20,7 +20,7 @@ class RecordButton extends ConsumerWidget {
           height: 40,
           child: Stack(
             children: [
-              if (playState == PlayState.idle)
+              if ([PlayState.listening, PlayState.idle].contains(playState))
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [

@@ -11,11 +11,16 @@ import 'state_provider.dart';
 import 'stt_result.dart';
 
 class PlayWord extends ConsumerStatefulWidget {
+  final ContentListConfig contentListConfig;
   final Word word;
   final Size size;
   final Words words;
   const PlayWord(
-      {super.key, required this.word, required this.size, required this.words});
+      {super.key,
+      required this.word,
+      required this.size,
+      required this.words,
+      required this.contentListConfig});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _PlayWordState();
@@ -26,7 +31,9 @@ class _PlayWordState extends ConsumerState<PlayWord> {
   @override
   void initState() {
     ref.read(playWordStateProvider.notifier).newState = PlayState.idle;
-    WidgetsBinding.instance.addPostFrameCallback((_) => speak());
+    if (!widget.word.succeeded) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => speak());
+    }
     super.initState();
   }
 
@@ -39,6 +46,14 @@ class _PlayWordState extends ConsumerState<PlayWord> {
       if (curr.lastStatus != prev?.lastStatus) {
         // print("Listener: status changed to ${curr.lastStatus}");
         if (["doneNoResult", "done"].contains(curr.lastStatus)) {
+          List<String> textBlocks =
+              curr.lastWords.toLowerCase().highlight(widget.word.original);
+          if (textBlocks.length == 3) {
+            // Found the word.
+            ref
+                .read(wordsProvider(widget.contentListConfig.filename).notifier)
+                .success(widget.word);
+          }
           //ref.read(ttsSpeakerProvider.notifier).unmute();
           // Done, to clear level
           ref.read(sttRecordProvider.notifier).stopListening();
@@ -98,18 +113,30 @@ class _PlayWordState extends ConsumerState<PlayWord> {
                   SizedBox(
                       height: 100,
                       width: widget.size.width,
-                      child: const Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: STTResult(),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: STTResult(
+                          highlight: widget.word.original,
+                        ),
                       )),
-                  SizedBox(
-                      height: 100,
-                      width: widget.size.width,
-                      child: const Padding(
-                        padding: EdgeInsets.all(15.0),
-                        child: FittedBox(
-                            fit: BoxFit.fitHeight, child: RecordButton()),
-                      )),
+                  if (widget.word.succeeded)
+                    SizedBox(
+                        height: 100,
+                        width: widget.size.width,
+                        child: const Padding(
+                          padding: EdgeInsets.all(15.0),
+                          child: FittedBox(
+                              fit: BoxFit.fitHeight, child: Icon(Icons.done)),
+                        ))
+                  else
+                    SizedBox(
+                        height: 100,
+                        width: widget.size.width,
+                        child: const Padding(
+                          padding: EdgeInsets.all(15.0),
+                          child: FittedBox(
+                              fit: BoxFit.fitHeight, child: RecordButton()),
+                        )),
                 ],
               ],
             ),
