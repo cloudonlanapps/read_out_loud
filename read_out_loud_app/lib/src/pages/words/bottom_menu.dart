@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manage_content/manage_content.dart';
 
 import '../../custom_widgets/custom_menu.dart';
-import '../../tts/tts_speaker.dart';
 import 'state_provider.dart';
 
 class BottomMenu extends ConsumerWidget {
@@ -35,7 +34,7 @@ class BottomMenu extends ConsumerWidget {
                           .prev();
                     },
               title: 'Prev'),
-      if ([PlayState.intro, PlayState.reading].contains(playState))
+      /* if ([PlayState.intro, PlayState.reading].contains(playState))
         CustomMenuItem(
             alignment: Alignment.bottomCenter,
             icon: Icons.stop,
@@ -43,8 +42,8 @@ class BottomMenu extends ConsumerWidget {
               await ref.watch(ttsSpeakerProvider.notifier).stop();
             },
             title: 'Stop')
-      else
-        null,
+      else */
+      null,
       (words.isLast || isAnimating)
           ? null
           : CustomMenuItem(
