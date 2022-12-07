@@ -91,7 +91,7 @@ class _PlayWordState extends ConsumerState<PlayWord> {
                     height: 200,
                     width: widget.size.width,
                     child: Align(
-                        alignment: Alignment.topCenter,
+                        alignment: Alignment.bottomCenter,
                         child: IntroWidget(introText: introText)),
                   )
                 else ...[
