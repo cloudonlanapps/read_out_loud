@@ -20,39 +20,43 @@ class RecordButton extends ConsumerWidget {
           height: 40,
           child: Stack(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  const SizedBox(
-                    width: 40,
-                    height: 40,
-                  ),
-                  Container(
-                    width: 40,
-                    height: 40,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                            blurRadius: .26,
-                            spreadRadius: sttRecord.level * 2,
-                            color: Colors.grey)
-                      ],
-                      color: Colors.white,
-                      borderRadius: const BorderRadius.all(Radius.circular(50)),
+              if (playState == PlayState.idle)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    const SizedBox(
+                      width: 40,
+                      height: 40,
                     ),
-                    child: IconButton(
-                        icon: const Icon(Icons.mic),
-                        onPressed: () {
-                          ref.read(playWordStateProvider.notifier).sttListen();
-                        }),
-                  ),
-                  const SizedBox(
-                    width: 40,
-                    height: 40,
-                  ),
-                ],
-              ),
+                    Container(
+                      width: 40,
+                      height: 40,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                              blurRadius: .26,
+                              spreadRadius: sttRecord.level * 2,
+                              color: Colors.grey)
+                        ],
+                        color: Colors.white,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(50)),
+                      ),
+                      child: IconButton(
+                          icon: const Icon(Icons.mic),
+                          onPressed: () {
+                            ref
+                                .read(playWordStateProvider.notifier)
+                                .sttListen();
+                          }),
+                    ),
+                    const SizedBox(
+                      width: 40,
+                      height: 40,
+                    ),
+                  ],
+                ),
               if (playState == PlayState.idle)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
