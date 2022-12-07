@@ -15,8 +15,7 @@ class BottomMenu extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     Words? words = ref.watch(wordsProvider(contentListConfig.filename));
-    final bool isSpeaking =
-        ref.watch(ttsSpeakerProvider.select((value) => value.isPlaying));
+    final PlayState playState = ref.watch(playWordStateProvider);
     if (words == null) {
       return Container();
     }
@@ -27,7 +26,7 @@ class BottomMenu extends ConsumerWidget {
           : CustomMenuItem(
               alignment: Alignment.bottomCenter,
               icon: Icons.arrow_circle_left,
-              onTap: isSpeaking
+              onTap: playState != PlayState.idle
                   ? null
                   : () async {
                       await ref
@@ -36,7 +35,7 @@ class BottomMenu extends ConsumerWidget {
                           .prev();
                     },
               title: 'Prev'),
-      if (isSpeaking)
+      if ([PlayState.intro, PlayState.reading].contains(playState))
         CustomMenuItem(
             alignment: Alignment.bottomCenter,
             icon: Icons.stop,
@@ -51,7 +50,7 @@ class BottomMenu extends ConsumerWidget {
           : CustomMenuItem(
               alignment: Alignment.bottomCenter,
               icon: Icons.arrow_circle_right,
-              onTap: isSpeaking
+              onTap: playState != PlayState.idle
                   ? null
                   : () async {
                       await ref

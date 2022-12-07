@@ -7,6 +7,7 @@ import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
 import 'stt_record_config.dart';
+import 'tts_speaker.dart';
 
 enum STTState { listening, stopped }
 
@@ -31,7 +32,7 @@ class STTRecord {
     this.lastStatus = '',
     this.currentLocaleId = '',
     List<LocaleName>? localeNames,
-    this.logEvents = false,
+    this.logEvents = true,
   })  : speechToText = speechToText ?? SpeechToText(),
         localeNames = localeNames ?? [];
 
@@ -103,8 +104,9 @@ class STTRecord {
 }
 
 class STTRecordNotifier extends StateNotifier<STTRecord> {
-  STTRecordNotifier() : super(STTRecord(sttConfig: STTConfig())) {
-    // init();
+  Ref ref;
+  STTRecordNotifier(this.ref) : super(STTRecord(sttConfig: STTConfig())) {
+    //init();
   }
   init() async {
     state = await state.init(onError: errorListener, onStatus: statusListener);
@@ -134,6 +136,7 @@ class STTRecordNotifier extends StateNotifier<STTRecord> {
 
   void statusListener(String status) {
     state = state.copyWith(lastStatus: status);
+
     state.logEvent(
         'Received listener status: $status, listening: ${state.speechToText.isListening}');
   }
@@ -141,7 +144,13 @@ class STTRecordNotifier extends StateNotifier<STTRecord> {
   // This is called each time the users wants to start a new speech
   // recognition session
   //(pauseFor = int.tryParse(_pauseForController.text, int.tryParse(_listenForController.text)))
-  void startListening({int? listenFor, int? pauseFor}) {
+  Future<void> startListening({int? listenFor, int? pauseFor}) async {
+    if (!state.hasSpeech) {
+      await init();
+    }
+    if (!state.hasSpeech) {
+      return;
+    }
     state.logEvent('start listening');
     // Check if it is already listening - TODO
     state = state.copyWith(lastWords: '', lastError: '');
@@ -150,7 +159,7 @@ class STTRecordNotifier extends StateNotifier<STTRecord> {
     // systems recognition will be stopped before this value is reached.
     // Similarly `pauseFor` is a maximum not a minimum and may be ignored
     // on some devices.
-    state.speechToText.listen(
+    await state.speechToText.listen(
       onResult: resultListener,
       listenFor: Duration(seconds: listenFor ?? 30),
       pauseFor: Duration(seconds: pauseFor ?? 3),
@@ -158,34 +167,34 @@ class STTRecordNotifier extends StateNotifier<STTRecord> {
       localeId: state.currentLocaleId,
       onSoundLevelChange: soundLevelListener,
       cancelOnError: true,
-      listenMode: ListenMode.confirmation,
+      listenMode: ListenMode.dictation,
       onDevice: state.sttConfig.onDevice,
     );
   }
 
-  void stopListening() {
+  void stopListening() async {
     state.logEvent('stop');
     state.speechToText.stop();
     state = state.copyWith(level: 0.0);
+    await ref.read(ttsSpeakerProvider.notifier).unmute();
   }
 
-  void cancelListening() {
+  void cancelListening() async {
     state.logEvent('cancel');
     state.speechToText.cancel();
     state = state.copyWith(level: 0.0);
+    await ref.read(ttsSpeakerProvider.notifier).unmute();
   }
 
   /// This callback is invoked each time new recognition results are
   /// available after `listen` is called.
   void resultListener(SpeechRecognitionResult result) {
-    state.logEvent(
-        'Result listener final: ${result.finalResult}, words: ${result.recognizedWords}');
-    state = state.copyWith(
-        lastWords: '${result.recognizedWords} - ${result.finalResult}');
+    state.logEvent('STT Result: words: ${result.recognizedWords}');
+    state = state.copyWith(lastWords: result.recognizedWords);
   }
 }
 
 final sttRecordProvider =
     StateNotifierProvider<STTRecordNotifier, STTRecord>((ref) {
-  return STTRecordNotifier();
+  return STTRecordNotifier(ref);
 });
