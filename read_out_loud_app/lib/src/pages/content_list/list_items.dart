@@ -68,7 +68,6 @@ class ListItemsState extends ConsumerState<ListItems> {
     return ItemTile(
       chapter: chapter,
       size: tileSize,
-      progress: chapter.percentageCompleted,
       onSelectItem: () => onSelectItem(chapter),
     );
   }

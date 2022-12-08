@@ -96,6 +96,10 @@ class Words {
 
   int get successCount =>
       words.where((Word e) => e.succeeded == true).toList().length;
+  int get totalCount => words.length;
+
+  double get progress =>
+      totalCount > 0 ? successCount.toDouble() / totalCount.toDouble() : 0.0;
 
   List<Word> get words => _words.where((e) {
         return wordFilter == WordFilter.all || !e.isReported;
@@ -111,5 +115,11 @@ class Words {
       return copyWith(words: wordList, index: nextIndex);
     }
     return this;
+  }
+
+  Words clearProgress() {
+    final wordList =
+        _words.map((e) => e.copyWith(succeeded: false, attempts: 0)).toList();
+    return copyWith(words: wordList);
   }
 }

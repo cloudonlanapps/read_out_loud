@@ -1,17 +1,13 @@
 import 'dart:convert';
-import 'dart:math';
 
 class Chapter {
   final String title;
   final String filename;
-  late final double percentageCompleted;
+
   Chapter({
     required this.title,
     required this.filename,
-  }) {
-    var rng = Random();
-    percentageCompleted = rng.nextDouble();
-  }
+  });
 
   Chapter copyWith({
     String? title,

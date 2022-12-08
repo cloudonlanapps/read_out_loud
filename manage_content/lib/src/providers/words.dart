@@ -124,6 +124,12 @@ class WordsNotifier extends StateNotifier<Words?> {
       await updateState(state!.reportCurrentWord());
     }
   }
+
+  clearProgress() async {
+    if (state != null) {
+      await updateState(state!.clearProgress());
+    }
+  }
 }
 
 final wordsProvider =
