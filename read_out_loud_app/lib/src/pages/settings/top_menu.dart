@@ -10,12 +10,28 @@ class TopMenu extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return CustomMenu(menuItems: [
-      CustomMenuItem(
-        alignment: Alignment.centerRight,
-        icon: Icons.home,
-        onTap: onSettings,
-      ),
-    ]);
+    return Row(
+      children: [
+        CustomMenuButton(
+          menuItem: CustomMenuItem(
+            alignment: Alignment.centerRight,
+            icon: Icons.arrow_back,
+            onTap: onSettings,
+          ),
+        ),
+        const Expanded(
+          child: Center(
+            child: Text(
+              "Settings",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 40),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
