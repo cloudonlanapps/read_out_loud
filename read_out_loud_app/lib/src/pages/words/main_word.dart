@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manage_content/manage_content.dart';
 
+import '../../custom_widgets/blink.dart';
+
 //import 'state_provider.dart';
 
 class MainWord extends ConsumerWidget {
@@ -46,6 +48,22 @@ class MainWord extends ConsumerWidget {
                     ),
                   ))),
         ),
+        if (word.succeeded)
+          Positioned(
+              top: 0,
+              bottom: 0,
+              right: 40,
+              child: Blink(
+                blinkDuration: const Duration(seconds: 1),
+                child: Transform.translate(
+                  offset: const Offset(30, 0),
+                  child: const Icon(
+                    Icons.done,
+                    size: 40,
+                    color: Colors.blue,
+                  ),
+                ),
+              ))
         /* if (playState == PlayState.idle)
           Transform.translate(
               offset: const Offset(0, 90),
