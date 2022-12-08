@@ -56,7 +56,7 @@ class _PlayWordState extends ConsumerState<PlayWord> {
                     ?.currentWord
                     ?.succeeded ??
                 false;
-            print(textBlocks);
+
             if (textBlocks.length == 3) {
               // Found the word.
 
