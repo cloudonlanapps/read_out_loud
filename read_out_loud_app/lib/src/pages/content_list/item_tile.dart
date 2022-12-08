@@ -1,11 +1,9 @@
-import 'dart:async';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manage_content/manage_content.dart';
 
 import '../../custom_widgets/progress_bar.dart';
+import 'progress_corner.dart';
 
 class ItemTile extends ConsumerStatefulWidget {
   final Chapter chapter;
@@ -27,19 +25,6 @@ class ItemTile extends ConsumerStatefulWidget {
 }
 
 class _ItemTileState extends ConsumerState<ItemTile> {
-  Timer? _timer;
-  clearProgress() async {
-    await ref
-        .read(wordsProvider(widget.chapter.filename).notifier)
-        .clearProgress();
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar((SnackBar(
-        content: Text("Progress cleared for '${widget.chapter.title}'"),
-        behavior: SnackBarBehavior.floating,
-      )));
-    }
-  }
-
   double get pad => 4.0;
   double get widthMinusPad => widget.size.width - (2 * pad);
   double get heightMinusPad => widget.size.height - (2 * pad);
@@ -59,60 +44,10 @@ class _ItemTileState extends ConsumerState<ItemTile> {
             ProgressBar(size: size, progress: progress),
             Row(
               children: [
-                GestureDetector(
-                  onTap: () {
-                    ScaffoldMessenger.of(context).showSnackBar((const SnackBar(
-                      content: Text("Long Press for 5 sec to clear progress"),
-                      behavior: SnackBarBehavior.floating,
-                    )));
-                  },
-                  onPanCancel: () {
-                    _timer?.cancel();
-                  },
-                  onPanDown: (_) async {
-                    int duration = 5;
-
-                    _timer =
-                        Timer.periodic(const Duration(seconds: 1), (timer) {
-                      duration = duration - 1;
-                      if (duration == 0) {
-                        clearProgress();
-                        timer.cancel();
-                      } else {
-                        ScaffoldMessenger.of(context).clearSnackBars();
-                        ScaffoldMessenger.of(context).showSnackBar((SnackBar(
-                          content: Text(
-                              "continue pressing for another $duration seconds"),
-                          behavior: SnackBarBehavior.floating,
-                        )));
-                      }
-                    });
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(widget.radius),
-                          bottomLeft: Radius.circular(widget.radius)),
-                    ),
-                    width: 50,
-                    height: size.height,
-                    child: FittedBox(
-                      fit: BoxFit.contain,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Transform.rotate(
-                            angle: -pi / 6.0,
-                            child: FittedBox(
-                                fit: BoxFit.fitWidth,
-                                child: Text(
-                                    (progress < 0.05)
-                                        ? "new"
-                                        : "${(progress * 100).toInt()}%",
-                                    style: TextStyle(
-                                        color: Colors.blue.shade800)))),
-                      ),
-                    ),
-                  ),
+                ProgressCorner(
+                  chapter: widget.chapter,
+                  size: Size(size.width, 50),
+                  radius: widget.radius,
                 ),
                 GestureDetector(
                   onTap: () => widget.onSelectItem(),
