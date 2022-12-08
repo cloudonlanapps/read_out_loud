@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import 'page_desc.dart';
 import 'screen_background.dart';
+import 'view_config.dart';
 
 class RouteManager extends StatefulWidget {
   final String appName;
@@ -10,19 +11,28 @@ class RouteManager extends StatefulWidget {
   final int defaultIndex;
   final Locale? locale;
   final Widget Function(BuildContext, Widget?)? builder;
+  final ViewConfig? viewConfig;
   const RouteManager(
       {super.key,
       required this.appName,
       required this.pageRoutes,
       this.defaultIndex = 0,
       this.locale,
-      this.builder});
+      this.builder,
+      this.viewConfig});
 
   @override
   State<RouteManager> createState() => _RouteManagerState();
 }
 
 class _RouteManagerState extends State<RouteManager> {
+  late ViewConfig viewConfig;
+  @override
+  void initState() {
+    viewConfig = widget.viewConfig ?? ViewConfig();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final router = GoRouter(
@@ -35,6 +45,7 @@ class _RouteManagerState extends State<RouteManager> {
                     key: state.pageKey,
                     transitionsBuilder: transitionBuilder,
                     child: ScreenBackground(
+                      viewConfig: ViewConfig(),
                       builder: ((context, size) =>
                           e.builder(context, state, size)),
                     ))))
@@ -61,13 +72,9 @@ class _RouteManagerState extends State<RouteManager> {
     return null;
   }
 
-  static Widget transitionBuilder(
-      BuildContext context,
-      Animation<double> animation,
-      Animation<double> secondaryAnimation,
-      Widget child) {
-    const String scheme = "size";
-    switch (scheme) {
+  Widget transitionBuilder(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation, Widget child) {
+    switch (viewConfig.scheme) {
       case "slide":
         return SlideTransition(
           position:
