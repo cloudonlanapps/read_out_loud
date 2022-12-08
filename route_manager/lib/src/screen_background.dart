@@ -1,76 +1,65 @@
-import 'dart:ui';
-
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
+import 'background.dart';
 import 'size.dart';
+import 'view_config.dart';
 
 class ScreenBackground extends StatelessWidget {
-  final double? borderRadius;
-  final EdgeInsets? marigin;
-
+  final ViewConfig viewConfig;
   final Widget Function(BuildContext context, Size size) builder;
   const ScreenBackground(
-      {super.key, required this.builder, this.borderRadius, this.marigin});
+      {super.key, required this.builder, required this.viewConfig});
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+    final Size size = MediaQuery.of(context).size;
+
     final padding = MediaQuery.of(context).size.shortestSide * 0.01;
-    final double borderRadius = this.borderRadius ?? padding;
-    return SafeArea(
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(borderRadius),
-        clipBehavior: Clip.antiAlias,
-        child: Container(
-          width: width,
-          height: height,
-          margin: marigin ??
-              EdgeInsets.only(
-                top: padding,
-                left: padding,
-                right: padding,
-                bottom: padding,
-              ),
-          //padding: const EdgeInsets.all(4),
-          decoration: BoxDecoration(
-              //color: Colors.white,
-              borderRadius: BorderRadius.circular(borderRadius),
-              // border: Border.all(),
-              gradient: const LinearGradient(
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
-                  colors: [
-                    Color.fromARGB(0xFF, 0x00, 0x8F, 0x8F),
-                    Color.fromARGB(0xFF, 0x8F, 0x8F, 0x00),
-                  ])),
-          child: Stack(
-            children: [
-              BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(borderRadius),
-                    color: Colors.grey.shade200.withOpacity(0.2),
-                  ),
-                ),
-              ),
-              Container(
+    final double borderRadius = viewConfig.borderRadius ?? 15;
+
+    /// Flutter starts quicker in release mode and the native platform
+    /// reports the actual resolution with a delay. So the very first frame
+    /// is build with Size(0.0, 0.0). After sometime, the app will be
+    /// rebuilt again with the proper value. Print MediaQuery.context.size
+    /// in the build() to observe this. (you need to use the regular print()
+    /// in your app to debug. Make the code to be resilient against
+    /// Size(0.0, 0.0) and make sure that you call findRenderBox only after
+    /// the resolution is received from the platform will make sure that you
+    /// get correct size.
+    /// Refer this https://github.com/flutter/flutter/issues/25827
+    ///
+    /// Alternate way using RenderProxyBox can also be explored.
+    /// https://stackoverflow.com/questions/49307677/how-to-get-height-of-a-widget
+
+    if (MediaQuery.of(context).size.width < 10 ||
+        MediaQuery.of(context).size.height < 10) {
+      return Scaffold(
+        body: Container(),
+      );
+    }
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Stack(
+        children: [
+          Background(
+            size: size,
+            borderRadius: borderRadius,
+          ),
+          SafeArea(
+            minimum: EdgeInsets.all(padding),
+            child: Container(
                 decoration: BoxDecoration(
                   //color: Colors.white,
                   borderRadius: BorderRadius.circular(borderRadius),
-                  // border: Border.all(),
+                  border: viewConfig.showContentBorder ? Border.all() : null,
                 ),
-                margin: EdgeInsets.only(
-                    top: padding,
-                    left: padding,
-                    right: padding,
-                    bottom: padding),
-                child: SizeGetter(builder: builder),
-              )
-            ],
+                child: SizeGetter(
+                  builder: builder,
+                  viewConfig: viewConfig,
+                )),
           ),
-        ),
+        ],
       ),
     );
   }
