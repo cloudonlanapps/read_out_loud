@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:manage_content/manage_content.dart';
 
-import '../../custom_widgets/progress_bar.dart';
 import '../words/page.dart';
 import 'animate_state.dart';
 import 'item_tile.dart';
@@ -64,30 +63,13 @@ class ListItemsState extends ConsumerState<ListItems> {
     ref.read(isAnimatingProvider.notifier).isAnimating = false;
   }
 
-  double get pad => 4.0;
-  double get widthMinusPad => widget.size.width - (2 * pad);
-  double get heightMinusPad => ListItems.tileHeight - (2 * pad);
-  Size get size => Size(widthMinusPad, heightMinusPad);
+  Size get tileSize => Size(widget.size.width, ListItems.tileHeight);
   Widget _buildTile(Chapter chapter) {
-    return InkWell(
-      onTap: () => onSelectItem(chapter),
-      child: Padding(
-        padding: EdgeInsets.all(pad),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(50),
-          child: Stack(
-            children: [
-              ProgressBar(size: size, progress: chapter.percentageCompleted),
-              ItemTile(
-                text: chapter.title,
-                size: size,
-                progress: chapter.percentageCompleted,
-                onSelectItem: () => onSelectItem(chapter),
-              ),
-            ],
-          ),
-        ),
-      ),
+    return ItemTile(
+      chapter: chapter,
+      size: tileSize,
+      progress: chapter.percentageCompleted,
+      onSelectItem: () => onSelectItem(chapter),
     );
   }
 
@@ -102,7 +84,7 @@ class ListItemsState extends ConsumerState<ListItems> {
   @override
   Widget build(BuildContext context) {
     final titleHeight =
-        widget.size.height - (widget.items.length * ListItems.tileHeight);
+        widget.size.height - (widget.items.length * tileSize.height);
     if (itemSelected) {
       return const CircularProgressIndicator();
     }
@@ -110,7 +92,7 @@ class ListItemsState extends ConsumerState<ListItems> {
       children: [
         SizedBox(
           height: titleHeight,
-          width: size.width,
+          width: widget.size.width,
           child: const Center(
             child: Text(
               "Select one",
