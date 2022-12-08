@@ -129,6 +129,7 @@ class TTSSpeakerNotifier extends StateNotifier<TTSSpeaker> {
   }
 
   void setErrorHandler(dynamic msg) {
+    // ignore: todo
     // TODO: Need to handle error!!
     //print("Error reported from flutterTTS $msg");
   }

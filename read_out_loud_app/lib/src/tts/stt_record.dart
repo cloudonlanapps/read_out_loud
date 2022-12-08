@@ -64,8 +64,9 @@ class STTRecord {
 
   void logEvent(String eventDescription) {
     if (logEvents) {
-      var eventTime = DateTime.now().toIso8601String();
-      //TODO: Logger print('$eventTime $eventDescription');
+      //var eventTime = DateTime.now().toIso8601String();
+      // ignore: todo
+      //TODO Logger print('$eventTime $eventDescription');
     }
   }
 
@@ -152,7 +153,7 @@ class STTRecordNotifier extends StateNotifier<STTRecord> {
       return;
     }
     state.logEvent('start listening');
-    // Check if it is already listening - TODO
+
     state = state.copyWith(lastWords: '', lastError: '');
 
     // Note that `listenFor` is the maximum, not the minimun, on some
