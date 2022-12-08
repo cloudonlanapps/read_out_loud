@@ -33,7 +33,7 @@ class MainContent extends ConsumerWidget {
               key: ObjectKey(currPage),
               repository: currState.repository,
               items: currPage,
-              size: Size(size.width, ListItems.tileHeight));
+              size: Size(size.width, size.height));
         },
         error: (error, stackTrace) => Container(),
         loading: () => const CircularProgressIndicator());

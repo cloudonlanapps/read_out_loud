@@ -66,7 +66,7 @@ class ListItemsState extends ConsumerState<ListItems> {
 
   double get pad => 4.0;
   double get widthMinusPad => widget.size.width - (2 * pad);
-  double get heightMinusPad => widget.size.height - (2 * pad);
+  double get heightMinusPad => ListItems.tileHeight - (2 * pad);
   Size get size => Size(widthMinusPad, heightMinusPad);
   Widget _buildTile(Chapter chapter) {
     return InkWell(
@@ -101,7 +101,8 @@ class ListItemsState extends ConsumerState<ListItems> {
 
   @override
   Widget build(BuildContext context) {
-    final titleHeight = size.height - (items.length * ListItems.tileHeight);
+    final titleHeight =
+        widget.size.height - (widget.items.length * ListItems.tileHeight);
     if (itemSelected) {
       return const CircularProgressIndicator();
     }
