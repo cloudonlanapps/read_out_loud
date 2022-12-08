@@ -13,7 +13,7 @@ import 'top_menu.dart';
 
 class ContentListPage implements AppRoute {
   @override
-  String get name => "content_list";
+  String get name => "chapter_list";
 
   @override
   String get path => "/$name";
