@@ -4,7 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../tts/tts_speaker.dart';
+import '../../../tts/tts_speaker.dart';
 
 class TTSConfig extends ConsumerWidget {
   final Size size;

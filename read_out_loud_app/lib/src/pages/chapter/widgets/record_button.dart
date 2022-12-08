@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:read_out_loud_app/src/tts/stt_record.dart';
 
-import 'state_provider.dart';
+import '../providers/state_provider.dart';
 
 class RecordButton extends ConsumerWidget {
   final bool succeeded;

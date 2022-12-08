@@ -4,7 +4,7 @@ import 'package:manage_content/manage_content.dart';
 import 'package:read_out_loud_app/src/tts/stt_record.dart';
 
 import '../../custom_widgets/custom_menu.dart';
-import 'state_provider.dart';
+import 'providers/state_provider.dart';
 
 class BottomMenu extends ConsumerWidget {
   final Size size;

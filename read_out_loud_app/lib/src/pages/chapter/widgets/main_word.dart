@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manage_content/manage_content.dart';
 
-import '../../custom_widgets/blink.dart';
+import '../../../custom_widgets/blink.dart';
 
 //import 'state_provider.dart';
 

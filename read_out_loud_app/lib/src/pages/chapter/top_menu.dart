@@ -4,7 +4,7 @@ import 'package:manage_content/manage_content.dart';
 
 import '../../custom_widgets/custom_menu.dart';
 import '../../tts/stt_record.dart';
-import 'state_provider.dart';
+import 'providers/state_provider.dart';
 
 class TopMenu extends ConsumerWidget {
   final ContentListConfig contentListConfig;

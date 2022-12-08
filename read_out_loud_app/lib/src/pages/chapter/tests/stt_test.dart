@@ -2,9 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:read_out_loud_app/src/tts/stt_record.dart';
 
-import '../../tts/stt_record_config.dart';
+import '../../../tts/stt_record.dart';
+import '../../../tts/stt_record_config.dart';
 
 class SpeechSampleApp extends ConsumerStatefulWidget {
   const SpeechSampleApp({super.key});

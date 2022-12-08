@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:manage_content/manage_content.dart';
 
-import '../../words/page.dart';
+import '../../chapter/page.dart';
 import '../providers/animate_state.dart';
 import 'chapter_view.dart';
 
@@ -76,8 +76,8 @@ class ListItemsState extends ConsumerState<ChapterListView> {
     setState(() {
       itemSelected = true;
     });
-    context
-        .goNamed(WordsPage().name, queryParams: {"filename": chapter.filename});
+    context.goNamed(ChapterPage().name,
+        queryParams: {"filename": chapter.filename});
   }
 
   @override

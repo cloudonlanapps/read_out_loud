@@ -7,7 +7,7 @@ import 'intro_widget.dart';
 import 'main_word.dart';
 import 'record_button.dart';
 import 'score.dart';
-import 'state_provider.dart';
+import '../providers/state_provider.dart';
 import 'stt_result.dart';
 
 class PlayWord extends ConsumerStatefulWidget {

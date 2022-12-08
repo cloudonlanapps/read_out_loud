@@ -7,12 +7,12 @@ import 'package:route_manager/route_manager.dart';
 import '../chapter_list/page.dart';
 import 'bottom_menu.dart';
 import 'main.dart';
-import 'state_provider.dart';
+import 'providers/state_provider.dart';
 import 'top_menu.dart';
 
-class WordsPage implements AppRoute {
+class ChapterPage implements AppRoute {
   @override
-  String get name => "words";
+  String get name => "chapter";
 
   @override
   String get path => "/$name";

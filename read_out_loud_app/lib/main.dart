@@ -5,10 +5,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:read_out_loud_app/src/pages/words/page.dart';
 
 import 'package:route_manager/route_manager.dart';
 
+import 'src/pages/chapter/page.dart';
 import 'src/pages/chapter_list/page.dart';
 import 'src/pages/main/page.dart';
 import 'src/pages/settings/page.dart';
@@ -33,7 +33,7 @@ void main() {
           MainPage(),
           ContentListPage(),
           SettingsPage(),
-          WordsPage()
+          ChapterPage()
         ],
         defaultIndex: 0,
       )),

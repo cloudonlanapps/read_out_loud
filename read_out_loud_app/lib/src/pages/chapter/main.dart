@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manage_content/manage_content.dart';
 
-import 'play_word.dart';
-import 'state_provider.dart';
+import 'widgets/play_word.dart';
+import 'providers/state_provider.dart';
 
 class MainContent extends ConsumerWidget {
   final Size size;

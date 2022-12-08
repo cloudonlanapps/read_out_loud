@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../tts/stt_record.dart';
+import '../../../tts/stt_record.dart';
 
 extension Highlight on String {
   List<String> highlight(String hightlightWord) {
