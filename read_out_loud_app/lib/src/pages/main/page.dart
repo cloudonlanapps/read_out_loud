@@ -5,7 +5,7 @@ import 'package:read_out_loud_app/src/pages/settings/page.dart';
 import 'package:responsive_screen/responsive_screen.dart';
 import 'package:route_manager/route_manager.dart';
 
-import '../content_list/page.dart';
+import '../chapter_list/page.dart';
 import 'bottom_menu.dart';
 import 'main.dart';
 import 'top_menu.dart';

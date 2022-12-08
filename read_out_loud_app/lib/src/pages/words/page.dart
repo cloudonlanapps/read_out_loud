@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:responsive_screen/responsive_screen.dart';
 import 'package:route_manager/route_manager.dart';
 
-import '../content_list/page.dart';
+import '../chapter_list/page.dart';
 import 'bottom_menu.dart';
 import 'main.dart';
 import 'state_provider.dart';

@@ -9,7 +9,7 @@ import 'package:read_out_loud_app/src/pages/words/page.dart';
 
 import 'package:route_manager/route_manager.dart';
 
-import 'src/pages/content_list/page.dart';
+import 'src/pages/chapter_list/page.dart';
 import 'src/pages/main/page.dart';
 import 'src/pages/settings/page.dart';
 
