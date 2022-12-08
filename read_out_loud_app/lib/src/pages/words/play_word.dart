@@ -46,18 +46,38 @@ class _PlayWordState extends ConsumerState<PlayWord> {
       if (curr.lastStatus != prev?.lastStatus) {
         // print("Listener: status changed to ${curr.lastStatus}");
         if (["doneNoResult", "done"].contains(curr.lastStatus)) {
-          List<String> textBlocks =
-              curr.lastWords.toLowerCase().highlight(widget.word.original);
-          if (textBlocks.length == 3) {
-            // Found the word.
-            ref
-                .read(wordsProvider(widget.contentListConfig.filename).notifier)
-                .success(widget.word);
+          ref.read(sttRecordProvider.notifier).stopListening();
+          ref.read(playWordStateProvider.notifier).newState = PlayState.idle;
+          if (curr.lastWords.isNotEmpty) {
+            List<String> textBlocks =
+                curr.lastWords.toLowerCase().highlight(widget.word.original);
+            bool succeeded = ref
+                    .read(wordsProvider(widget.contentListConfig.filename))
+                    ?.currentWord
+                    ?.succeeded ??
+                false;
+            print(textBlocks);
+            if (textBlocks.length == 3) {
+              // Found the word.
+
+              ref
+                  .read(
+                      wordsProvider(widget.contentListConfig.filename).notifier)
+                  .success(widget.word);
+              ref.read(playWordStateProvider.notifier).speak(text: 'Well Done');
+            } else if (!succeeded) {
+              ref
+                  .read(
+                      wordsProvider(widget.contentListConfig.filename).notifier)
+                  .attempted(widget.word);
+              ref.read(playWordStateProvider.notifier).speak(text: 'Try again');
+            } else {
+              ref.read(playWordStateProvider.notifier).speak(text: 'Try again');
+            }
           }
           //ref.read(ttsSpeakerProvider.notifier).unmute();
           // Done, to clear level
-          ref.read(sttRecordProvider.notifier).stopListening();
-          ref.read(playWordStateProvider.notifier).newState = PlayState.idle;
+
         }
         if (["listening"].contains(curr.lastStatus)) {
           //ref.read(ttsSpeakerProvider.notifier).mute();
@@ -94,11 +114,20 @@ class _PlayWordState extends ConsumerState<PlayWord> {
                 Container(
                   height: 100,
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: MainWord(
-                    word: widget.word.original,
-                    onTap: () => ref
-                        .read(playWordStateProvider.notifier)
-                        .speak(text: widget.word.original),
+                  child: Stack(
+                    children: [
+                      MainWord(
+                        word: widget.word,
+                        onTap: () => ref
+                            .read(playWordStateProvider.notifier)
+                            .speak(text: widget.word.original),
+                      ),
+                      if (widget.word.attempts > 0)
+                        Positioned(
+                            right: 10,
+                            top: 10,
+                            child: Text(widget.word.attempts.toString()))
+                    ],
                   ),
                 ),
                 if (playState == PlayState.intro)
@@ -119,24 +148,16 @@ class _PlayWordState extends ConsumerState<PlayWord> {
                           highlight: widget.word.original,
                         ),
                       )),
-                  if (widget.word.succeeded)
-                    SizedBox(
-                        height: 100,
-                        width: widget.size.width,
-                        child: const Padding(
-                          padding: EdgeInsets.all(15.0),
-                          child: FittedBox(
-                              fit: BoxFit.fitHeight, child: Icon(Icons.done)),
-                        ))
-                  else
-                    SizedBox(
-                        height: 100,
-                        width: widget.size.width,
-                        child: const Padding(
-                          padding: EdgeInsets.all(15.0),
-                          child: FittedBox(
-                              fit: BoxFit.fitHeight, child: RecordButton()),
-                        )),
+                  SizedBox(
+                      height: 100,
+                      width: widget.size.width,
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: FittedBox(
+                            fit: BoxFit.fitHeight,
+                            child:
+                                RecordButton(succeeded: widget.word.succeeded)),
+                      )),
                 ],
               ],
             ),

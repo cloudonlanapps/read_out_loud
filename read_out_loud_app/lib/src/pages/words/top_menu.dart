@@ -50,7 +50,7 @@ class TopMenu extends ConsumerWidget {
               ScaffoldMessenger.of(context).showSnackBar(
                   (const SnackBar(content: Text("Reporting this word"))));
 
-              ref
+              await ref
                   .read(wordsProvider(contentListConfig.filename).notifier)
                   .reportCurrentWord();
             },

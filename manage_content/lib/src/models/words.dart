@@ -107,7 +107,7 @@ class Words {
       wordList[wordList.indexOf(currentWord!)] =
           currentWord!.copyWith(isReported: true);
 
-      final nextIndex = isLast ? index : index - 1;
+      final nextIndex = isLast ? index - 1 : index;
       return copyWith(words: wordList, index: nextIndex);
     }
     return this;

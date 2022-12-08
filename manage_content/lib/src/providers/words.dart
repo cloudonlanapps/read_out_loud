@@ -28,6 +28,19 @@ class WordsNotifier extends StateNotifier<Words?> {
     return file.readAsString();
   }
 
+  updateState(Words words) async {
+    await save();
+    state = words;
+  }
+
+  save() async {
+    if (state != null) {
+      final String path = (await getApplicationDocumentsDirectory()).path;
+      String json = state!.toJson();
+      await File("$path/$filename.json").writeAsString(json);
+    }
+  }
+
   static Future<File> install(
       {required String assetFile, required String storageFile}) async {
     File? file = File(storageFile);
@@ -49,7 +62,7 @@ class WordsNotifier extends StateNotifier<Words?> {
     if (state == null) return;
     final words = state!;
     if (!words.isFirst) {
-      state = words.copyWith(index: words.index - 1);
+      await updateState(words.copyWith(index: words.index - 1));
     }
   }
 
@@ -57,10 +70,11 @@ class WordsNotifier extends StateNotifier<Words?> {
     if (state == null) return;
     final words = state!;
     if (!words.isLast) {
-      state = words.copyWith(index: words.index + 1);
+      await updateState(words.copyWith(index: words.index + 1));
     }
   }
 
+  // Not used
   recognizedWords({
     required String spokenText,
   }) async {
@@ -82,21 +96,32 @@ class WordsNotifier extends StateNotifier<Words?> {
           attempts: spokenWords.length,
           succeeded: success);
 
-      state = state!.copyWith(words: wordList);
+      await updateState(state!.copyWith(words: wordList));
     }
   }
 
-  success(Word word) {
+  attempted(Word word) async {
     final wordList = state!.words;
     wordList[wordList.indexOf(word)] =
-        word.copyWith(succeeded: true, attempts: word.attempts + 1);
+        word.copyWith(attempts: word.attempts + 1);
 
-    state = state!.copyWith(words: wordList);
+    await updateState(state!.copyWith(words: wordList));
   }
 
-  reportCurrentWord() {
+  success(Word word) async {
+    final wordList = state!.words;
+    if (word.succeeded) {
+      wordList[wordList.indexOf(word)] = word.copyWith(succeeded: true);
+    } else {
+      wordList[wordList.indexOf(word)] =
+          word.copyWith(succeeded: true, attempts: word.attempts + 1);
+    }
+    await updateState(state!.copyWith(words: wordList));
+  }
+
+  reportCurrentWord() async {
     if (state != null) {
-      state = state!.reportCurrentWord();
+      await updateState(state!.reportCurrentWord());
     }
   }
 }

@@ -6,9 +6,8 @@ import 'package:read_out_loud_app/src/tts/stt_record.dart';
 import 'state_provider.dart';
 
 class RecordButton extends ConsumerWidget {
-  const RecordButton({
-    Key? key,
-  }) : super(key: key);
+  final bool succeeded;
+  const RecordButton({Key? key, required this.succeeded}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -91,11 +90,11 @@ class RecordButton extends ConsumerWidget {
         Container(
           child: (playState != PlayState.idle)
               ? null
-              : const Align(
+              : Align(
                   alignment: Alignment.center,
                   child: Text(
-                    "Tap to Speak",
-                    style: TextStyle(color: Colors.white),
+                    succeeded ? "Try again? " : "Tap to Speak",
+                    style: const TextStyle(color: Colors.white),
                   ),
                 ),
         )

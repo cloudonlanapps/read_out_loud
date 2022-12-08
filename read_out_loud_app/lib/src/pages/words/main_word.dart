@@ -1,11 +1,12 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:manage_content/manage_content.dart';
 
 //import 'state_provider.dart';
 
 class MainWord extends ConsumerWidget {
-  final String word;
+  final Word word;
   final Function()? onTap;
   const MainWord({super.key, required this.word, this.onTap});
 
@@ -22,7 +23,9 @@ class MainWord extends ConsumerWidget {
               radius: const Radius.circular(12),
               child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.amber.shade100,
+                    color: word.succeeded
+                        ? Colors.amberAccent.shade100
+                        : Colors.amber.shade100,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(),
                   ),
@@ -32,10 +35,12 @@ class MainWord extends ConsumerWidget {
                         const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
                     child: FittedBox(
                       child: Text(
-                        word,
+                        word.original,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
-                            color: Colors.blueGrey,
+                        style: TextStyle(
+                            color: word.succeeded
+                                ? const Color.fromARGB(255, 39, 242, 46)
+                                : Colors.blueGrey,
                             fontWeight: FontWeight.bold),
                       ),
                     ),

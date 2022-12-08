@@ -28,9 +28,9 @@ extension Highlight on String {
 class STTResult extends ConsumerWidget {
   final String highlight;
   TextStyle get normalStyle =>
-      const TextStyle(color: Colors.white, fontSize: 40);
-  TextStyle get highlightStyle => normalStyle.copyWith(
-      fontWeight: FontWeight.bold, color: Colors.red.shade400);
+      const TextStyle(color: Colors.white, fontSize: 30);
+  TextStyle get highlightStyle => const TextStyle(
+      fontWeight: FontWeight.bold, color: Colors.lightGreen, fontSize: 45);
   const STTResult({
     this.highlight = '',
     Key? key,
