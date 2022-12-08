@@ -5,7 +5,7 @@ class ViewConfig {
   final String scheme;
 
   ViewConfig({
-    this.hideContent = true,
+    this.hideContent = false,
     this.showContentBorder = true,
     this.borderRadius,
     this.scheme = "size",
