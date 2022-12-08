@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'list_items.dart';
-import 'state_provider.dart';
+import 'widgets/chapter_list_view.dart';
+import 'providers/state_provider.dart';
 
 class MainContent extends ConsumerWidget {
   final Size size;
@@ -29,7 +29,7 @@ class MainContent extends ConsumerWidget {
             );
           }
           final currPage = currState.getcurrentPage();
-          return ListItems(
+          return ChapterListView(
               key: ObjectKey(currPage),
               repository: currState.repository,
               items: currPage,

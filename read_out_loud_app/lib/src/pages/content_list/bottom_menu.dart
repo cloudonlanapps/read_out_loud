@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../custom_widgets/custom_menu.dart';
-import 'animate_state.dart';
-import 'state_provider.dart';
+import 'providers/animate_state.dart';
+import 'providers/state_provider.dart';
 
 class BottomMenu extends ConsumerWidget {
   final Size size;

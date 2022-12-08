@@ -6,9 +6,9 @@ import 'package:route_manager/route_manager.dart';
 
 import '../main/page.dart';
 import 'bottom_menu.dart';
-import 'list_items.dart';
+import 'widgets/chapter_list_view.dart';
 import 'main.dart';
-import 'state_provider.dart';
+import 'providers/state_provider.dart';
 import 'top_menu.dart';
 
 class ContentListPage implements AppRoute {
@@ -36,7 +36,7 @@ class ContentListPage implements AppRoute {
           };
 
   static int itemsPerPage(double totalHeight) =>
-      (totalHeight - 75.0) ~/ ListItems.tileHeight;
+      (totalHeight - 75.0) ~/ ChapterListView.tileHeight;
 }
 
 class PageView extends StatelessWidget {

@@ -3,15 +3,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:manage_content/manage_content.dart';
 
-import '../words/page.dart';
-import 'animate_state.dart';
-import 'item_tile.dart';
+import '../../words/page.dart';
+import '../providers/animate_state.dart';
+import 'chapter_view.dart';
 
-class ListItems extends ConsumerStatefulWidget {
+class ChapterListView extends ConsumerStatefulWidget {
   final Repository repository;
   final List<Chapter> items;
   final Size size;
-  const ListItems({
+  const ChapterListView({
     super.key,
     required this.repository,
     required this.items,
@@ -19,10 +19,10 @@ class ListItems extends ConsumerStatefulWidget {
   });
   static double get tileHeight => 75;
   @override
-  ConsumerState<ListItems> createState() => ListItemsState();
+  ConsumerState<ChapterListView> createState() => ListItemsState();
 }
 
-class ListItemsState extends ConsumerState<ListItems> {
+class ListItemsState extends ConsumerState<ChapterListView> {
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   final List<Widget> items = [];
   final Tween<Offset> _offset =
@@ -63,9 +63,9 @@ class ListItemsState extends ConsumerState<ListItems> {
     ref.read(isAnimatingProvider.notifier).isAnimating = false;
   }
 
-  Size get tileSize => Size(widget.size.width, ListItems.tileHeight);
+  Size get tileSize => Size(widget.size.width, ChapterListView.tileHeight);
   Widget _buildTile(Chapter chapter) {
-    return ItemTile(
+    return ChapterView(
       chapter: chapter,
       size: tileSize,
       onSelectItem: () => onSelectItem(chapter),

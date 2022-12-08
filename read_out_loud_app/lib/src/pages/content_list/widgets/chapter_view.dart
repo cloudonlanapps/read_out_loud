@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manage_content/manage_content.dart';
 
-import '../../custom_widgets/progress_bar.dart';
+import '../../../custom_widgets/progress_bar.dart';
 import 'progress_corner.dart';
 
-class ItemTile extends ConsumerStatefulWidget {
+class ChapterView extends ConsumerWidget {
   final Chapter chapter;
   final Size size;
 
@@ -13,26 +13,21 @@ class ItemTile extends ConsumerStatefulWidget {
 
   final Function() onSelectItem;
 
-  const ItemTile(
+  const ChapterView(
       {super.key,
       required this.chapter,
       required this.size,
       this.radius = 50,
       required this.onSelectItem});
 
-  @override
-  ConsumerState<ItemTile> createState() => _ItemTileState();
-}
-
-class _ItemTileState extends ConsumerState<ItemTile> {
   double get pad => 4.0;
-  double get widthMinusPad => widget.size.width - (2 * pad);
-  double get heightMinusPad => widget.size.height - (2 * pad);
-  Size get size => Size(widthMinusPad, heightMinusPad);
+  double get widthMinusPad => size.width - (2 * pad);
+  double get heightMinusPad => size.height - (2 * pad);
+  Size get tileSize => Size(widthMinusPad, heightMinusPad);
 
   @override
-  Widget build(BuildContext context) {
-    double progress = ref.watch(wordsProvider(widget.chapter.filename)
+  Widget build(BuildContext context, WidgetRef ref) {
+    double progress = ref.watch(wordsProvider(chapter.filename)
         .select((value) => value?.progress ?? 0.0));
 
     return Padding(
@@ -41,19 +36,19 @@ class _ItemTileState extends ConsumerState<ItemTile> {
         borderRadius: BorderRadius.circular(50),
         child: Stack(
           children: [
-            ProgressBar(size: size, progress: progress),
+            ProgressBar(size: tileSize, progress: progress),
             Row(
               children: [
                 ProgressCorner(
-                  chapter: widget.chapter,
-                  size: Size(size.width, 50),
-                  radius: widget.radius,
+                  chapter: chapter,
+                  size: Size(tileSize.width, 50),
+                  radius: radius,
                 ),
                 GestureDetector(
-                  onTap: () => widget.onSelectItem(),
+                  onTap: () => onSelectItem(),
                   child: SizedBox(
-                    width: size.width - 100,
-                    height: size.height,
+                    width: tileSize.width - 100,
+                    height: tileSize.height,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 4.0, vertical: 2.0),
@@ -66,7 +61,7 @@ class _ItemTileState extends ConsumerState<ItemTile> {
                               fit: BoxFit.fitWidth,
                               child: Align(
                                 alignment: Alignment.centerLeft,
-                                child: Text(widget.chapter.title,
+                                child: Text(chapter.title,
                                     textAlign: TextAlign.start,
                                     style: const TextStyle(
                                         fontSize: 30, color: Colors.black)),
@@ -80,15 +75,15 @@ class _ItemTileState extends ConsumerState<ItemTile> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () => widget.onSelectItem(),
+                  onTap: () => onSelectItem(),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(widget.radius),
-                          bottomRight: Radius.circular(widget.radius)),
+                          topRight: Radius.circular(radius),
+                          bottomRight: Radius.circular(radius)),
                     ),
                     width: 50,
-                    height: size.height,
+                    height: tileSize.height,
                     child: Icon(
                       Icons.arrow_forward_ios,
                       color: Colors.blue.shade400,
