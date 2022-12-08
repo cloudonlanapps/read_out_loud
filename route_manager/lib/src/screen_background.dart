@@ -33,9 +33,10 @@ class ScreenBackground extends StatelessWidget {
                   borderRadius: BorderRadius.circular(borderRadius),
                   border: viewConfig.showContentBorder ? Border.all() : null,
                 ),
-                child: viewConfig.hideContent
-                    ? null
-                    : SizeGetter(builder: builder)),
+                child: SizeGetter(
+                  builder: builder,
+                  viewConfig: viewConfig,
+                )),
           ),
         ],
       ),
