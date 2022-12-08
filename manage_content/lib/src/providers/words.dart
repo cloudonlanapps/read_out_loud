@@ -93,6 +93,12 @@ class WordsNotifier extends StateNotifier<Words?> {
 
     state = state!.copyWith(words: wordList);
   }
+
+  reportCurrentWord() {
+    if (state != null) {
+      state = state!.reportCurrentWord();
+    }
+  }
 }
 
 final wordsProvider =

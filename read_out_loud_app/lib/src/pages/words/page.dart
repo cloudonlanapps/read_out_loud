@@ -54,7 +54,8 @@ class PageView extends StatelessWidget {
       size: size,
       contentBuilder: (context, size) =>
           MainContent(contentListConfig: contentListConfig, size: size),
-      topMenuBuilder: (context, size) => TopMenu(onClose: onClose, size: size),
+      topMenuBuilder: (context, size) => TopMenu(
+          contentListConfig: contentListConfig, onClose: onClose, size: size),
       bottomMenubuilder: (context, size) =>
           BottomMenu(contentListConfig: contentListConfig, size: size),
     );

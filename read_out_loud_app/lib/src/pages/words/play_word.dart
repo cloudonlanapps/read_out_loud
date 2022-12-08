@@ -141,7 +141,7 @@ class _PlayWordState extends ConsumerState<PlayWord> {
               ],
             ),
           ),
-        )
+        ),
       ],
     );
   }

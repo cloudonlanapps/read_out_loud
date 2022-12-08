@@ -5,14 +5,30 @@ import 'package:flutter/foundation.dart';
 
 import 'word.dart';
 
+enum WordFilter { all, excludeReported }
+
 class Words {
-  final List<Word> words;
+  final List<Word> _words;
   final String title;
   final int index;
-  Words({required this.words, required this.title, int? index})
-      : index = ((index != null) && (index >= 0) && (index < words.length))
+  final WordFilter wordFilter;
+  Words(
+      {required List<Word> words,
+      required this.title,
+      int? index,
+      this.wordFilter = WordFilter.excludeReported})
+      : index = ((index != null) &&
+                (index >= 0) &&
+                (index <
+                    words
+                        .where((e) {
+                          return wordFilter == WordFilter.all || !e.isReported;
+                        })
+                        .toList()
+                        .length))
             ? index
-            : 0;
+            : 0,
+        _words = words;
 
   Words copyWith({
     List<Word>? words,
@@ -20,7 +36,7 @@ class Words {
     int? index,
   }) {
     return Words(
-      words: words ?? this.words,
+      words: words ?? _words,
       title: title ?? this.title,
       index: index ?? this.index,
     );
@@ -28,7 +44,7 @@ class Words {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'words': words.map((x) => x.toMap()).toList(),
+      'words': _words.map((x) => x.toMap()).toList(),
       'title': title,
     };
   }
@@ -57,19 +73,19 @@ class Words {
       Words.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'Words(words: $words, title: $title, index: $index)';
+  String toString() => 'Words(words: $_words, title: $title, index: $index)';
 
   @override
   bool operator ==(covariant Words other) {
     if (identical(this, other)) return true;
 
-    return listEquals(other.words, words) &&
+    return listEquals(other._words, _words) &&
         other.title == title &&
         other.index == index;
   }
 
   @override
-  int get hashCode => words.hashCode ^ title.hashCode ^ index.hashCode;
+  int get hashCode => _words.hashCode ^ title.hashCode ^ index.hashCode;
 
   Word? get currentWord =>
       (words.length > index && index >= 0) ? words[index] : null;
@@ -80,4 +96,20 @@ class Words {
 
   int get successCount =>
       words.where((Word e) => e.succeeded == true).toList().length;
+
+  List<Word> get words => _words.where((e) {
+        return wordFilter == WordFilter.all || !e.isReported;
+      }).toList();
+
+  Words reportCurrentWord() {
+    final wordList = _words;
+    if (currentWord != null) {
+      wordList[wordList.indexOf(currentWord!)] =
+          currentWord!.copyWith(isReported: true);
+
+      final nextIndex = isLast ? index : index - 1;
+      return copyWith(words: wordList, index: nextIndex);
+    }
+    return this;
+  }
 }

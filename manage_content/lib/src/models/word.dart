@@ -7,32 +7,36 @@ class Word {
   final int attempts;
   final bool succeeded;
   final bool giveup;
+  final bool isReported;
   Word(
       {required this.original,
       required this.lastSpoken,
       required this.attempts,
       required this.succeeded,
-      required this.giveup});
+      required this.giveup,
+      required this.isReported});
 
   Word.fromString(this.original)
       : lastSpoken = "",
         attempts = 0,
         succeeded = false,
-        giveup = false;
+        giveup = false,
+        isReported = false;
 
-  Word copyWith({
-    String? original,
-    String? lastSpoken,
-    int? attempts,
-    bool? succeeded,
-    bool? giveup,
-  }) {
+  Word copyWith(
+      {String? original,
+      String? lastSpoken,
+      int? attempts,
+      bool? succeeded,
+      bool? giveup,
+      bool? isReported}) {
     return Word(
         original: original ?? this.original,
         lastSpoken: lastSpoken ?? this.lastSpoken,
         attempts: attempts ?? this.attempts,
         succeeded: succeeded ?? this.succeeded,
-        giveup: giveup ?? this.giveup);
+        giveup: giveup ?? this.giveup,
+        isReported: isReported ?? this.isReported);
   }
 
   Map<String, dynamic> toMap() {
@@ -54,6 +58,8 @@ class Word {
       succeeded:
           (map.containsKey('succeeded')) ? map['succeeded'] as bool : false,
       giveup: (map.containsKey('giveup')) ? map['giveup'] as bool : false,
+      isReported:
+          (map.containsKey('isReported')) ? map['isReported'] as bool : false,
     );
   }
 
