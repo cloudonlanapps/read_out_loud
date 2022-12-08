@@ -41,7 +41,10 @@ class ChapterView extends ConsumerWidget {
               children: [
                 ProgressCorner(
                   chapter: chapter,
-                  size: Size(tileSize.width, 50),
+                  size: Size(
+                    50,
+                    tileSize.height,
+                  ),
                   radius: radius,
                 ),
                 GestureDetector(
