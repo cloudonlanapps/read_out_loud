@@ -27,8 +27,8 @@ class ChapterView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    double progress = ref.watch(wordsProvider(chapter.filename)
-        .select((value) => value?.progress ?? 0.0));
+    final Words? words = ref.watch(wordsProvider(chapter.filename));
+    double? progress = words?.progress;
 
     return Padding(
       padding: EdgeInsets.all(pad),
@@ -36,7 +36,7 @@ class ChapterView extends ConsumerWidget {
         borderRadius: BorderRadius.circular(50),
         child: Stack(
           children: [
-            ProgressBar(size: tileSize, progress: progress),
+            ProgressBar(size: tileSize, progress: progress ?? 0),
             Row(
               children: [
                 ProgressCorner(
@@ -48,7 +48,7 @@ class ChapterView extends ConsumerWidget {
                   radius: radius,
                 ),
                 GestureDetector(
-                  onTap: () => onSelectItem(),
+                  onTap: words == null ? null : () => onSelectItem(),
                   child: SizedBox(
                     width: tileSize.width - 100,
                     height: tileSize.height,
@@ -66,8 +66,15 @@ class ChapterView extends ConsumerWidget {
                                 alignment: Alignment.centerLeft,
                                 child: Text(chapter.title,
                                     textAlign: TextAlign.start,
-                                    style: const TextStyle(
-                                        fontSize: 30, color: Colors.black)),
+                                    style: TextStyle(
+                                      fontSize: 30,
+                                      color: words == null
+                                          ? Colors.redAccent
+                                          : Colors.black,
+                                      decoration: words == null
+                                          ? TextDecoration.lineThrough
+                                          : null,
+                                    )),
                               ),
                             ),
                           ),

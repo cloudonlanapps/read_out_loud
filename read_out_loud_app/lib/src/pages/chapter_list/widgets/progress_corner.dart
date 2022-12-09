@@ -37,8 +37,8 @@ class _ProgressState extends ConsumerState<ProgressCorner> {
 
   @override
   Widget build(BuildContext context) {
-    double progress = ref.watch(wordsProvider(widget.chapter.filename)
-        .select((value) => value?.progress ?? 0.0));
+    double? progress = ref.watch(wordsProvider(widget.chapter.filename)
+        .select((value) => value?.progress));
     return GestureDetector(
       onTap: () {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -77,21 +77,23 @@ class _ProgressState extends ConsumerState<ProgressCorner> {
         ),
         width: widget.size.width,
         height: widget.size.height,
-        child: FittedBox(
-          fit: BoxFit.contain,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Transform.rotate(
-                angle: -pi / 6.0,
-                child: FittedBox(
-                    fit: BoxFit.fitWidth,
-                    child: Text(
-                        (progress < 0.05)
-                            ? "new"
-                            : "${(progress * 100).toInt()}%",
-                        style: TextStyle(color: Colors.blue.shade800)))),
-          ),
-        ),
+        child: (progress == null)
+            ? null
+            : FittedBox(
+                fit: BoxFit.contain,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Transform.rotate(
+                      angle: -pi / 6.0,
+                      child: FittedBox(
+                          fit: BoxFit.fitWidth,
+                          child: Text(
+                              (progress < 0.05)
+                                  ? "new"
+                                  : "${(progress * 100).toInt()}%",
+                              style: TextStyle(color: Colors.blue.shade800)))),
+                ),
+              ),
       ),
     );
   }
