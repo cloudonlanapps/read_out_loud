@@ -74,7 +74,11 @@ class ChapterView extends ConsumerWidget {
                   Align(
                     alignment: Alignment.centerRight,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        await ref
+                            .read(wordsProvider(chapter.filename).notifier)
+                            .clearProgress();
+                      },
                       child: const Text(
                         "Clear Progress",
                         textAlign: TextAlign.right,
