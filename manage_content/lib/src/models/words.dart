@@ -99,6 +99,12 @@ class Words {
 
   int get reportCount =>
       _words.where((Word e) => e.report == true).toList().length;
+
+  List<String> get reported => _words
+      .where((Word e) => e.report == true)
+      .map((e) => e.original)
+      .toList();
+
   int get totalCount => words.length;
 
   double get progress =>

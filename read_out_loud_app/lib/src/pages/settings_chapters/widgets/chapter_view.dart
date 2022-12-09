@@ -93,11 +93,39 @@ class ChapterView extends ConsumerWidget {
                       style: textStyle.copyWith(color: Colors.redAccent)),
                   Align(
                     alignment: Alignment.centerRight,
-                    child: TextButton.icon(
-                      onPressed: () {},
-                      icon: const Icon(Icons.email_outlined),
-                      label: const Text(
-                        "Send",
+                    child: TextButton(
+                      onPressed: () {
+                        showModalBottomSheet(
+                            isScrollControlled: true,
+                            context: context,
+                            builder: (context) {
+                              return Wrap(
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsets.only(
+                                        top: 8.0,
+                                        left: 8,
+                                        right: 8,
+                                        bottom: 24),
+                                    child: TitleText("Reported Words"),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 8.0,
+                                        left: 8,
+                                        right: 8,
+                                        bottom: 64),
+                                    child: Text(
+                                      words.reported.join(", "),
+                                      style: textStyle,
+                                    ),
+                                  )
+                                ],
+                              );
+                            });
+                      },
+                      child: const Text(
+                        "View",
                         textAlign: TextAlign.right,
                       ),
                     ),

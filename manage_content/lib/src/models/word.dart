@@ -47,8 +47,7 @@ class Word {
       attempts: (map.containsKey('attempts')) ? map['attempts'] as int : 0,
       succeeded:
           (map.containsKey('succeeded')) ? map['succeeded'] as bool : false,
-      report:
-          (map.containsKey('isReported')) ? map['isReported'] as bool : false,
+      report: (map.containsKey('report')) ? map['report'] as bool : false,
     );
   }
 

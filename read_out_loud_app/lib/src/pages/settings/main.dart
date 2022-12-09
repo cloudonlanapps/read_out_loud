@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../settings_chapters/page.dart';
+import 'report_widget.dart';
 
 class MainContent extends ConsumerWidget {
   final Size size;
@@ -68,23 +69,9 @@ class MainContent extends ConsumerWidget {
             trailing: const Icon(Icons.arrow_forward_ios),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 16.0),
-          child: ListTile(
-            contentPadding: const EdgeInsets.all(8),
-            shape: RoundedRectangleBorder(
-              //<-- SEE HERE
-              side: const BorderSide(width: 2),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            title: const TitleText(" Reset "),
-            subtitle: const Padding(
-              padding: EdgeInsets.only(left: 8.0),
-              child: SubtitleText("Reset all Progress and local data."),
-            ),
-            tileColor: Colors.white,
-            trailing: const Icon(Icons.arrow_forward_ios),
-          ),
+        const Padding(
+          padding: EdgeInsets.only(bottom: 16.0),
+          child: ReportWidget(),
         ),
         Padding(
           padding: const EdgeInsets.only(bottom: 16.0),

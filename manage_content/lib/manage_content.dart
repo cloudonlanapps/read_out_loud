@@ -7,3 +7,4 @@ export 'src/providers/repository.dart';
 export 'src/models/word.dart';
 export 'src/models/words.dart';
 export 'src/providers/words.dart';
+export 'src/providers/reported_words.dart';

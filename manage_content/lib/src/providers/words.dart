@@ -11,8 +11,9 @@ import '../models/word.dart';
 import '../models/words.dart';
 
 class WordsNotifier extends StateNotifier<Words?> {
+  Ref ref;
   final String filename;
-  WordsNotifier(this.filename) : super(null) {
+  WordsNotifier(this.ref, this.filename) : super(null) {
     load();
   }
 
@@ -144,5 +145,5 @@ class WordsNotifier extends StateNotifier<Words?> {
 final wordsProvider =
     StateNotifierProvider.family<WordsNotifier, Words?, String>(
         (ref, filename) {
-  return WordsNotifier(filename);
+  return WordsNotifier(ref, filename);
 });
