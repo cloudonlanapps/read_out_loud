@@ -43,6 +43,46 @@ class AudioPlayerConfigState extends ConsumerState<AudioPlayerConfig> {
               style: textStyle,
             ),
           ),
+          ...[
+            Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                    onPressed: () async {
+                      ref.watch(ttsSpeakerProvider.notifier).volume = 0.5;
+                      ref.watch(ttsSpeakerProvider.notifier).pitch = 1.0;
+                      ref.watch(ttsSpeakerProvider.notifier).rate = 0.5;
+                    },
+                    child: const Text("Reset"))),
+            Slider(
+                value: ttsSpeaker.volume,
+                onChanged: (value) {
+                  ref.watch(ttsSpeakerProvider.notifier).volume = value;
+                },
+                min: 0.0,
+                max: 1.0,
+                divisions: 10,
+                label: "Volume: ${ttsSpeaker.volume}"),
+            Slider(
+              value: ttsSpeaker.pitch,
+              onChanged: (value) {
+                ref.watch(ttsSpeakerProvider.notifier).pitch = value;
+              },
+              min: 0.5,
+              max: 2.0,
+              divisions: 15,
+              label: "Pitch: ${ttsSpeaker.volume}",
+            ),
+            Slider(
+              value: ttsSpeaker.rate,
+              onChanged: (value) {
+                ref.watch(ttsSpeakerProvider.notifier).rate = value;
+              },
+              min: 0.0,
+              max: 1.0,
+              divisions: 10,
+              label: "Rate: ${ttsSpeaker.rate}",
+            ),
+          ],
           Padding(
             padding:
                 const EdgeInsets.only(top: 0, bottom: 24, left: 8, right: 8),
@@ -69,7 +109,7 @@ class AudioPlayerConfigState extends ConsumerState<AudioPlayerConfig> {
                   title: 'Stop'),
               null,
             ]),
-          )
+          ),
 
           //_engineSection(),
           //_futureBuilder(),

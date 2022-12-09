@@ -183,6 +183,10 @@ class TTSSpeakerNotifier extends StateNotifier<TTSSpeaker> {
     }
     state = state.copyWith(isMuted: false);
   }
+
+  set volume(double value) => state = state.copyWith(volume: value);
+  set pitch(double value) => state = state.copyWith(pitch: value);
+  set rate(double value) => state = state.copyWith(rate: value);
 }
 
 final ttsSpeakerProvider =
