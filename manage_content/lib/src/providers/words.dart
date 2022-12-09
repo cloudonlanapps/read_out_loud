@@ -17,15 +17,20 @@ class WordsNotifier extends StateNotifier<Words?> {
   }
 
   load() async {
-    final String json = await loadString(filename);
-    state = Words.fromJson(json);
+    final String? json = await loadString(filename);
+    if (json != null) {
+      state = Words.fromJson(json);
+    }
   }
 
-  static Future<String> loadString(String filename) async {
+  static Future<String?> loadString(String filename) async {
     final String path = (await getApplicationDocumentsDirectory()).path;
     File file = await install(
         assetFile: "assets/$filename.txt", storageFile: "$path/$filename.json");
-    return file.readAsString();
+    if (file.existsSync()) {
+      return file.readAsString();
+    }
+    return null;
   }
 
   updateState(Words words) async {
@@ -45,15 +50,19 @@ class WordsNotifier extends StateNotifier<Words?> {
       {required String assetFile, required String storageFile}) async {
     File? file = File(storageFile);
     if (!file.existsSync()) {
-      final list = (const LineSplitter())
-          .convert(await rootBundle.loadString(assetFile));
-      Words words = Words.fromList(list);
+      try {
+        final list = (const LineSplitter())
+            .convert(await rootBundle.loadString(assetFile));
+        Words words = Words.fromList(list);
 
-      File file = await File(storageFile).create(recursive: true);
+        File file = await File(storageFile).create(recursive: true);
 
-      file.writeAsString(words.toJson());
+        file.writeAsString(words.toJson());
 
-      return file;
+        return file;
+      } catch (e) {
+        return file;
+      }
     }
     return file;
   }
