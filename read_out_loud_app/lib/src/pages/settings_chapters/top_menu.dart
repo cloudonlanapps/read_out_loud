@@ -22,13 +22,23 @@ class TopMenu extends ConsumerWidget {
         const Expanded(
           child: Center(
             child: Text(
-              "Settings",
+              "Chapters",
               textAlign: TextAlign.center,
               style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 40),
             ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 16.0),
+          child: CustomMenuButton(
+            menuItem: CustomMenuItem(
+                alignment: Alignment.centerRight,
+                icon: Icons.add,
+                onTap: onClose,
+                title: "Add New"),
           ),
         ),
       ],

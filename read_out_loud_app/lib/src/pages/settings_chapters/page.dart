@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:read_out_loud_app/src/pages/settings/page.dart';
 
 import 'package:responsive_screen/responsive_screen.dart';
 import 'package:route_manager/route_manager.dart';
 
-import '../main/page.dart';
 import 'main.dart';
 import 'top_menu.dart';
 
-class SettingsPage implements AppRoute {
+class SettingsChapterPage implements AppRoute {
   @override
-  String get name => "settings";
+  String get name => "settings-chapter";
 
   @override
   String get path => "/$name";
@@ -22,7 +22,7 @@ class SettingsPage implements AppRoute {
               size: size,
               filename: state.queryParams['content list'] ?? 'index',
               onClose: () {
-                context.goNamed(MainPage().name);
+                context.goNamed(SettingsPage().name);
               },
             );
           };
@@ -30,7 +30,7 @@ class SettingsPage implements AppRoute {
 
 class PageView extends StatelessWidget {
   final Size size;
-  final String? filename;
+  final String filename;
   final Function() onClose;
 
   const PageView({

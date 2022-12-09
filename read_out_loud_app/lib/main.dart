@@ -12,14 +12,15 @@ import 'src/pages/chapter/page.dart';
 import 'src/pages/chapter_list/page.dart';
 import 'src/pages/main/page.dart';
 import 'src/pages/settings/page.dart';
+import 'src/pages/settings_chapters/page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
-    DeviceOrientation.landscapeLeft,
-    DeviceOrientation.landscapeRight,
+    //DeviceOrientation.landscapeLeft,
+    //DeviceOrientation.landscapeRight,
   ]);
 
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
@@ -33,9 +34,10 @@ void main() {
           MainPage(),
           ContentListPage(),
           SettingsPage(),
-          ChapterPage()
+          ChapterPage(),
+          SettingsChapterPage(),
         ],
-        defaultIndex: 0,
+        defaultIndex: 2,
       )),
     ),
   );

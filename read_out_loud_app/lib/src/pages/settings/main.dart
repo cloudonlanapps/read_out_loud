@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
+import '../settings_chapters/page.dart';
 
 class MainContent extends ConsumerWidget {
   final Size size;
@@ -86,6 +89,7 @@ class MainContent extends ConsumerWidget {
         Padding(
           padding: const EdgeInsets.only(bottom: 16.0),
           child: ListTile(
+            onTap: () => context.goNamed(SettingsChapterPage().name),
             contentPadding: const EdgeInsets.all(8),
             shape: RoundedRectangleBorder(
               //<-- SEE HERE
