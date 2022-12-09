@@ -1,17 +1,3 @@
-water
-rainbow
-quick
-tree
-bee
-doll
-toy
-chair
-mother
-father
-piece
-peace
-camel
-horse
 family
 friend
 pony

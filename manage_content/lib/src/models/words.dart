@@ -22,7 +22,7 @@ class Words {
                 (index <
                     words
                         .where((e) {
-                          return wordFilter == WordFilter.all || !e.isReported;
+                          return wordFilter == WordFilter.all || !e.report;
                         })
                         .toList()
                         .length))
@@ -102,7 +102,7 @@ class Words {
       totalCount > 0 ? successCount.toDouble() / totalCount.toDouble() : 0.0;
 
   List<Word> get words => _words.where((e) {
-        return wordFilter == WordFilter.all || !e.isReported;
+        return wordFilter == WordFilter.all || !e.report;
       }).toList();
 
   Words reportCurrentWord() {
