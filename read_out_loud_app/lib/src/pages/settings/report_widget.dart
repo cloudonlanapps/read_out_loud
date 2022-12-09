@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manage_content/manage_content.dart';
 
+import '../../../services/clipboard/clipboard.dart';
 import 'main.dart';
 
 class ReportWidget extends ConsumerWidget {
@@ -48,7 +49,10 @@ class ReportWidget extends ConsumerWidget {
                         top: 8.0, left: 8, right: 8, bottom: 64),
                     child: Center(
                       child: ElevatedButton.icon(
-                          onPressed: () {},
+                          onPressed: () async {
+                            ClipboardManager.copy(reportedWords.join(", "));
+                            Navigator.pop(context);
+                          },
                           icon: const Icon(Icons.copy_outlined),
                           label: const Text("Copy")),
                     ),
