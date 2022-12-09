@@ -96,6 +96,9 @@ class Words {
 
   int get successCount =>
       words.where((Word e) => e.succeeded == true).toList().length;
+
+  int get reportCount =>
+      _words.where((Word e) => e.report == true).toList().length;
   int get totalCount => words.length;
 
   double get progress =>

@@ -26,14 +26,28 @@ class _ListChaptersState extends State<ListChapters> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        key: ValueKey(currIndex),
+        key: ValueKey("$currIndex"),
         itemCount: widget.repository.chapters.length,
         itemBuilder: (BuildContext context, int index) {
-          return ChapterView(
-              chapter: widget.repository.chapters[index],
-              myIndex: index,
-              selectedIndex: currIndex,
-              onExpansion: onExpansion);
+          return FutureBuilder(
+            future: isAssetExists(widget.repository.chapters[index].filename),
+            builder: ((context, snapshot) {
+              return ChapterView(
+                  key: ValueKey("ChapterView $index $currIndex"),
+                  chapter: widget.repository.chapters[index],
+                  myIndex: index,
+                  selectedIndex: currIndex,
+                  onExpansion: onExpansion,
+                  editable:
+                      (snapshot.connectionState == ConnectionState.waiting)
+                          ? false
+                          : snapshot.data ?? false);
+            }),
+          );
         });
+  }
+
+  Future<bool> isAssetExists(String filename) async {
+    return false;
   }
 }
