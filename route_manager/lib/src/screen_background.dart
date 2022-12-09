@@ -55,6 +55,7 @@ class ScreenBackground extends StatelessWidget {
                   border: viewConfig.showContentBorder ? Border.all() : null,
                 ),
                 child: SizeGetter(
+                  key: ObjectKey(MediaQuery.of(context).size),
                   builder: builder,
                   viewConfig: viewConfig,
                 )),
