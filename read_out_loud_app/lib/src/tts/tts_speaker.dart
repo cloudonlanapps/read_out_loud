@@ -98,6 +98,13 @@ class TTSSpeaker {
   Future _setAwaitOptions() async {
     await flutterTts.awaitSpeakCompletion(true);
   }
+
+  Future<List<String>> getLanguages() async {
+    final List<dynamic> languages = await flutterTts.getLanguages;
+    return languages.map((e) => e as String).toList()..sort();
+  }
+
+  Future<dynamic> getEngines() async => await flutterTts.getEngines;
 }
 
 class TTSSpeakerNotifier extends StateNotifier<TTSSpeaker> {
@@ -187,6 +194,10 @@ class TTSSpeakerNotifier extends StateNotifier<TTSSpeaker> {
   set volume(double value) => state = state.copyWith(volume: value);
   set pitch(double value) => state = state.copyWith(pitch: value);
   set rate(double value) => state = state.copyWith(rate: value);
+
+  set isCurrentLanguageInstalled(bool val) =>
+      state = state.copyWith(isCurrentLanguageInstalled: val);
+  set language(String val) => state = state.copyWith(language: val);
 }
 
 final ttsSpeakerProvider =

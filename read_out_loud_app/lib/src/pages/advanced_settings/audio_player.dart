@@ -111,6 +111,35 @@ class AudioPlayerConfigState extends ConsumerState<AudioPlayerConfig> {
             ]),
           ),
 
+          FutureBuilder<dynamic>(
+              future: ttsSpeaker.getLanguages(),
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                if (snapshot.hasData) {
+                  return Container(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            DropdownButton(
+                              value: ttsSpeaker.language,
+                              items:
+                                  getLanguageDropDownMenuItems(snapshot.data),
+                              onChanged: (val) =>
+                                  changedLanguageDropDownItem(ttsSpeaker, val),
+                            ),
+                            Visibility(
+                              visible: ttsSpeaker.isAndroid,
+                              child: Text(
+                                  "Is installed: ${ttsSpeaker.isCurrentLanguageInstalled}"),
+                            ),
+                          ]));
+                } else if (snapshot.hasError) {
+                  return const Text('Error loading languages...');
+                } else {
+                  return const Text('Loading Languages...');
+                }
+              })
+
           //_engineSection(),
           //_futureBuilder(),
           //_buildSliders(),
@@ -118,5 +147,52 @@ class AudioPlayerConfigState extends ConsumerState<AudioPlayerConfig> {
         ],
       ),
     );
+  }
+
+  List<DropdownMenuItem<String>> getLanguageDropDownMenuItems(
+      dynamic languages) {
+    var items = <DropdownMenuItem<String>>[];
+    for (dynamic type in languages) {
+      items.add(DropdownMenuItem(
+          value: type as String?, child: Text(type as String)));
+    }
+    return items;
+  }
+
+  void changedLanguageDropDownItem(TTSSpeaker ttsSpeaker, String? language) {
+    ttsSpeaker.flutterTts.setLanguage(language!);
+    ref.watch(ttsSpeakerProvider.notifier).language = language;
+    if (ttsSpeaker.isAndroid) {
+      ttsSpeaker.flutterTts.isLanguageInstalled(language).then((value) => ref
+          .watch(ttsSpeakerProvider.notifier)
+          .isCurrentLanguageInstalled = (value as bool));
+    }
+
+    /* setState(() {
+      language = selectedType;
+      flutterTts.setLanguage(language!);
+      if (isAndroid) {
+        flutterTts
+            .isLanguageInstalled(language!)
+            .then((value) => isCurrentLanguageInstalled = (value as bool));
+      }
+    }); */
+  }
+
+  List<DropdownMenuItem<String>> getEnginesDropDownMenuItems(dynamic engines) {
+    var items = <DropdownMenuItem<String>>[];
+    for (dynamic type in engines) {
+      items.add(DropdownMenuItem(
+          value: type as String?, child: Text(type as String)));
+    }
+    return items;
+  }
+
+  void changedEnginesDropDownItem(String? selectedEngine) async {
+    /*  await flutterTts.setEngine(selectedEngine!);
+    language = null;
+    setState(() {
+      engine = selectedEngine;
+    }); */
   }
 }
