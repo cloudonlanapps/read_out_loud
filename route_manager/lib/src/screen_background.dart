@@ -40,6 +40,7 @@ class ScreenBackground extends StatelessWidget {
     }
     return Scaffold(
       backgroundColor: Colors.transparent,
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           Background(

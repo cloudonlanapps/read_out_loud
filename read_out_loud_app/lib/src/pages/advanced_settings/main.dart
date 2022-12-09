@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'audio_player.dart';
+
 class MainContent extends ConsumerWidget {
   final Size size;
   final String? filename;
@@ -18,8 +20,20 @@ class MainContent extends ConsumerWidget {
             ),
             margin: const EdgeInsets.only(bottom: 16.0, left: 8, right: 8),
             child: const ExpansionTile(
+              initiallyExpanded: true,
               title: TitleText("AudioPlayer Settings"),
-              children: [],
+              children: [AudioPlayerConfig()],
+            )),
+        Card(
+            shape: RoundedRectangleBorder(
+              side: const BorderSide(width: 2),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            margin: const EdgeInsets.only(bottom: 16.0, left: 8, right: 8),
+            child: const ExpansionTile(
+              initiallyExpanded: true,
+              title: TitleText("AudioPlayer Settings"),
+              children: [AudioPlayerConfig()],
             ))
       ],
     );

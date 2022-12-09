@@ -7,9 +7,11 @@ class CustomMenuItem {
   void Function()? onTap;
   void Function()? onLongPress;
   double? scale;
+  Color? color;
   CustomMenuItem(
       {this.title,
       this.icon,
+      this.color,
       this.onTap,
       this.alignment = Alignment.center,
       this.onLongPress,
@@ -23,6 +25,8 @@ class CustomMenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final color =
+        menuItem.color ?? (menuItem.onTap == null ? Colors.grey : Colors.white);
     return Transform.scale(
       scale: menuItem.scale ?? 1.0,
       child: InkWell(
@@ -35,20 +39,13 @@ class CustomMenuButton extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             if (menuItem.icon != null)
-              Icon(
-                menuItem.icon!,
-                size: 40,
-                color: menuItem.onTap == null ? Colors.grey : Colors.white,
-              ),
+              Icon(menuItem.icon!, size: 40, color: color),
             if (menuItem.title != null)
               Padding(
                 padding: const EdgeInsets.only(top: 2),
                 child: Text(
                   menuItem.title!,
-                  style: TextStyle(
-                      color:
-                          (menuItem.onTap == null) ? Colors.grey : Colors.white,
-                      fontSize: 12),
+                  style: TextStyle(color: color, fontSize: 12),
                 ),
               ),
           ],

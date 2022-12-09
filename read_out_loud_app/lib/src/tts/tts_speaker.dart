@@ -1,22 +1,37 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:io' show Platform;
+
+import 'dart:io';
 
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
-import 'tts_speaker_config.dart';
-
 enum TTSState { playing, stopped }
 
 class TTSSpeaker {
   final FlutterTts flutterTts;
-  final TTSSpeakerConfig config;
+
   final TTSState ttsState;
   final bool isMuted;
 
+  final String sampleText;
+  final bool isAndroid;
+  final String? engine;
+  final String language;
+  final double volume;
+  final double pitch;
+  final double rate;
+  final bool isCurrentLanguageInstalled;
+
   TTSSpeaker({
-    required this.config,
+    this.sampleText = "The quick brown fox jumps over the lazy dog.",
+    required this.isAndroid,
+    this.engine,
+    this.language = 'en-US',
+    this.volume = 0.5,
+    this.pitch = 1.0,
+    this.rate = 0.5,
+    this.isCurrentLanguageInstalled = false,
     FlutterTts? flutterTts,
     this.ttsState = TTSState.stopped,
     this.isMuted = false,
@@ -25,14 +40,31 @@ class TTSSpeaker {
   }
 
   TTSSpeaker copyWith({
+    FlutterTts? flutterTts,
     TTSState? ttsState,
     bool? isMuted,
+    String? sampleText,
+    bool? isAndroid,
+    String? engine,
+    String? language,
+    double? volume,
+    double? pitch,
+    double? rate,
+    bool? isCurrentLanguageInstalled,
   }) {
     return TTSSpeaker(
-      config: config,
-      flutterTts: flutterTts,
+      flutterTts: flutterTts ?? this.flutterTts,
       ttsState: ttsState ?? this.ttsState,
       isMuted: isMuted ?? this.isMuted,
+      sampleText: sampleText ?? this.sampleText,
+      isAndroid: isAndroid ?? this.isAndroid,
+      engine: engine ?? this.engine,
+      language: language ?? this.language,
+      volume: volume ?? this.volume,
+      pitch: pitch ?? this.pitch,
+      rate: rate ?? this.rate,
+      isCurrentLanguageInstalled:
+          isCurrentLanguageInstalled ?? this.isCurrentLanguageInstalled,
     );
   }
 
@@ -41,9 +73,9 @@ class TTSSpeaker {
 
   init() {
     _setAwaitOptions();
-    flutterTts.setLanguage(config.language);
+    flutterTts.setLanguage(language);
 
-    if (config.isAndroid) {
+    if (isAndroid) {
       _getDefaultEngine();
       _getDefaultVoice();
     }
@@ -70,8 +102,8 @@ class TTSSpeaker {
 
 class TTSSpeakerNotifier extends StateNotifier<TTSSpeaker> {
   bool cancelling = false;
-  TTSSpeakerNotifier({required TTSSpeakerConfig config})
-      : super(TTSSpeaker(config: config)) {
+  TTSSpeakerNotifier({required bool isAndroid})
+      : super(TTSSpeaker(isAndroid: isAndroid)) {
     state.flutterTts.setErrorHandler(setErrorHandler);
   }
 
@@ -108,9 +140,10 @@ class TTSSpeakerNotifier extends StateNotifier<TTSSpeaker> {
         onCancel?.call();
         cancelling = false;
       });
-      await state.flutterTts.setVolume(state.config.volume);
-      await state.flutterTts.setSpeechRate(state.config.rate);
-      await state.flutterTts.setPitch(state.config.pitch);
+      await state.flutterTts.setVolume(state.volume);
+      await state.flutterTts.setSpeechRate(state.rate);
+      await state.flutterTts.setPitch(state.pitch);
+      updateState(TTSState.playing);
       await state.flutterTts.speak(text);
     }
   }
@@ -155,7 +188,6 @@ class TTSSpeakerNotifier extends StateNotifier<TTSSpeaker> {
 final ttsSpeakerProvider =
     StateNotifierProvider<TTSSpeakerNotifier, TTSSpeaker>((ref) {
   // To be obtained from preferences later
-  TTSSpeakerConfig config =
-      TTSSpeakerConfig(isAndroid: !kIsWeb && Platform.isAndroid);
-  return TTSSpeakerNotifier(config: config);
+
+  return TTSSpeakerNotifier(isAndroid: !kIsWeb && Platform.isAndroid);
 });

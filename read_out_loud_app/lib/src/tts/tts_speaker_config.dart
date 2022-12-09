@@ -1,4 +1,5 @@
 class TTSSpeakerConfig {
+  final String sampleText;
   final bool isAndroid;
   final String? engine;
   final String language;
@@ -7,6 +8,7 @@ class TTSSpeakerConfig {
   final double rate;
   final bool isCurrentLanguageInstalled;
   TTSSpeakerConfig({
+    this.sampleText = "The quick brown fox jumps over the lazy dog.",
     required this.isAndroid,
     this.engine,
     this.language = 'en-US',
@@ -17,6 +19,7 @@ class TTSSpeakerConfig {
   });
 
   TTSSpeakerConfig copyWith({
+    String? sampleText,
     bool? isAndroid,
     String? engine,
     String? language,
@@ -26,6 +29,7 @@ class TTSSpeakerConfig {
     bool? isCurrentLanguageInstalled,
   }) {
     return TTSSpeakerConfig(
+      sampleText: sampleText ?? this.sampleText,
       isAndroid: isAndroid ?? this.isAndroid,
       engine: engine ?? this.engine,
       language: language ?? this.language,
