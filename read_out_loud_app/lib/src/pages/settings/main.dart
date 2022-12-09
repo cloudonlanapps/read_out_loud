@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:read_out_loud_app/src/pages/advanced_settings/page.dart';
 
 import '../settings_chapters/page.dart';
 import 'report_widget.dart';
@@ -18,64 +19,6 @@ class MainContent extends ConsumerWidget {
         Padding(
           padding: const EdgeInsets.only(bottom: 16.0),
           child: ListTile(
-            contentPadding: const EdgeInsets.all(8),
-            shape: RoundedRectangleBorder(
-              //<-- SEE HERE
-              side: const BorderSide(width: 2),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            title: const TitleText("General"),
-            subtitle: const Padding(
-              padding: EdgeInsets.only(left: 8.0),
-              child: SubtitleText("App level settings"),
-            ),
-            tileColor: Colors.white,
-            trailing: const Icon(Icons.arrow_forward_ios),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 16.0),
-          child: ListTile(
-            contentPadding: const EdgeInsets.all(8),
-            shape: RoundedRectangleBorder(
-              //<-- SEE HERE
-              side: const BorderSide(width: 2),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            title: const TitleText("Listener"),
-            subtitle: const Padding(
-              padding: EdgeInsets.only(left: 8.0),
-              child: SubtitleText("Configuration related to  listening "),
-            ),
-            tileColor: Colors.white,
-            trailing: const Icon(Icons.arrow_forward_ios),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 16.0),
-          child: ListTile(
-            contentPadding: const EdgeInsets.all(8),
-            shape: RoundedRectangleBorder(
-              //<-- SEE HERE
-              side: const BorderSide(width: 2),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            title: const TitleText(" Player"),
-            subtitle: const Padding(
-              padding: EdgeInsets.only(left: 8.0),
-              child: SubtitleText("Configure Audio Player"),
-            ),
-            tileColor: Colors.white,
-            trailing: const Icon(Icons.arrow_forward_ios),
-          ),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(bottom: 16.0),
-          child: ReportWidget(),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 16.0),
-          child: ListTile(
             onTap: () => context.goNamed(SettingsChapterPage().name),
             contentPadding: const EdgeInsets.all(8),
             shape: RoundedRectangleBorder(
@@ -88,6 +31,29 @@ class MainContent extends ConsumerWidget {
               padding: EdgeInsets.only(left: 8.0),
               child: SubtitleText(
                   "Add/Remove chapters, edit existing chapters, reset progress etc..\n"),
+            ),
+            tileColor: Colors.white,
+            trailing: const Icon(Icons.arrow_forward_ios),
+          ),
+        ),
+        const Padding(
+          padding: EdgeInsets.only(bottom: 16.0),
+          child: ReportWidget(),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 16.0),
+          child: ListTile(
+            onTap: () => context.goNamed(AdvancedSettingsPage().name),
+            contentPadding: const EdgeInsets.all(8),
+            shape: RoundedRectangleBorder(
+              //<-- SEE HERE
+              side: const BorderSide(width: 2),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            title: const TitleText("Advanced Settings"),
+            subtitle: const Padding(
+              padding: EdgeInsets.only(left: 8.0),
+              child: SubtitleText("Expert level settings"),
             ),
             tileColor: Colors.white,
             trailing: const Icon(Icons.arrow_forward_ios),

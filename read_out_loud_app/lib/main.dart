@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:route_manager/route_manager.dart';
 
+import 'src/pages/advanced_settings/page.dart';
 import 'src/pages/chapter/page.dart';
 import 'src/pages/chapter_list/page.dart';
 import 'src/pages/main/page.dart';
@@ -36,6 +37,7 @@ void main() {
           SettingsPage(),
           ChapterPage(),
           SettingsChapterPage(),
+          AdvancedSettingsPage(),
         ],
         defaultIndex: 2,
       )),
