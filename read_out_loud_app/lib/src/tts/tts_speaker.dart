@@ -102,7 +102,8 @@ class TTSSpeaker {
   Future<List<String>> getLanguages() async {
     final List<dynamic> languages = await flutterTts.getLanguages;
     List<String> installedLanguages = [];
-    for (final language in languages) {
+    for (final language
+        in languages.where((e) => (e as String).startsWith('en'))) {
       await flutterTts.isLanguageInstalled(language).then((value) {
         if ((value as bool)) {
           installedLanguages.add(language as String);
@@ -206,6 +207,12 @@ class TTSSpeakerNotifier extends StateNotifier<TTSSpeaker> {
   set isCurrentLanguageInstalled(bool val) =>
       state = state.copyWith(isCurrentLanguageInstalled: val);
   set language(String val) => state = state.copyWith(language: val);
+  set engine(dynamic val) => state = state.copyWith(engine: val);
+
+  restoreDefault() {
+    state =
+        state.copyWith(volume: 0.5, pitch: 1.0, rate: 0.5, language: 'en-US');
+  }
 }
 
 final ttsSpeakerProvider =

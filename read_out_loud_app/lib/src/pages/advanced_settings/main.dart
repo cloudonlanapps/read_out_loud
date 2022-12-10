@@ -24,17 +24,6 @@ class MainContent extends ConsumerWidget {
               title: TitleText("AudioPlayer Settings"),
               children: [AudioPlayerConfig()],
             )),
-        Card(
-            shape: RoundedRectangleBorder(
-              side: const BorderSide(width: 2),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            margin: const EdgeInsets.only(bottom: 16.0, left: 8, right: 8),
-            child: const ExpansionTile(
-              initiallyExpanded: true,
-              title: TitleText("AudioPlayer Settings"),
-              children: [AudioPlayerConfig()],
-            ))
       ],
     );
   }
