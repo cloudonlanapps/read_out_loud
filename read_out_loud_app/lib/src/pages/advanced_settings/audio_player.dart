@@ -127,11 +127,12 @@ class AudioPlayerConfigState extends ConsumerState<AudioPlayerConfig> {
                               onChanged: (val) =>
                                   changedLanguageDropDownItem(ttsSpeaker, val),
                             ),
-                            Visibility(
-                              visible: ttsSpeaker.isAndroid,
-                              child: Text(
-                                  "Is installed: ${ttsSpeaker.isCurrentLanguageInstalled}"),
-                            ),
+                            if (ttsSpeaker.isCurrentLanguageInstalled != null)
+                              Visibility(
+                                visible: ttsSpeaker.isAndroid,
+                                child: Text(
+                                    "Is installed: ${ttsSpeaker.isCurrentLanguageInstalled}"),
+                              ),
                           ]));
                 } else if (snapshot.hasError) {
                   return const Text('Error loading languages...');
@@ -167,16 +168,6 @@ class AudioPlayerConfigState extends ConsumerState<AudioPlayerConfig> {
           .watch(ttsSpeakerProvider.notifier)
           .isCurrentLanguageInstalled = (value as bool));
     }
-
-    /* setState(() {
-      language = selectedType;
-      flutterTts.setLanguage(language!);
-      if (isAndroid) {
-        flutterTts
-            .isLanguageInstalled(language!)
-            .then((value) => isCurrentLanguageInstalled = (value as bool));
-      }
-    }); */
   }
 
   List<DropdownMenuItem<String>> getEnginesDropDownMenuItems(dynamic engines) {

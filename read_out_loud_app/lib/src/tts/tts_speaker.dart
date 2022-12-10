@@ -21,7 +21,7 @@ class TTSSpeaker {
   final double volume;
   final double pitch;
   final double rate;
-  final bool isCurrentLanguageInstalled;
+  final bool? isCurrentLanguageInstalled;
 
   TTSSpeaker({
     this.sampleText = "The quick brown fox jumps over the lazy dog.",
@@ -31,7 +31,7 @@ class TTSSpeaker {
     this.volume = 0.5,
     this.pitch = 1.0,
     this.rate = 0.5,
-    this.isCurrentLanguageInstalled = false,
+    this.isCurrentLanguageInstalled,
     FlutterTts? flutterTts,
     this.ttsState = TTSState.stopped,
     this.isMuted = false,
@@ -101,7 +101,15 @@ class TTSSpeaker {
 
   Future<List<String>> getLanguages() async {
     final List<dynamic> languages = await flutterTts.getLanguages;
-    return languages.map((e) => e as String).toList()..sort();
+    List<String> installedLanguages = [];
+    for (final language in languages) {
+      await flutterTts.isLanguageInstalled(language).then((value) {
+        if ((value as bool)) {
+          installedLanguages.add(language as String);
+        }
+      });
+    }
+    return installedLanguages.map((e) => e).toList()..sort();
   }
 
   Future<dynamic> getEngines() async => await flutterTts.getEngines;
