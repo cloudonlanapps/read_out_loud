@@ -20,7 +20,7 @@ class SettingsChapterPage implements AppRoute {
       get builder => (BuildContext context, GoRouterState state, Size size) {
             return PageView(
               size: size,
-              filename: 'index',
+              filename: 'index.json',
               onClose: () {
                 context.goNamed(SettingsPage().name);
               },

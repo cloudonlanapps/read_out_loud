@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 
-const assetPath = 'asset';
+const assetPath = 'assets';
 
 mixin ContentStorage {
   static Future<bool> hasAsset(String filename) async =>

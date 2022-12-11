@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:collection/collection.dart';
 
+import '../helpers/content_storage.dart';
 import 'chapter.dart';
 
 class Repository {
@@ -55,14 +56,35 @@ class Repository {
   @override
   int get hashCode => chapters.hashCode;
 
-  add(Chapter newChapter) {
-    return copyWith(chapters: [...chapters, newChapter]);
+  add(Chapter newChapter, {String? filename}) async {
+    final updated = copyWith(chapters: [...chapters, newChapter]);
+    await updated.save(filename);
+    return updated;
   }
 
-  remove(Chapter chapter) {
-    return copyWith(
+  remove(Chapter chapter, {String? filename}) async {
+    final updated = copyWith(
         chapters: chapters.where((element) => element != chapter).toList());
+    await updated.save(filename);
+    return updated;
+  }
+
+  update(int index, Chapter chapter, {String? filename}) async {
+    List<Chapter> chaptersLocal = chapters;
+    chaptersLocal[index] = chapter;
+    final updated = copyWith(chapters: chaptersLocal);
+    await updated.save(filename);
+    return updated;
   }
 
   bool get isEmpty => chapters.isEmpty;
+
+  static Future<Repository> loadFromFile(filename) async {
+    String json = await ContentStorage.loadString(filename);
+    return Repository.fromJson(json);
+  }
+
+  save(String? filename) async {
+    if (filename != null) await ContentStorage.saveString(filename, toJson());
+  }
 }

@@ -24,8 +24,7 @@ class ContentListPage implements AppRoute {
             double hContent = ResponsiveScreen.contentHeight(
                 size: size, isBottom: true, isTop: true);
             ContentListConfig contentListConfig = ContentListConfig(
-                repoPath: state.queryParams['content list'] ?? 'index',
-                itemsPerPage: itemsPerPage(hContent));
+                repoPath: 'index.json', itemsPerPage: itemsPerPage(hContent));
             return PageView(
               size: size,
               contentListConfig: contentListConfig,

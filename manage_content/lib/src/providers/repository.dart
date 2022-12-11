@@ -1,50 +1,34 @@
-import 'dart:io';
-
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:path_provider/path_provider.dart';
 
 import '../models/chapter.dart';
 import '../models/repository.dart';
 
 class RepositoryNotifier extends StateNotifier<AsyncValue<Repository>> {
-  String fileName;
-  RepositoryNotifier(this.fileName) : super(const AsyncValue.loading()) {
+  String filename;
+  RepositoryNotifier(this.filename) : super(const AsyncValue.loading()) {
     load();
   }
 
-  load() async {
+  _guard(Future<Repository> Function() func) async {
     state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async {
-      String json = await loadString('$fileName.json');
-      return Repository.fromJson(json);
-    });
+    state = await AsyncValue.guard(func);
   }
 
-  static Future<String> loadString(String filename) async {
-    final String path = (await getApplicationDocumentsDirectory()).path;
-    File file = await install(
-        assetFile: "assets/$filename", storageFile: "$path/$filename");
-    return file.readAsString();
-  }
+  Future<void> load() async =>
+      await _guard(() async => await Repository.loadFromFile(filename));
 
-  static Future<File> install(
-      {required String assetFile, required String storageFile}) async {
-    File? file = File(storageFile);
-    if (!file.existsSync()) {
-      ByteData byteData = await rootBundle.load(assetFile);
+  Future<void> addChapter(Repository repository, Chapter chapter) async =>
+      await _guard(
+          () async => await repository.add(chapter, filename: filename));
 
-      File file = await File(storageFile).create(recursive: true);
+  Future<void> removeChapter(Repository repository, Chapter chapter) async =>
+      await _guard(
+          () async => await repository.remove(chapter, filename: filename));
 
-      // copies data byte by byte
-      await file.writeAsBytes(byteData.buffer
-          .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
-    }
-    return file;
-  }
-
-  onClearProgress(Repository repository, Chapter chapter) {}
-  onSelectItem(Repository repository, Chapter chapter) {}
+  Future<void> updateChapter(
+          Repository repository, int index, Chapter chapter) async =>
+      await _guard(() async =>
+          await repository.update(index, chapter, filename: filename));
 }
 
 final repositoryProvider = StateNotifierProvider.family<RepositoryNotifier,

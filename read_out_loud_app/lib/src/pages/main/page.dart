@@ -22,7 +22,7 @@ class MainPage implements AppRoute {
       get builder => (BuildContext context, GoRouterState state, Size size) {
             return _ContentListPage(
               size: size,
-              filename: state.queryParams['content list'] ?? 'index',
+              filename: 'index.json',
               onSettings: () {
                 context.goNamed(SettingsPage().name);
               },
