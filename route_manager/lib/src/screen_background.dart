@@ -2,12 +2,11 @@
 import 'package:flutter/material.dart';
 
 import 'background.dart';
-import 'size.dart';
 import 'view_config.dart';
 
 class ScreenBackground extends StatelessWidget {
   final ViewConfig viewConfig;
-  final Widget Function(BuildContext context, Size size) builder;
+  final Widget Function(BuildContext context) builder;
   const ScreenBackground(
       {super.key, required this.builder, required this.viewConfig});
 
@@ -55,11 +54,7 @@ class ScreenBackground extends StatelessWidget {
                   borderRadius: BorderRadius.circular(borderRadius),
                   border: viewConfig.showContentBorder ? Border.all() : null,
                 ),
-                child: SizeGetter(
-                  key: ObjectKey(MediaQuery.of(context).size),
-                  builder: builder,
-                  viewConfig: viewConfig,
-                )),
+                child: builder(context)),
           ),
         ],
       ),

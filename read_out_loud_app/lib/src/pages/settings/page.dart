@@ -16,34 +16,30 @@ class SettingsPage implements AppRoute {
   String get path => "/$name";
 
   @override
-  Widget Function(BuildContext context, GoRouterState state, Size size)
-      get builder => (BuildContext context, GoRouterState state, Size size) {
-            return PageView(
-              size: size,
-              filename: 'index.json',
-              onClose: () {
-                context.goNamed(MainPage().name);
-              },
-            );
-          };
+  Widget Function(BuildContext context, GoRouterState state) get builder =>
+      (BuildContext context, GoRouterState state) {
+        return PageView(
+          filename: 'index.json',
+          onClose: () {
+            context.goNamed(MainPage().name);
+          },
+        );
+      };
 }
 
 class PageView extends StatelessWidget {
-  final Size size;
   final String? filename;
   final Function() onClose;
 
   const PageView({
     super.key,
     required this.filename,
-    required this.size,
     required this.onClose,
   });
 
   @override
   Widget build(BuildContext context) {
     return ResponsiveScreen(
-      size: size,
       contentBuilder: (context, size) =>
           MainContent(filename: filename, size: size),
       topMenuBuilder: (context, size) => TopMenu(onClose: onClose, size: size),

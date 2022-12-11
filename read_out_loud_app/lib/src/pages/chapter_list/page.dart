@@ -19,41 +19,35 @@ class ContentListPage implements AppRoute {
   String get path => "/$name";
 
   @override
-  Widget Function(BuildContext context, GoRouterState state, Size size)
-      get builder => (BuildContext context, GoRouterState state, Size size) {
-            double hContent = ResponsiveScreen.contentHeight(
-                size: size, isBottom: true, isTop: true);
-            ContentListConfig contentListConfig = ContentListConfig(
-                repoPath: 'index.json', itemsPerPage: itemsPerPage(hContent));
-            return PageView(
-              size: size,
-              contentListConfig: contentListConfig,
-              onClose: () {
-                context.goNamed(MainPage().name);
-              },
-            );
-          };
+  Widget Function(BuildContext context, GoRouterState state) get builder =>
+      (BuildContext context, GoRouterState state) {
+        ContentListConfig contentListConfig = ContentListConfig(
+            repoPath: 'index.json', itemsPerPage: 10); //TODO Avoid this
+        return PageView(
+          contentListConfig: contentListConfig,
+          onClose: () {
+            context.goNamed(MainPage().name);
+          },
+        );
+      };
 
   static int itemsPerPage(double totalHeight) =>
       (totalHeight - 75.0) ~/ ChapterListView.tileHeight;
 }
 
 class PageView extends StatelessWidget {
-  final Size size;
   final ContentListConfig contentListConfig;
   final Function() onClose;
 
   const PageView({
     super.key,
     required this.contentListConfig,
-    required this.size,
     required this.onClose,
   });
 
   @override
   Widget build(BuildContext context) {
     return ResponsiveScreen(
-      size: size,
       contentBuilder: (context, size) =>
           MainContent(contentListConfig: contentListConfig, size: size),
       topMenuBuilder: (context, size) => TopMenu(onClose: onClose, size: size),

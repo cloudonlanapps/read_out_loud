@@ -18,37 +18,34 @@ class MainPage implements AppRoute {
   String get path => "/$name";
 
   @override
-  Widget Function(BuildContext context, GoRouterState state, Size size)
-      get builder => (BuildContext context, GoRouterState state, Size size) {
-            return _ContentListPage(
-              size: size,
-              filename: 'index.json',
-              onSettings: () {
-                context.goNamed(SettingsPage().name);
-              },
-              onPlay: () {
-                context.goNamed(ContentListPage().name);
-              },
-            );
-          };
+  Widget Function(BuildContext context, GoRouterState state) get builder =>
+      (BuildContext context, GoRouterState state) {
+        return PageView(
+          filename: 'index.json',
+          onSettings: () {
+            context.goNamed(SettingsPage().name);
+          },
+          onPlay: () {
+            context.goNamed(ContentListPage().name);
+          },
+        );
+      };
 }
 
-class _ContentListPage extends StatelessWidget {
-  final Size size;
+class PageView extends StatelessWidget {
   final String? filename;
   final Function() onSettings;
   final Function() onPlay;
 
-  const _ContentListPage(
-      {required this.filename,
-      required this.size,
+  const PageView(
+      {super.key,
+      required this.filename,
       required this.onSettings,
       required this.onPlay});
 
   @override
   Widget build(BuildContext context) {
     return ResponsiveScreen(
-      size: size,
       contentBuilder: (context, size) =>
           MainContent(filename: filename, size: size),
       topMenuBuilder: (context, size) =>

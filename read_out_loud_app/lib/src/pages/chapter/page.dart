@@ -18,40 +18,35 @@ class ChapterPage implements AppRoute {
   String get path => "/$name";
 
   @override
-  Widget Function(BuildContext context, GoRouterState state, Size size)
-      get builder => (BuildContext context, GoRouterState state, Size size) {
-            if (state.queryParams['filename'] == null) {
-              throw Exception(
-                  "WordsPage is invoked without providing a filename");
-            }
-            ContentListConfig contentListConfig =
-                ContentListConfig(filename: state.queryParams['filename']!);
-            return PageView(
-              size: size,
-              contentListConfig: contentListConfig,
-              onClose: () {
-                context.goNamed(ContentListPage().name);
-              },
-            );
-          };
+  Widget Function(BuildContext context, GoRouterState state) get builder =>
+      (BuildContext context, GoRouterState state) {
+        if (state.queryParams['filename'] == null) {
+          throw Exception("WordsPage is invoked without providing a filename");
+        }
+        ContentListConfig contentListConfig =
+            ContentListConfig(filename: state.queryParams['filename']!);
+        return PageView(
+          contentListConfig: contentListConfig,
+          onClose: () {
+            context.goNamed(ContentListPage().name);
+          },
+        );
+      };
 }
 
 class PageView extends StatelessWidget {
-  final Size size;
   final ContentListConfig contentListConfig;
   final Function() onClose;
 
   const PageView({
     super.key,
     required this.contentListConfig,
-    required this.size,
     required this.onClose,
   });
 
   @override
   Widget build(BuildContext context) {
     return ResponsiveScreen(
-      size: size,
       contentBuilder: (context, size) =>
           MainContent(contentListConfig: contentListConfig, size: size),
       topMenuBuilder: (context, size) => TopMenu(

@@ -4,14 +4,12 @@ import 'landscape_screen.dart';
 import 'portrait_screen.dart';
 
 class ResponsiveScreen extends StatelessWidget {
-  final Size size;
   final Widget Function(BuildContext context, Size size) contentBuilder;
   final Widget Function(BuildContext context, Size size)? topMenuBuilder;
   final Widget Function(BuildContext context, Size size)? bottomMenubuilder;
 
   const ResponsiveScreen({
     super.key,
-    required this.size,
     required this.contentBuilder,
     this.topMenuBuilder,
     this.bottomMenubuilder,
@@ -29,6 +27,7 @@ class ResponsiveScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
+        final size = Size(constraints.maxWidth, constraints.maxHeight);
         if (size.height >= size.width) {
           return PortraitScreen(
             size: size,

@@ -46,8 +46,7 @@ class _RouteManagerState extends State<RouteManager> {
                     transitionsBuilder: transitionBuilder,
                     child: ScreenBackground(
                       viewConfig: ViewConfig(),
-                      builder: ((context, size) =>
-                          e.builder(context, state, size)),
+                      builder: ((context) => e.builder(context, state)),
                     ))))
             .toList()
       ],
