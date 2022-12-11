@@ -18,9 +18,12 @@ enum TtsState {
 }
 
 class AudioPlayerConfigState extends ConsumerState<AudioPlayerConfig> {
+  late TextEditingController textEditingController;
   final textStyle = const TextStyle(color: Colors.blueGrey, fontSize: 20);
   @override
   initState() {
+    textEditingController =
+        TextEditingController(text: ref.read(ttsSpeakerProvider).sampleText);
     super.initState();
   }
 
@@ -28,54 +31,68 @@ class AudioPlayerConfigState extends ConsumerState<AudioPlayerConfig> {
   Widget build(BuildContext context) {
     final TTSSpeaker ttsSpeaker = ref.watch(ttsSpeakerProvider);
 
-    return Column(
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        Container(
-          margin: const EdgeInsets.only(top: 24, bottom: 8, left: 8, right: 8),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5), border: Border.all()),
-          padding: const EdgeInsets.all(8),
-          child: Text(
-            ttsSpeaker.sampleText,
-            style: textStyle,
+    return Padding(
+      padding: const EdgeInsets.only(top: 24, bottom: 8, left: 8, right: 8),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          TextFormField(
+              decoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(
+                      width: 2, color: Colors.blueGrey), //<-- SEE HERE
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+              ),
+              controller: textEditingController,
+              style: textStyle,
+              minLines: 2,
+              maxLines: 2,
+              textInputAction: TextInputAction.done),
+          Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                  onPressed: () async {
+                    textEditingController.text = ttsSpeaker.sampleText;
+                  },
+                  child: const Text("Resetore sample text"))),
+          Padding(
+            padding:
+                const EdgeInsets.only(top: 0, bottom: 8, left: 8, right: 8),
+            child: CustomMenu(menuItems: [
+              null,
+              CustomMenuItem(
+                  alignment: Alignment.bottomCenter,
+                  icon: Icons.play_arrow,
+                  color: Colors.greenAccent,
+                  onTap: () async {
+                    await ref.read(ttsSpeakerProvider.notifier).play(
+                        textEditingController.text,
+                        onComplete: () {},
+                        onCancel: () {});
+                  },
+                  title: 'Play'),
+              CustomMenuItem(
+                  alignment: Alignment.bottomCenter,
+                  icon: Icons.stop,
+                  color: Colors.redAccent,
+                  onTap: () async {
+                    await ref.read(ttsSpeakerProvider.notifier).stop();
+                  },
+                  title: 'Stop'),
+              null,
+            ]),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 0, bottom: 8, left: 8, right: 8),
-          child: CustomMenu(menuItems: [
-            null,
-            CustomMenuItem(
-                alignment: Alignment.bottomCenter,
-                icon: Icons.play_arrow,
-                color: Colors.greenAccent,
-                onTap: () async {
-                  await ref.read(ttsSpeakerProvider.notifier).play(
-                      ttsSpeaker.sampleText,
-                      onComplete: () {},
-                      onCancel: () {});
-                },
-                title: 'Play'),
-            CustomMenuItem(
-                alignment: Alignment.bottomCenter,
-                icon: Icons.stop,
-                color: Colors.redAccent,
-                onTap: () async {
-                  await ref.read(ttsSpeakerProvider.notifier).stop();
-                },
-                title: 'Stop'),
-            null,
-          ]),
-        ),
-        if (ttsSpeaker.isStopped)
-          const Padding(
-            padding: EdgeInsets.only(top: 0, bottom: 8, left: 8, right: 8),
-            child: AudioParameters(),
+          if (ttsSpeaker.isStopped)
+            const Padding(
+              padding: EdgeInsets.only(top: 0, bottom: 8, left: 8, right: 8),
+              child: AudioParameters(),
+            ),
+          const SizedBox(
+            height: 16,
           ),
-        const SizedBox(
-          height: 16,
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

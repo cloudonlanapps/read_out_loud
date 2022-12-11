@@ -25,25 +25,22 @@ class PortraitScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          if (topMenuBuilder != null)
-            SizedBox.fromSize(
-                size: Size(size.width, hTop),
-                child: topMenuBuilder!(context, Size(size.width, hTop))),
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        if (topMenuBuilder != null)
           SizedBox.fromSize(
-              size: Size(size.width, hContent),
-              child: contentBuilder(context, Size(size.width, hContent))),
-          if (bottomMenubuilder != null)
-            SizedBox.fromSize(
-                size: Size(size.width, hBottom),
-                child: bottomMenubuilder!(context, Size(size.width, hBottom))),
-        ],
-      ),
+              size: Size(size.width, hTop),
+              child: topMenuBuilder!(context, Size(size.width, hTop))),
+        SizedBox.fromSize(
+            size: Size(size.width, hContent),
+            child: contentBuilder(context, Size(size.width, hContent))),
+        if (bottomMenubuilder != null)
+          SizedBox.fromSize(
+              size: Size(size.width, hBottom),
+              child: bottomMenubuilder!(context, Size(size.width, hBottom))),
+      ],
     );
   }
 }
