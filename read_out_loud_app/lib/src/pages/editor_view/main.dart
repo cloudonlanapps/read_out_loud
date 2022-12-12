@@ -41,8 +41,7 @@ class MainContent extends ConsumerWidget {
 
                         return ChapterUpdate(
                           key: ObjectKey(repository.chapters[index!]),
-                          repository: repository,
-                          index: index!,
+                          wordsFilename: repository.chapters[index!].filename,
                           readOnly: readOnly,
                         );
                       },
