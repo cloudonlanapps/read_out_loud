@@ -32,7 +32,6 @@ class ChapterUpdateState extends ConsumerState<ChapterUpdate>
   late final FocusNode wordsfocusNode;
   var isKeyboardVisible = false;
   late bool addingNewWords;
-  late List<Word> words;
 
   @override
   void initState() {
@@ -41,7 +40,7 @@ class ChapterUpdateState extends ConsumerState<ChapterUpdate>
     titlefocusNode = FocusNode();
     wordsfocusNode = FocusNode();
     WidgetsBinding.instance.addObserver(this);
-    words = widget.words.words;
+
     addingNewWords = widget.words.words.isEmpty;
     super.initState();
   }
@@ -83,6 +82,7 @@ class ChapterUpdateState extends ConsumerState<ChapterUpdate>
                   child: Column(
                     children: [
                       EnterTitle(
+                          readonly: true,
                           path: path,
                           controller: titleController,
                           focusNode: titlefocusNode,
@@ -144,15 +144,11 @@ class ChapterUpdateState extends ConsumerState<ChapterUpdate>
                                       if (_formKey.currentState!.validate()) {
                                         // TODOcontext.pop();
 
-                                        String title = titleController.text;
                                         Words newWords = widget.words
                                             .addMoreWords(wordsController.text
                                                 .split("\n")
                                                 .where((e) => e.isNotEmpty)
                                                 .toList());
-                                        if (title != widget.words.title) {
-                                          newWords = newWords.newTitle(title);
-                                        }
 
                                         await ref
                                             .read(
@@ -190,7 +186,8 @@ class ChapterUpdateState extends ConsumerState<ChapterUpdate>
                             spacing: 6.0,
                             runSpacing: 6.0,
                             children: <Widget>[
-                              for (Word word in words)
+                              for (Word word
+                                  in widget.words.wordsIncludeReported)
                                 _buildChip(word, widget.readOnly),
                             ],
                           ),
@@ -247,11 +244,11 @@ class ChapterUpdateState extends ConsumerState<ChapterUpdate>
         padding: const EdgeInsets.all(8.0),
         onDeleted: readOnly || word.report
             ? null
-            : () {
-                setState(() {
-                  words = words.where((element) => element != word).toList();
-                  words.forEach(print);
-                });
+            : () async {
+                Words newWords = widget.words.delete(word);
+                await ref
+                    .read(repositoryProvider("index.json").notifier)
+                    .updateChapter(widget.repository, widget.index, newWords);
               });
   }
 }

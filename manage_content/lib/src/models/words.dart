@@ -143,6 +143,10 @@ class Words {
         words: allWordsOriginal.map((e) => getWordByString(e)).toList());
   }
 
+  Words delete(Word word) {
+    return copyWith(words: _words.where((element) => element != word).toList());
+  }
+
   Words newTitle(String title) {
     return copyWith(title: title);
   }
