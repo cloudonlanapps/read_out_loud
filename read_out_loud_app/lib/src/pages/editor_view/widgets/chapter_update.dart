@@ -145,15 +145,14 @@ class ChapterUpdateState extends ConsumerState<ChapterUpdate>
                                         // TODOcontext.pop();
 
                                         String title = titleController.text;
-                                        Words newWords =
-                                            Words(title: title, words: [
-                                          ...words,
-                                          ...wordsController.text
-                                              .split("\n")
-                                              .where((e) => e.isNotEmpty)
-                                              .map((e) => Word.fromString(e))
-                                              .toList()
-                                        ]);
+                                        Words newWords = widget.words
+                                            .addMoreWords(wordsController.text
+                                                .split("\n")
+                                                .where((e) => e.isNotEmpty)
+                                                .toList());
+                                        if (title != widget.words.title) {
+                                          newWords = newWords.newTitle(title);
+                                        }
 
                                         await ref
                                             .read(

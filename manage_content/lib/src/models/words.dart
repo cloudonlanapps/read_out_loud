@@ -127,6 +127,26 @@ class Words {
     return copyWith(words: wordList);
   }
 
+  Word getWordByString(String string) {
+    try {
+      return _words.where((element) => element.original == string).first;
+    } catch (e) {
+      return Word.fromString(string);
+    }
+  }
+
+  Words addMoreWords(List<String> newWords) {
+    List<String> allWordsOriginal =
+        {..._words.map((e) => e.original).toList(), ...newWords}.toList();
+
+    return copyWith(
+        words: allWordsOriginal.map((e) => getWordByString(e)).toList());
+  }
+
+  Words newTitle(String title) {
+    return copyWith(title: title);
+  }
+
   static Future<Words> loadFromFile(filename) async {
     String json = await ContentStorage.loadString(filename);
 

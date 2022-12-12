@@ -41,10 +41,8 @@ class RepositoryNotifier extends StateNotifier<AsyncValue<Repository>> {
         await words.save(newChapter.filename);
         if (newChapter.filename != currChapter.filename) {
           await ContentStorage.delete(currChapter.filename);
-        } else {
-          await ref.read(wordsProvider(newChapter.filename).notifier).reload();
-          return repository;
         }
+        await ref.read(wordsProvider(newChapter.filename).notifier).reload();
 
         return await repository.update(index, newChapter, filename: filename);
       });
