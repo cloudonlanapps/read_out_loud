@@ -45,7 +45,8 @@ class PageView extends StatelessWidget {
     return ResponsiveScreen(
       contentBuilder: (context, size) =>
           MainContent(filename: filename, index: index, size: size),
-      topMenuBuilder: (context, size) => TopMenu(onClose: onClose, size: size),
+      topMenuBuilder: (context, size) => TopMenu(
+          filename: filename, onClose: onClose, index: index, size: size),
     );
   }
 }

@@ -1,21 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:manage_content/manage_content.dart';
 
 import '../../custom_widgets/custom_menu.dart';
 
 class TopMenu extends ConsumerWidget {
+  final String filename;
   final Size size;
   final Function() onClose;
-  const TopMenu({super.key, required this.onClose, required this.size});
+  final int? index;
+  const TopMenu(
+      {super.key,
+      required this.filename,
+      required this.onClose,
+      required this.size,
+      this.index});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return CustomMenu(menuItems: [
-      CustomMenuItem(
-        alignment: Alignment.centerLeft,
-        icon: Icons.arrow_back,
-        onTap: onClose,
-      ),
-    ]);
+    AsyncValue<Repository> asyncValue = ref.watch(repositoryProvider(filename));
+    String title = (index == null)
+        ? "New Chapter"
+        : asyncValue.whenOrNull(
+                data: (Repository repository) =>
+                    repository.chapters[index!].title) ??
+            "";
+
+    return Row(
+      children: [
+        CustomMenuButton(
+          menuItem: CustomMenuItem(
+            alignment: Alignment.centerRight,
+            icon: Icons.arrow_back,
+            onTap: onClose,
+          ),
+        ),
+        Expanded(
+            child: Center(
+                child: Text(
+          title,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 40),
+        ))),
+      ],
+    );
   }
 }
+
+/***
+ * 
+ * 
+ * 
+ */

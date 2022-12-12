@@ -1,22 +1,19 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:manage_content/manage_content.dart';
 
-import 'enter_title.dart';
 import 'enter_new_words.dart';
 
 class ChapterUpdate extends ConsumerStatefulWidget {
   final Repository repository;
-  final Words words;
+
   final int index;
   final bool readOnly;
   const ChapterUpdate(
       {super.key,
       required this.repository,
       required this.index,
-      required this.words,
       required this.readOnly});
 
   @override
@@ -26,31 +23,28 @@ class ChapterUpdate extends ConsumerStatefulWidget {
 class ChapterUpdateState extends ConsumerState<ChapterUpdate>
     with WidgetsBindingObserver {
   final _formKey = GlobalKey<FormState>();
-  late final TextEditingController titleController;
+
   late final TextEditingController wordsController;
-  late final FocusNode titlefocusNode;
   late final FocusNode wordsfocusNode;
   var isKeyboardVisible = false;
   late bool addingNewWords;
 
   @override
   void initState() {
-    titleController = TextEditingController(text: widget.words.title);
     wordsController = TextEditingController();
-    titlefocusNode = FocusNode();
+
     wordsfocusNode = FocusNode();
     WidgetsBinding.instance.addObserver(this);
 
-    addingNewWords = widget.words.words.isEmpty;
+    addingNewWords = false;
     super.initState();
   }
 
   @override
   void dispose() {
-    titleController.dispose();
     wordsController.dispose();
     wordsfocusNode.dispose();
-    titlefocusNode.dispose();
+
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -81,25 +75,6 @@ class ChapterUpdateState extends ConsumerState<ChapterUpdate>
                   },
                   child: Column(
                     children: [
-                      EnterTitle(
-                          readonly: true,
-                          path: path,
-                          controller: titleController,
-                          focusNode: titlefocusNode,
-                          onValidateFileName: ((fname) {
-                            if (fname ==
-                                widget.repository.chapters[widget.index]
-                                    .filename) {
-                              return null;
-                            }
-                            if (File("$path/$fname").existsSync()) {
-                              return "Chapter with the same name exists already";
-                            }
-                            return null;
-                          }),
-                          onChange: () {
-                            setState(() {});
-                          }),
                       if (addingNewWords) ...[
                         Expanded(
                             child: EnterNewWords(
@@ -142,20 +117,19 @@ class ChapterUpdateState extends ConsumerState<ChapterUpdate>
                                 child: TextButton(
                                     onPressed: () async {
                                       if (_formKey.currentState!.validate()) {
-                                        // TODOcontext.pop();
-
-                                        Words newWords = widget.words
-                                            .addMoreWords(wordsController.text
-                                                .split("\n")
-                                                .where((e) => e.isNotEmpty)
-                                                .toList());
+                                        context.pop();
 
                                         await ref
                                             .read(
                                                 repositoryProvider("index.json")
                                                     .notifier)
-                                            .updateChapter(widget.repository,
-                                                widget.index, newWords);
+                                            .addMoreWords(
+                                                widget.repository,
+                                                widget.index,
+                                                wordsController.text
+                                                    .split("\n")
+                                                    .where((e) => e.isNotEmpty)
+                                                    .toList());
                                       }
                                     },
                                     child: const Text("Add Words")),
@@ -182,14 +156,10 @@ class ChapterUpdateState extends ConsumerState<ChapterUpdate>
                       ] else ...[
                         Container(
                           padding: const EdgeInsets.all(16.0),
-                          child: Wrap(
-                            spacing: 6.0,
-                            runSpacing: 6.0,
-                            children: <Widget>[
-                              for (Word word
-                                  in widget.words.wordsIncludeReported)
-                                _buildChip(word, widget.readOnly),
-                            ],
+                          child: WordsAsChip(
+                            readonly: widget.readOnly,
+                            repository: widget.repository,
+                            index: widget.index,
                           ),
                         ),
                         const Spacer(),
@@ -226,6 +196,49 @@ class ChapterUpdateState extends ConsumerState<ChapterUpdate>
               child: CircularProgressIndicator(),
             ));
   }
+}
+
+class WordsAsChip extends ConsumerStatefulWidget {
+  final Repository repository;
+  final int index;
+  final bool readonly;
+  const WordsAsChip({
+    super.key,
+    required this.repository,
+    required this.index,
+    required this.readonly,
+  });
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _WordsAsChipState();
+}
+
+class _WordsAsChipState extends ConsumerState<WordsAsChip> {
+  @override
+  Widget build(BuildContext context) {
+    final words = ref.watch(
+        wordsProvider(widget.repository.chapters[widget.index].filename));
+    if (words == null || words.words.isEmpty) {
+      return const Center(
+        child: Text(
+          "This is an empty list, add more words ",
+          style: TextStyle(
+            fontSize: 40.0,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Horizon',
+          ),
+        ),
+      );
+    }
+    return Wrap(
+      spacing: 6.0,
+      runSpacing: 6.0,
+      children: <Widget>[
+        for (Word word in words.wordsIncludeReported)
+          _buildChip(word, widget.readonly),
+      ],
+    );
+  }
 
   Widget _buildChip(Word word, bool readOnly) {
     return Chip(
@@ -245,10 +258,9 @@ class ChapterUpdateState extends ConsumerState<ChapterUpdate>
         onDeleted: readOnly || word.report
             ? null
             : () async {
-                Words newWords = widget.words.delete(word);
                 await ref
                     .read(repositoryProvider("index.json").notifier)
-                    .updateChapter(widget.repository, widget.index, newWords);
+                    .removeWords(widget.repository, widget.index, [word]);
               });
   }
 }

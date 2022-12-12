@@ -75,8 +75,7 @@ class ChapterCreateState extends ConsumerState<ChapterCreate>
                   },
                   child: Column(
                     children: [
-                      EnterTitle(
-                        readonly: false,
+                      NewTitle(
                         path: path,
                         controller: titleController,
                         focusNode: titlefocusNode,

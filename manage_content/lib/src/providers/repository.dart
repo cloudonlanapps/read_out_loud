@@ -31,20 +31,34 @@ class RepositoryNotifier extends StateNotifier<AsyncValue<Repository>> {
         return await repository.remove(chapter, filename: filename);
       });
 
-  Future<void> updateChapter(
-          Repository repository, int index, Words words) async =>
+  Future<void> addMoreWords(Repository repository, int index,
+          List<String> newWordStrings) async =>
       await _guard(() async {
         Chapter currChapter = repository.chapters[index];
-        Chapter newChapter =
-            Chapter(title: words.title, filename: "${words.title}.json");
 
-        await words.save(newChapter.filename);
-        if (newChapter.filename != currChapter.filename) {
-          await ContentStorage.delete(currChapter.filename);
-        }
-        await ref.read(wordsProvider(newChapter.filename).notifier).reload();
+        final Words? updated = ref
+            .read(wordsProvider(currChapter.filename))
+            ?.addMoreWords(newWordStrings);
 
-        return await repository.update(index, newChapter, filename: filename);
+        await updated?.save(currChapter.filename);
+
+        await ref.read(wordsProvider(currChapter.filename).notifier).reload();
+
+        return repository;
+      });
+
+  Future<void> removeWords(Repository repository, int index,
+          List<Word> wordListToRemove) async =>
+      await _guard(() async {
+        Chapter currChapter = repository.chapters[index];
+
+        final Words? updated = ref
+            .read(wordsProvider(currChapter.filename))
+            ?.deleteWords(wordListToRemove);
+        await updated?.save(currChapter.filename);
+        await ref.read(wordsProvider(currChapter.filename).notifier).reload();
+
+        return repository;
       });
 }
 
