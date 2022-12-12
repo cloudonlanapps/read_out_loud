@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -74,12 +76,19 @@ class ChapterCreateState extends ConsumerState<ChapterCreate>
                   child: Column(
                     children: [
                       EnterTitle(
-                          path: path,
-                          controller: titleController,
-                          focusNode: titlefocusNode,
-                          onChange: () {
-                            setState(() {});
-                          }),
+                        path: path,
+                        controller: titleController,
+                        focusNode: titlefocusNode,
+                        onValidateFileName: ((fname) {
+                          if (File("$path/$fname").existsSync()) {
+                            return "Chapter with the same name exists already";
+                          }
+                          return null;
+                        }),
+                        onChange: () {
+                          setState(() {});
+                        },
+                      ),
                       Expanded(
                           child: EnterNewWords(
                         focusNode: wordsfocusNode,

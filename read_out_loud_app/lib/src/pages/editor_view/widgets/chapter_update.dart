@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manage_content/manage_content.dart';
@@ -84,6 +86,17 @@ class ChapterUpdateState extends ConsumerState<ChapterUpdate>
                           path: path,
                           controller: titleController,
                           focusNode: titlefocusNode,
+                          onValidateFileName: ((fname) {
+                            if (fname ==
+                                widget.repository.chapters[widget.index]
+                                    .filename) {
+                              return null;
+                            }
+                            if (File("$path/$fname").existsSync()) {
+                              return "Chapter with the same name exists already";
+                            }
+                            return null;
+                          }),
                           onChange: () {
                             setState(() {});
                           }),
@@ -141,28 +154,13 @@ class ChapterUpdateState extends ConsumerState<ChapterUpdate>
                                               .map((e) => Word.fromString(e))
                                               .toList()
                                         ]);
+
                                         await ref
                                             .read(
                                                 repositoryProvider("index.json")
                                                     .notifier)
-                                            .removeChapter(
-                                                widget.repository,
-                                                widget.repository
-                                                    .chapters[widget.index]);
-
-                                        final fname = "$title.json";
-                                        await newWords.save(fname);
-                                        if (newWords.title !=
-                                            widget.words.title) {}
-
-                                        Chapter chapter = Chapter(
-                                            filename: fname, title: title);
-                                        await ref
-                                            .read(
-                                                repositoryProvider("index.json")
-                                                    .notifier)
-                                            .addChapter(
-                                                widget.repository, chapter);
+                                            .updateChapter(widget.repository,
+                                                widget.index, newWords);
                                       }
                                     },
                                     child: const Text("Add Words")),

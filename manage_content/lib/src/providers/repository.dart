@@ -32,10 +32,21 @@ class RepositoryNotifier extends StateNotifier<AsyncValue<Repository>> {
       });
 
   Future<void> updateChapter(
-          Repository repository, int index, Chapter chapter) async =>
+          Repository repository, int index, Words words) async =>
       await _guard(() async {
-        await ref.read(wordsProvider(chapter.filename).notifier).reload();
-        return await repository.update(index, chapter, filename: filename);
+        Chapter currChapter = repository.chapters[index];
+        Chapter newChapter =
+            Chapter(title: words.title, filename: "${words.title}.json");
+
+        await words.save(newChapter.filename);
+        if (newChapter.filename != currChapter.filename) {
+          await ContentStorage.delete(currChapter.filename);
+        } else {
+          await ref.read(wordsProvider(newChapter.filename).notifier).reload();
+          return repository;
+        }
+
+        return await repository.update(index, newChapter, filename: filename);
       });
 }
 

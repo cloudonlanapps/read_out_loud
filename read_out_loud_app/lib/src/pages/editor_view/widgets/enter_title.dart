@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -8,12 +6,14 @@ class EnterTitle extends StatelessWidget {
   final FocusNode focusNode;
   final Function() onChange;
   final String path;
+  final Function(String fname) onValidateFileName;
   const EnterTitle(
       {super.key,
       required this.controller,
       required this.onChange,
       required this.focusNode,
-      required this.path});
+      required this.path,
+      required this.onValidateFileName});
 
   @override
   Widget build(BuildContext context) {
@@ -63,12 +63,8 @@ class EnterTitle extends StatelessWidget {
               if (value == null || value.isEmpty) {
                 return 'Enter a title';
               }
-              final fname = "$path/$value.json";
-              if (File(fname).existsSync()) {
-                return "Chapter with the same name exists already";
-              }
 
-              return null;
+              return onValidateFileName("$value.json");
             },
           ),
         ),
