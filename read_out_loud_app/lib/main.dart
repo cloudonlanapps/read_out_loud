@@ -11,6 +11,7 @@ import 'package:route_manager/route_manager.dart';
 import 'src/pages/advanced_settings/page.dart';
 import 'src/pages/chapter/page.dart';
 import 'src/pages/chapter_list/page.dart';
+import 'src/pages/editor_view/page.dart';
 import 'src/pages/main/page.dart';
 import 'src/pages/settings/page.dart';
 import 'src/pages/settings_chapters/page.dart';
@@ -38,8 +39,9 @@ void main() {
           ChapterPage(),
           SettingsChapterPage(),
           AdvancedSettingsPage(),
+          EditorPage(),
         ],
-        defaultIndex: 2,
+        defaultIndex: 4,
       )),
     ),
   );

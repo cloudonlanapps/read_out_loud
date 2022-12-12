@@ -1,5 +1,6 @@
 library manage_content;
 
+export 'src/helpers/content_storage.dart';
 export 'src/models/chapter.dart';
 export 'src/models/repository.dart';
 export 'src/providers/repository.dart';

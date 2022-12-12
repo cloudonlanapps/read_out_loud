@@ -16,6 +16,7 @@ class SettingsMenuButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: onTap == null ? Colors.grey : null,
       shape: RoundedRectangleBorder(
         side: const BorderSide(width: 2),
         borderRadius: BorderRadius.circular(20),

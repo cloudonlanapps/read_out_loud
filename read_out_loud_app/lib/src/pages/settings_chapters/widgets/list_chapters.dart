@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:manage_content/manage_content.dart';
 
+import '../../editor_view/page.dart';
 import 'chapter_view.dart';
 
-class ListChapters extends StatefulWidget {
+class ListChapters extends ConsumerWidget {
   final Repository repository;
   const ListChapters({
     Key? key,
@@ -11,37 +14,28 @@ class ListChapters extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<ListChapters> createState() => _ListChaptersState();
-}
-
-class _ListChaptersState extends State<ListChapters> {
-  int currIndex = -1;
-
-  onExpansion(int index) {
-    setState(() {
-      currIndex = index;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ListView.builder(
-        key: ValueKey("$currIndex"),
-        itemCount: widget.repository.chapters.length,
+        itemCount: repository.chapters.length,
         itemBuilder: (BuildContext context, int index) {
           return FutureBuilder(
-            future: isAssetExists(widget.repository.chapters[index].filename),
+            future:
+                ContentStorage.hasAsset(repository.chapters[index].filename),
             builder: ((context, snapshot) {
+              final bool isAsset = snapshot.hasData && !(snapshot.data as bool);
               return ChapterView(
-                  key: ValueKey("ChapterView $index $currIndex"),
-                  chapter: widget.repository.chapters[index],
-                  myIndex: index,
-                  selectedIndex: currIndex,
-                  onExpansion: onExpansion,
-                  editable:
-                      (snapshot.connectionState == ConnectionState.waiting)
-                          ? false
-                          : snapshot.data ?? false);
+                  chapter: repository.chapters[index],
+                  onDelete: isAsset ? null : () {},
+                  onResetProgress: () {
+                    ref
+                        .read(wordsProvider(repository.chapters[index].filename)
+                            .notifier)
+                        .clearProgress();
+                  },
+                  onEdit: () {
+                    context.pushNamed(EditorPage().name,
+                        queryParams: {"index": index.toString()});
+                  });
             }),
           );
         });
