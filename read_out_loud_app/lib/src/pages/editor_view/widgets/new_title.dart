@@ -5,7 +5,7 @@ class NewTitle extends StatelessWidget {
   final TextEditingController controller;
   final FocusNode focusNode;
   final Function() onChange;
-  final String path;
+
   final Function(String fname) onValidateFileName;
 
   const NewTitle({
@@ -13,7 +13,6 @@ class NewTitle extends StatelessWidget {
     required this.controller,
     required this.onChange,
     required this.focusNode,
-    required this.path,
     required this.onValidateFileName,
   });
 

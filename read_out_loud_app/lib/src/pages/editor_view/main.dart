@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manage_content/manage_content.dart';
 
 import 'widgets/chapter_create.dart';
-import 'widgets/existing_chapter.dart';
+import 'widgets/chapter_update.dart';
 
 class MainContent extends ConsumerWidget {
   final Size size;
@@ -32,9 +32,20 @@ class MainContent extends ConsumerWidget {
                   ? ChapterCreate(
                       repository: repository,
                     )
-                  : ChapterEditor(
-                      repository: repository,
-                      index: index!,
+                  : FutureBuilder(
+                      future: ContentStorage.hasAsset(
+                          repository.chapters[index!].filename),
+                      builder: (BuildContext build, AsyncSnapshot snapshot) {
+                        bool readOnly =
+                            !snapshot.hasData || snapshot.data as bool;
+
+                        return ChapterUpdate(
+                          key: ObjectKey(repository.chapters[index!]),
+                          repository: repository,
+                          index: index!,
+                          readOnly: readOnly,
+                        );
+                      },
                     ),
             ),
         error: (error, stackTrace) => Container(),

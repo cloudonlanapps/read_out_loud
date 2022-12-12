@@ -32,7 +32,6 @@ class ChapterUpdateState extends ConsumerState<ChapterUpdate>
   @override
   void initState() {
     wordsController = TextEditingController();
-
     wordsfocusNode = FocusNode();
     WidgetsBinding.instance.addObserver(this);
 

@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:manage_content/manage_content.dart';
 
-import 'enter_title.dart';
+import 'new_title.dart';
 import 'enter_new_words.dart';
 
 class ChapterCreate extends ConsumerStatefulWidget {
@@ -76,7 +76,6 @@ class ChapterCreateState extends ConsumerState<ChapterCreate>
                   child: Column(
                     children: [
                       NewTitle(
-                        path: path,
                         controller: titleController,
                         focusNode: titlefocusNode,
                         onValidateFileName: ((fname) {
