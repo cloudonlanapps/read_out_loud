@@ -14,10 +14,10 @@ class ChapterCreate extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _NewWordsState();
+  ConsumerState<ConsumerStatefulWidget> createState() => ChapterCreateState();
 }
 
-class _NewWordsState extends ConsumerState<ChapterCreate>
+class ChapterCreateState extends ConsumerState<ChapterCreate>
     with WidgetsBindingObserver {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController titleController;

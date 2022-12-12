@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manage_content/manage_content.dart';
-import 'words_editor.dart';
+import 'package:read_out_loud_app/src/pages/editor_view/widgets/chapter_update.dart';
 
 class ChapterEditor extends ConsumerWidget {
   final Repository repository;
@@ -29,10 +29,13 @@ class ChapterEditor extends ConsumerWidget {
       builder: (BuildContext build, AsyncSnapshot snapshot) {
         bool readOnly = !snapshot.hasData || snapshot.data as bool;
 
-        return WordsEditor(
-            key: ObjectKey(words),
-            words: words,
-            onSave: readOnly ? null : (Words words) {});
+        return ChapterUpdate(
+          key: ObjectKey(words),
+          repository: repository,
+          index: index,
+          words: words,
+          readOnly: readOnly,
+        );
       },
     );
   }

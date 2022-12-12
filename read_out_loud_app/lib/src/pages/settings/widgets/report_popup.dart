@@ -17,7 +17,8 @@ class ReportPopup extends ConsumerWidget {
     final text = reportedWords.join(', ');
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Wrap(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
             padding: const EdgeInsets.only(bottom: 16),

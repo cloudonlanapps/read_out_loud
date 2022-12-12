@@ -30,7 +30,7 @@ class EnterTitle extends StatelessWidget {
               FilteringTextInputFormatter.allow(RegExp(r"[0-9a-zA-Z\ ]")),
             ],
             decoration: InputDecoration(
-              label: const Text("Name of the Chapter"),
+              label: const Text("Edit name of the Chapter"),
               enabledBorder: OutlineInputBorder(
                 borderSide: const BorderSide(
                     width: 2, color: Colors.blueGrey), //<-- SEE HERE

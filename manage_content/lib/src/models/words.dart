@@ -107,6 +107,7 @@ class Words {
   List<Word> get words => _words.where((e) {
         return wordFilter == WordFilter.all || !e.report;
       }).toList();
+  List<Word> get wordsIncludeReported => _words;
 
   Words reportCurrentWord() {
     final wordList = _words;
