@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:manage_content/manage_content.dart';
 import 'package:read_out_loud_app/src/pages/advanced_settings/page.dart';
 
+import '../../custom_widgets/settings_menu_button.dart';
 import '../settings_chapters/page.dart';
-import 'report_widget.dart';
+import 'widgets/report_popup.dart';
 
 class MainContent extends ConsumerWidget {
   final Size size;
@@ -13,62 +15,40 @@ class MainContent extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ListView(
-      padding: const EdgeInsets.all(8),
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 16.0),
-          child: ListTile(
+    List<String>? reportedWords = ref.watch(reportedWordsProvider);
+    final length = reportedWords?.length ?? 0;
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          SettingsMenuButton(
+            title: "Chapters",
+            subTitle:
+                "Add/Remove chapters, edit existing chapters, reset progress etc.",
             onTap: () => context.goNamed(SettingsChapterPage().name),
-            contentPadding: const EdgeInsets.all(8),
-            shape: RoundedRectangleBorder(
-              //<-- SEE HERE
-              side: const BorderSide(width: 2),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            title:
-                Text("Chapters", style: Theme.of(context).textTheme.bodyLarge),
-            subtitle: Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Text(
-                "Add/Remove chapters, edit existing chapters, reset progress etc..\n",
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-            ),
-            tileColor: Colors.white,
-            trailing: const Icon(Icons.arrow_forward_ios),
           ),
-        ),
-        const Padding(
-          padding: EdgeInsets.only(bottom: 16.0),
-          child: ReportWidget(),
-        ),
-        Card(
-          shape: RoundedRectangleBorder(
-            side: const BorderSide(width: 2),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          margin: const EdgeInsets.only(bottom: 16.0, left: 8, right: 8),
-          child: ListTile(
+          if (length > 0)
+            SettingsMenuButton(
+              title: "Report",
+              subTitle: (length == 0)
+                  ? "There is nothing to report"
+                  : "You have marked $length words as problematic. "
+                      "You could report them to developer. ",
+              onTap: () {
+                showModalBottomSheet(
+                    isScrollControlled: true,
+                    context: context,
+                    builder: (context) {
+                      return ReportPopup(reportedWords: reportedWords!);
+                    });
+              },
+            ),
+          SettingsMenuButton(
+            title: "Advanced Settings",
+            subTitle: "Expert level settings",
             onTap: () => context.goNamed(AdvancedSettingsPage().name),
-            contentPadding: const EdgeInsets.all(8),
-            shape: RoundedRectangleBorder(
-              //<-- SEE HERE
-              side: const BorderSide(width: 2),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            title: Text("Advanced Settings",
-                style: Theme.of(context).textTheme.bodyLarge),
-            subtitle: Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Text("Expert level settings",
-                  style: Theme.of(context).textTheme.bodyMedium),
-            ),
-            tileColor: Colors.white,
-            trailing: const Icon(Icons.arrow_forward_ios),
-          ),
-        ),
-      ],
+          )
+        ],
+      ),
     );
   }
 }
