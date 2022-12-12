@@ -2,23 +2,23 @@
     "chapters": [
         {
             "title": "Chapter 1",
-            "filename": "wordlist1"
+            "filename": "wordlist1.json"
         },
         {
             "title": "Chapter 2",
-            "filename": "wordlist2"
+            "filename": "wordlist2.json"
         },
         {
             "title": "Chapter 3",
-            "filename": "wordlist3"
+            "filename": "wordlist3.json"
         },
         {
             "title": "Chapter 4",
-            "filename": "wordlist4"
+            "filename": "wordlist4.json"
         },
         {
             "title": "Chapter 5",
-            "filename": "wordlist5"
+            "filename": "wordlist5.json"
         }
     ]
 }

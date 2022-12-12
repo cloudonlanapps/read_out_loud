@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
+import '../helpers/content_storage.dart';
 import 'word.dart';
 
 enum WordFilter { all, excludeReported }
@@ -50,6 +51,7 @@ class Words {
   }
 
   factory Words.fromMap(Map<String, dynamic> map) {
+    print(map);
     return Words(
       words: List<Word>.from(
         (map['words'] as List<dynamic>).map<Word>(
@@ -130,5 +132,19 @@ class Words {
     final wordList =
         _words.map((e) => e.copyWith(succeeded: false, attempts: 0)).toList();
     return copyWith(words: wordList);
+  }
+
+  static Future<Words> loadFromFile(filename) async {
+    String json = await ContentStorage.loadString(filename);
+    print("got json of length: ${json.length}");
+    try {
+      return Words.fromJson(json);
+    } catch (e) {
+      throw Exception("Error parsing $filename ${e.toString()}");
+    }
+  }
+
+  save(String? filename) async {
+    if (filename != null) await ContentStorage.saveString(filename, toJson());
   }
 }

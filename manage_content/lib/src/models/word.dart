@@ -34,7 +34,7 @@ class Word {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'original': original,
+      'word': original,
       'attempts': attempts,
       'succeeded': succeeded,
       'report': report,
@@ -43,7 +43,7 @@ class Word {
 
   factory Word.fromMap(Map<String, dynamic> map) {
     return Word(
-      original: map['original'] as String,
+      original: map['word'] as String,
       attempts: (map.containsKey('attempts')) ? map['attempts'] as int : 0,
       succeeded:
           (map.containsKey('succeeded')) ? map['succeeded'] as bool : false,

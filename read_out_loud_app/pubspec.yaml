@@ -38,10 +38,10 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/wordlist1.txt
-    - assets/wordlist2.txt
-    - assets/wordlist3.txt
-    - assets/wordlist4.txt
+    - assets/wordlist1.json
+    - assets/wordlist2.json
+    - assets/wordlist3.json
+    - assets/wordlist4.json
     - assets/index.json
     - assets/42193-hand-pointing-icon.json
     - assets/83583-tap-hand-gest.json
