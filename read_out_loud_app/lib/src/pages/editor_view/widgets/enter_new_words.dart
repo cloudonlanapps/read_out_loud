@@ -37,12 +37,12 @@ class EnterNewWords extends StatelessWidget {
                     "Paste",
                     textAlign: TextAlign.end,
                   )),
-              TextButton(
+              /* TextButton(
                   onPressed: () {},
                   child: const Text(
                     "Import",
                     textAlign: TextAlign.end,
-                  )),
+                  )), */
             ],
           ),
         ),
