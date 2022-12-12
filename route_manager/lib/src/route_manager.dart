@@ -63,11 +63,12 @@ class _RouteManagerState extends State<RouteManager> {
       title: widget.appName,
       theme: ThemeData(
           textTheme: const TextTheme(
-              bodyLarge: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 40),
-              bodyMedium: TextStyle(color: Colors.blueGrey, fontSize: 20))),
+        bodyLarge: TextStyle(
+            color: Colors.black, fontWeight: FontWeight.bold, fontSize: 40),
+        bodyMedium: TextStyle(color: Colors.blueGrey, fontSize: 20),
+        bodySmall: TextStyle(color: Colors.blueGrey, fontSize: 16),
+        labelLarge: TextStyle(color: Colors.black, fontSize: 16),
+      )),
     );
   }
 
