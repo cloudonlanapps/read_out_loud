@@ -20,6 +20,15 @@ class WordsNotifier extends StateNotifier<Words?> {
     }
   }
 
+  reload() async {
+    state = null;
+    try {
+      state = await Words.loadFromFile(filename);
+    } catch (e) {
+      state = null;
+    }
+  }
+
   updateState(Words words) async {
     await save();
     state = words;
