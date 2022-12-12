@@ -31,7 +31,7 @@ class RepositoryNotifier extends StateNotifier<AsyncValue<Repository>> {
         return await repository.remove(chapter, filename: filename);
       });
 
-  Future<void> addMoreWords(Repository repository, int index,
+  /* Future<void> addMoreWords(Repository repository, int index,
           List<String> newWordStrings) async =>
       await _guard(() async {
         Chapter currChapter = repository.chapters[index];
@@ -59,7 +59,7 @@ class RepositoryNotifier extends StateNotifier<AsyncValue<Repository>> {
         await ref.read(wordsProvider(currChapter.filename).notifier).reload();
 
         return repository;
-      });
+      }); */
 }
 
 final repositoryProvider = StateNotifierProvider.family<RepositoryNotifier,
