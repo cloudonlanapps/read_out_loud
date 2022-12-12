@@ -27,6 +27,8 @@ class ChapterView extends ConsumerWidget {
               onPressed: (ctx) => onResetProgress?.call(),
               icon: Icons.restore_page,
               label: 'Reset Progress',
+              foregroundColor: Colors.amber.shade300,
+              backgroundColor: Colors.transparent,
             ),
           if (onDelete != null)
             SlidableAction(
@@ -34,6 +36,7 @@ class ChapterView extends ConsumerWidget {
               icon: Icons.delete,
               foregroundColor: Colors.red.shade300,
               label: 'Delete',
+              backgroundColor: Colors.transparent,
             ),
         ],
       );

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -5,11 +7,13 @@ class EnterTitle extends StatelessWidget {
   final TextEditingController controller;
   final FocusNode focusNode;
   final Function() onChange;
+  final String path;
   const EnterTitle(
       {super.key,
       required this.controller,
       required this.onChange,
-      required this.focusNode});
+      required this.focusNode,
+      required this.path});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +27,7 @@ class EnterTitle extends StatelessWidget {
           child: TextFormField(
             focusNode: focusNode,
             inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp(r"[a-zA-Z\ ]")),
+              FilteringTextInputFormatter.allow(RegExp(r"[0-9a-zA-Z\ ]")),
             ],
             decoration: InputDecoration(
               label: const Text("Name of the Chapter"),
@@ -59,6 +63,11 @@ class EnterTitle extends StatelessWidget {
               if (value == null || value.isEmpty) {
                 return 'Enter a title';
               }
+              final fname = "$path/$value.json";
+              if (File(fname).existsSync()) {
+                return "Chapter with the same name exists already";
+              }
+
               return null;
             },
           ),

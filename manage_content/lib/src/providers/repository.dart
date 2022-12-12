@@ -1,7 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../models/chapter.dart';
-import '../models/repository.dart';
+import 'package:manage_content/manage_content.dart';
 
 class RepositoryNotifier extends StateNotifier<AsyncValue<Repository>> {
   String filename;
@@ -34,4 +32,8 @@ class RepositoryNotifier extends StateNotifier<AsyncValue<Repository>> {
 final repositoryProvider = StateNotifierProvider.family<RepositoryNotifier,
     AsyncValue<Repository>, String>((ref, fileName) {
   return RepositoryNotifier(fileName);
+});
+
+final repositoryPathProvider = FutureProvider<String>((ref) async {
+  return await ContentStorage.path;
 });

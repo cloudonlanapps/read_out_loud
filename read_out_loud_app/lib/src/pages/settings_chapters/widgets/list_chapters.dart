@@ -22,10 +22,17 @@ class ListChapters extends ConsumerWidget {
             future:
                 ContentStorage.hasAsset(repository.chapters[index].filename),
             builder: ((context, snapshot) {
-              final bool isAsset = snapshot.hasData && !(snapshot.data as bool);
+              final bool isAsset = !snapshot.hasData || (snapshot.data as bool);
               return ChapterView(
                   chapter: repository.chapters[index],
-                  onDelete: isAsset ? null : () {},
+                  onDelete: isAsset
+                      ? null
+                      : () {
+                          ref
+                              .read(repositoryProvider("index.json").notifier)
+                              .removeChapter(
+                                  repository, repository.chapters[index]);
+                        },
                   onResetProgress: () {
                     ref
                         .read(wordsProvider(repository.chapters[index].filename)

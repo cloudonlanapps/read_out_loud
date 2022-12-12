@@ -6,8 +6,16 @@ import 'package:path_provider/path_provider.dart';
 const assetPath = 'assets';
 
 mixin ContentStorage {
+  static Future<String> get path async =>
+      (await getApplicationDocumentsDirectory()).path;
   static Future<bool> hasAsset(String filename) async =>
       await _loadAsset(filename) == null ? false : true;
+
+  static Future<bool> fileExists(String filename) async {
+    File file = File("${await path}/$filename");
+
+    return file.existsSync();
+  }
 
   static Future<String> loadString(String filename) async {
     File? file = await _readOpen(filename);
@@ -35,13 +43,13 @@ mixin ContentStorage {
   }
 
   static Future<File?> _writeOpen(filename) async {
-    final String path = (await getApplicationDocumentsDirectory()).path;
-    return await File("$path/$filename").create(recursive: true);
+    String file = "${await path}/$filename";
+
+    return await File(file).create(recursive: true);
   }
 
   static Future<File?> _readOpen(filename) async {
-    final String path = (await getApplicationDocumentsDirectory()).path;
-    File file = File("$path/$filename");
+    File file = File("${await path}/$filename");
 
     if (!file.existsSync()) {
       String? asset = await _loadAsset(filename);
