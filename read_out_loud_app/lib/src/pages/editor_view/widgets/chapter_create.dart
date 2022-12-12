@@ -115,6 +115,7 @@ class _NewWordsState extends ConsumerState<ChapterCreate>
                                         title: title,
                                         words: wordsController.text
                                             .split("\n")
+                                            .where((e) => e.isNotEmpty)
                                             .map((e) => Word.fromString(e))
                                             .toList());
 
