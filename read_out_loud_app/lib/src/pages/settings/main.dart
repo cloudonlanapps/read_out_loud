@@ -26,11 +26,14 @@ class MainContent extends ConsumerWidget {
               side: const BorderSide(width: 2),
               borderRadius: BorderRadius.circular(20),
             ),
-            title: const TitleText("Chapters"),
-            subtitle: const Padding(
-              padding: EdgeInsets.only(left: 8.0),
-              child: SubtitleText(
-                  "Add/Remove chapters, edit existing chapters, reset progress etc..\n"),
+            title:
+                Text("Chapters", style: Theme.of(context).textTheme.bodyLarge),
+            subtitle: Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: Text(
+                "Add/Remove chapters, edit existing chapters, reset progress etc..\n",
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
             ),
             tileColor: Colors.white,
             trailing: const Icon(Icons.arrow_forward_ios),
@@ -40,8 +43,12 @@ class MainContent extends ConsumerWidget {
           padding: EdgeInsets.only(bottom: 16.0),
           child: ReportWidget(),
         ),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 16.0),
+        Card(
+          shape: RoundedRectangleBorder(
+            side: const BorderSide(width: 2),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          margin: const EdgeInsets.only(bottom: 16.0, left: 8, right: 8),
           child: ListTile(
             onTap: () => context.goNamed(AdvancedSettingsPage().name),
             contentPadding: const EdgeInsets.all(8),
@@ -50,51 +57,18 @@ class MainContent extends ConsumerWidget {
               side: const BorderSide(width: 2),
               borderRadius: BorderRadius.circular(20),
             ),
-            title: const TitleText("Advanced Settings"),
-            subtitle: const Padding(
-              padding: EdgeInsets.only(left: 8.0),
-              child: SubtitleText("Expert level settings"),
+            title: Text("Advanced Settings",
+                style: Theme.of(context).textTheme.bodyLarge),
+            subtitle: Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: Text("Expert level settings",
+                  style: Theme.of(context).textTheme.bodyMedium),
             ),
             tileColor: Colors.white,
             trailing: const Icon(Icons.arrow_forward_ios),
           ),
         ),
       ],
-    );
-  }
-}
-
-class TitleText extends StatelessWidget {
-  final String text;
-  const TitleText(
-    this.text, {
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: const TextStyle(
-          color: Colors.black, fontWeight: FontWeight.bold, fontSize: 40),
-      textAlign: TextAlign.start,
-    );
-  }
-}
-
-class SubtitleText extends StatelessWidget {
-  final String text;
-  const SubtitleText(
-    this.text, {
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: const TextStyle(color: Colors.blueGrey, fontSize: 20),
-      textAlign: TextAlign.start,
     );
   }
 }

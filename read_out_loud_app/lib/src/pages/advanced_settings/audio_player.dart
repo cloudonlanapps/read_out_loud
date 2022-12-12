@@ -19,7 +19,7 @@ enum TtsState {
 
 class AudioPlayerConfigState extends ConsumerState<AudioPlayerConfig> {
   late TextEditingController textEditingController;
-  final textStyle = const TextStyle(color: Colors.blueGrey, fontSize: 20);
+
   @override
   initState() {
     textEditingController =
@@ -45,7 +45,7 @@ class AudioPlayerConfigState extends ConsumerState<AudioPlayerConfig> {
                 ),
               ),
               controller: textEditingController,
-              style: textStyle,
+              style: Theme.of(context).textTheme.bodyMedium!,
               minLines: 2,
               maxLines: 2,
               textInputAction: TextInputAction.done),

@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manage_content/manage_content.dart';
 
 import '../../../services/clipboard/clipboard.dart';
-import 'main.dart';
 
 class ReportWidget extends ConsumerWidget {
   const ReportWidget({
@@ -13,7 +12,7 @@ class ReportWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     List<String>? reportedWords = ref.watch(reportedWordsProvider);
-    const textStyle = TextStyle(color: Colors.blueGrey, fontSize: 20);
+
     final length = reportedWords?.length ?? 0;
     return ListTile(
       onTap: () {
@@ -23,25 +22,26 @@ class ReportWidget extends ConsumerWidget {
             builder: (context) {
               return Wrap(
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.only(
+                  Padding(
+                    padding: const EdgeInsets.only(
                         top: 8.0, left: 8, right: 8, bottom: 24),
-                    child: TitleText("Reported Words"),
+                    child: Text("Reported Words",
+                        style: Theme.of(context).textTheme.bodyLarge),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
                         top: 8.0, left: 8, right: 8, bottom: 8),
                     child: Text(
                       reportedWords!.join(", "),
-                      style: textStyle,
+                      style: Theme.of(context).textTheme.bodyMedium!,
                     ),
                   ),
-                  const Padding(
-                    padding:
-                        EdgeInsets.only(top: 8.0, left: 8, right: 8, bottom: 8),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 8.0, left: 8, right: 8, bottom: 8),
                     child: Text(
                       "Copy and report to developer",
-                      style: textStyle,
+                      style: Theme.of(context).textTheme.bodyMedium!,
                     ),
                   ),
                   Padding(
@@ -67,73 +67,18 @@ class ReportWidget extends ConsumerWidget {
         side: const BorderSide(width: 2),
         borderRadius: BorderRadius.circular(20),
       ),
-      title: const TitleText("Report"),
+      title: Text("Report", style: Theme.of(context).textTheme.bodyLarge),
       subtitle: (length == 0)
-          ? const Text("There is nothing to report", style: textStyle)
+          ? Text("There is nothing to report",
+              style: Theme.of(context).textTheme.bodyMedium!)
           : Text.rich(TextSpan(children: [
               TextSpan(
                   text: "You have marked $length words as problematic. "
                       "You could report them to developer. ",
-                  style: textStyle),
+                  style: Theme.of(context).textTheme.bodyMedium!),
             ])),
       tileColor: Colors.white,
       trailing: const Icon(Icons.arrow_forward_ios),
     );
   }
 }
-
-/*
-
- return Card(
-      shape: RoundedRectangleBorder(
-        side: const BorderSide(width: 2),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: ListTile(
-
-          title: const TitleText("Report"),
-          subtitle: 
-    );
-children: [
-          if (length > 0) ...[
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton.icon(
-                onPressed: () {
-                  showModalBottomSheet(
-                      isScrollControlled: true,
-                      context: context,
-                      builder: (context) {
-                        return Wrap(
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.only(
-                                  top: 8.0, left: 8, right: 8, bottom: 24),
-                              child: TitleText("Reported Words"),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 8.0, left: 8, right: 8, bottom: 64),
-                              child: Text(
-                                reportedWords!.join(", "),
-                                style: textStyle,
-                              ),
-                            )
-                          ],
-                        );
-                      });
-                },
-                icon: const Icon(Icons.email_outlined),
-                label: const Text(
-                  "Report",
-                  textAlign: TextAlign.right,
-                ),
-              ),
-            ),
-            const Divider(
-              thickness: 2,
-            ),
-          ],
-        ],
-*/
-

@@ -61,6 +61,13 @@ class _RouteManagerState extends State<RouteManager> {
       //routeInformationParser: _router.routeInformationParser,
       routerConfig: router,
       title: widget.appName,
+      theme: ThemeData(
+          textTheme: const TextTheme(
+              bodyLarge: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 40),
+              bodyMedium: TextStyle(color: Colors.blueGrey, fontSize: 20))),
     );
   }
 

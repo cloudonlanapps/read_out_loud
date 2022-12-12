@@ -39,7 +39,7 @@ void main() {
           SettingsChapterPage(),
           AdvancedSettingsPage(),
         ],
-        defaultIndex: 5,
+        defaultIndex: 2,
       )),
     ),
   );

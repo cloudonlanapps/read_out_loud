@@ -4,8 +4,6 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:manage_content/manage_content.dart';
 
 class ChapterView extends ConsumerWidget {
-  final textStyle = const TextStyle(color: Colors.blueGrey, fontSize: 20);
-
   final Chapter chapter;
 
   final int myIndex;
@@ -26,6 +24,7 @@ class ChapterView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final Words? words = ref.watch(wordsProvider(chapter.filename));
     bool nothingToShow = (words == null || words.words.isEmpty);
+
     return Slidable(
       endActionPane: (nothingToShow || !editable)
           ? null
@@ -61,7 +60,8 @@ class ChapterView extends ConsumerWidget {
                 ? onExpansion(selectedIndex)
                 : onExpansion(change ? myIndex : -1),
             expandedCrossAxisAlignment: CrossAxisAlignment.start,
-            title: TitleText(chapter.title),
+            title: Text(chapter.title,
+                style: Theme.of(context).textTheme.bodyLarge),
             children: [
               if (!nothingToShow) ...[
                 if (words.successCount > 0) ...[
@@ -70,7 +70,10 @@ class ChapterView extends ConsumerWidget {
                   ),
                   Text(
                       "Can read ${words.successCount} of ${words.totalCount} words",
-                      style: textStyle.copyWith(color: Colors.green)),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium!
+                          .copyWith(color: Colors.green)),
                   Align(
                     alignment: Alignment.centerRight,
                     child: TextButton(
@@ -88,13 +91,16 @@ class ChapterView extends ConsumerWidget {
                 ] else
                   Text(
                       "There are ${words.totalCount} words to learn in this chapter",
-                      style: textStyle),
+                      style: Theme.of(context).textTheme.bodyMedium!),
                 const Divider(
                   thickness: 2,
                 ),
                 if (words.reportCount > 0) ...[
                   Text("Have marked ${words.reportCount} words as problematic",
-                      style: textStyle.copyWith(color: Colors.redAccent)),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium!
+                          .copyWith(color: Colors.redAccent)),
                   Align(
                     alignment: Alignment.centerRight,
                     child: TextButton(
@@ -105,13 +111,18 @@ class ChapterView extends ConsumerWidget {
                             builder: (context) {
                               return Wrap(
                                 children: [
-                                  const Padding(
-                                    padding: EdgeInsets.only(
+                                  Padding(
+                                    padding: const EdgeInsets.only(
                                         top: 8.0,
                                         left: 8,
                                         right: 8,
                                         bottom: 24),
-                                    child: TitleText("Reported Words"),
+                                    child: Text(
+                                      "Reported Words",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge!,
+                                    ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(
@@ -121,7 +132,9 @@ class ChapterView extends ConsumerWidget {
                                         bottom: 64),
                                     child: Text(
                                       words.reported.join(", "),
-                                      style: textStyle,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!,
                                     ),
                                   )
                                 ],
@@ -143,23 +156,6 @@ class ChapterView extends ConsumerWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class TitleText extends StatelessWidget {
-  final String text;
-  const TitleText(
-    this.text, {
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: const TextStyle(fontSize: 30),
-      textAlign: TextAlign.start,
     );
   }
 }

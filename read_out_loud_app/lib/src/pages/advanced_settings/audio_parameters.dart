@@ -12,8 +12,6 @@ class AudioParameters extends ConsumerStatefulWidget {
 }
 
 class _AudioParametersState extends ConsumerState<AudioParameters> {
-  final textStyle = const TextStyle(color: Colors.blueGrey, fontSize: 20);
-
   @override
   Widget build(BuildContext context) {
     final TTSSpeaker ttsSpeaker = ref.watch(ttsSpeakerProvider);
@@ -45,7 +43,8 @@ class _AudioParametersState extends ConsumerState<AudioParameters> {
                                 padding: const EdgeInsets.only(right: 8.0),
                                 child: Text(
                                   "Engines: ",
-                                  style: textStyle,
+                                  style:
+                                      Theme.of(context).textTheme.bodyMedium!,
                                 ),
                               ),
                             ),
@@ -89,7 +88,8 @@ class _AudioParametersState extends ConsumerState<AudioParameters> {
                                 padding: const EdgeInsets.only(right: 8.0),
                                 child: Text(
                                   "Language: ",
-                                  style: textStyle,
+                                  style:
+                                      Theme.of(context).textTheme.bodyMedium!,
                                 ),
                               ),
                             ),
