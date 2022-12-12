@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:manage_content/manage_content.dart';
 
+import '../../../custom_widgets/custom_menu.dart';
 import 'new_title.dart';
 import 'enter_new_words.dart';
 
@@ -111,11 +112,14 @@ class ChapterCreateState extends ConsumerState<ChapterCreate>
                           return true;
                         }),
                       )),
-                      Stack(
-                        children: [
-                          Center(
-                            child: TextButton(
-                                onPressed: () async {
+                      SizedBox(
+                        height: 50,
+                        child: CustomMenu(
+                          menuItems: [
+                            null,
+                            CustomMenuItem(
+                                color: Colors.blue,
+                                onTap: () async {
                                   if (_formKey.currentState!.validate()) {
                                     context.pop();
                                     String title = titleController.text;
@@ -137,18 +141,17 @@ class ChapterCreateState extends ConsumerState<ChapterCreate>
                                         .addChapter(widget.repository, chapter);
                                   }
                                 },
-                                child: const Text("Save")),
-                          ),
-                          if (isKeyboardVisible)
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: IconButton(
-                                  onPressed: () {
-                                    FocusScope.of(context).unfocus();
-                                  },
-                                  icon: const Icon(Icons.keyboard_hide)),
-                            )
-                        ],
+                                title: "Save"),
+                            (isKeyboardVisible)
+                                ? CustomMenuItem(
+                                    color: Colors.blue,
+                                    onTap: () {
+                                      FocusScope.of(context).unfocus();
+                                    },
+                                    icon: Icons.keyboard_hide)
+                                : null
+                          ],
+                        ),
                       )
                     ],
                   ),

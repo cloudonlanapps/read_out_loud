@@ -22,10 +22,11 @@ class MainContent extends ConsumerWidget {
 
     return asyncValue.when(
         data: (Repository repository) => Card(
-              shape: RoundedRectangleBorder(
+              //color: Colors.transparent,
+              /* shape: RoundedRectangleBorder(
                 side: const BorderSide(width: 2),
                 borderRadius: BorderRadius.circular(20),
-              ),
+              ), */
               margin:
                   const EdgeInsets.only(bottom: 8, left: 8, right: 8, top: 8),
               child: index == null
