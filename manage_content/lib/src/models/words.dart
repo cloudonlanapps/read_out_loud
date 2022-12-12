@@ -51,7 +51,6 @@ class Words {
   }
 
   factory Words.fromMap(Map<String, dynamic> map) {
-    print(map);
     return Words(
       words: List<Word>.from(
         (map['words'] as List<dynamic>).map<Word>(
@@ -59,13 +58,6 @@ class Words {
         ),
       ),
       title: map['title'] as String,
-    );
-  }
-  factory Words.fromList(List list, {String title = "Unknown List"}) {
-    return Words(
-      words: list.map((e) => Word.fromString(e)).toList(),
-      title: title,
-      index: 0,
     );
   }
 
@@ -136,7 +128,7 @@ class Words {
 
   static Future<Words> loadFromFile(filename) async {
     String json = await ContentStorage.loadString(filename);
-    print("got json of length: ${json.length}");
+
     try {
       return Words.fromJson(json);
     } catch (e) {

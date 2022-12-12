@@ -15,7 +15,6 @@ class WordsNotifier extends StateNotifier<Words?> {
   load() async {
     try {
       state = await Words.loadFromFile(filename);
-      print("State: ${state?.words.length}");
     } catch (e) {
       state = null;
     }
