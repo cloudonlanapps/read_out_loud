@@ -64,4 +64,9 @@ mixin ContentStorage {
     }
     return file;
   }
+
+  static delete(String filename) async {
+    File file = File("${await path}/$filename");
+    file.deleteSync();
+  }
 }
