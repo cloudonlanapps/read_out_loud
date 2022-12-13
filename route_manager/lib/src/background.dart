@@ -31,17 +31,17 @@ class Background extends StatelessWidget {
                     borderRadius: BorderRadius.circular(borderRadius),
                     // border: Border.all(),
                     gradient: const LinearGradient(
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topCenter,
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
                         colors: [
-                          Colors.white,
+                          Colors.blueGrey,
                           Color.fromARGB(0xFF, 0xF0, 0xF0, 0xF0),
                           Colors.orange,
                           Colors.red,
                           Colors.red,
                           Colors.orange,
                           Color.fromARGB(0xFF, 0xF0, 0xF0, 0xF0),
-                          Colors.white,
+                          Colors.blueGrey,
                         ])),
               )),
           BackdropFilter(

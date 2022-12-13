@@ -6,7 +6,6 @@ import 'package:responsive_screen/responsive_screen.dart';
 import 'package:route_manager/route_manager.dart';
 
 import '../chapter_list/page.dart';
-import 'bottom_menu.dart';
 import 'main.dart';
 import 'top_menu.dart';
 
@@ -47,11 +46,9 @@ class PageView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ResponsiveScreen(
       contentBuilder: (context, size) =>
-          MainContent(filename: filename, size: size),
+          MainContent(filename: filename, size: size, onPlay: onPlay),
       topMenuBuilder: (context, size) =>
           TopMenu(onSettings: onSettings, size: size),
-      bottomMenubuilder: (context, size) =>
-          BottomMenu(onPlay: onPlay, size: size),
     );
   }
 }
