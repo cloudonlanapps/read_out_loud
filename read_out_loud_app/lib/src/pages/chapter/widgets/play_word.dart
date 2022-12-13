@@ -37,6 +37,96 @@ class _PlayWordState extends ConsumerState<PlayWord> {
     super.initState();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    final playState = ref.watch(playWordStateProvider);
+    listener();
+    print(widget.size);
+    double part = widget.size.height / 13;
+    print("part = $part");
+    if (part < 35) {
+      return const Center(child: Text("Too small screen to play"));
+    }
+
+    return Stack(
+      children: [
+        SizedBox.fromSize(
+          size: widget.size,
+          //child: Container(decoration: BoxDecoration(border: Border.all())),
+        ),
+        Positioned(
+          bottom: part,
+          left: 0,
+          right: 0,
+          child: DecoratedBox(
+            decoration: const BoxDecoration(),
+            child: Column(
+              //mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                    height: part * 2,
+                    child: Align(
+                        alignment: Alignment.topRight,
+                        child: Score(words: widget.words))),
+                SizedBox(
+                  height: part * 4,
+                ),
+                Container(
+                  height: part * 2,
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Stack(
+                    children: [
+                      MainWord(
+                        word: widget.word,
+                        onTap: () => ref
+                            .read(playWordStateProvider.notifier)
+                            .speak(text: widget.word.original),
+                      ),
+                      if (widget.word.attempts > 0)
+                        Positioned(
+                            right: 10,
+                            top: 10,
+                            child: Text(widget.word.attempts.toString()))
+                    ],
+                  ),
+                ),
+                if (playState == PlayState.intro)
+                  SizedBox(
+                    height: part * 4,
+                    width: widget.size.width,
+                    child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: IntroWidget(introText: introText)),
+                  )
+                else ...[
+                  SizedBox(
+                      height: part * 2,
+                      width: widget.size.width,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: STTResult(
+                          highlight: widget.word.original,
+                        ),
+                      )),
+                  SizedBox(
+                      height: part * 2,
+                      width: widget.size.width,
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: FittedBox(
+                            fit: BoxFit.fitHeight,
+                            child:
+                                RecordButton(succeeded: widget.word.succeeded)),
+                      )),
+                ],
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   speak() => ref
       .read(playWordStateProvider.notifier)
       .speak(text: introText, playState: PlayState.intro);
@@ -86,84 +176,5 @@ class _PlayWordState extends ConsumerState<PlayWord> {
         }
       }
     });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final playState = ref.watch(playWordStateProvider);
-    listener();
-    return Stack(
-      children: [
-        SizedBox.fromSize(
-          size: widget.size,
-        ),
-        Positioned(
-          top: 16,
-          right: 16,
-          child: Score(words: widget.words),
-        ),
-        Positioned(
-          bottom: 40,
-          left: 0,
-          right: 0,
-          child: DecoratedBox(
-            decoration: const BoxDecoration(),
-            child: Column(
-              //mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  height: 100,
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Stack(
-                    children: [
-                      MainWord(
-                        word: widget.word,
-                        onTap: () => ref
-                            .read(playWordStateProvider.notifier)
-                            .speak(text: widget.word.original),
-                      ),
-                      if (widget.word.attempts > 0)
-                        Positioned(
-                            right: 10,
-                            top: 10,
-                            child: Text(widget.word.attempts.toString()))
-                    ],
-                  ),
-                ),
-                if (playState == PlayState.intro)
-                  SizedBox(
-                    height: 200,
-                    width: widget.size.width,
-                    child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: IntroWidget(introText: introText)),
-                  )
-                else ...[
-                  SizedBox(
-                      height: 100,
-                      width: widget.size.width,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: STTResult(
-                          highlight: widget.word.original,
-                        ),
-                      )),
-                  SizedBox(
-                      height: 100,
-                      width: widget.size.width,
-                      child: Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: FittedBox(
-                            fit: BoxFit.fitHeight,
-                            child:
-                                RecordButton(succeeded: widget.word.succeeded)),
-                      )),
-                ],
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
   }
 }
