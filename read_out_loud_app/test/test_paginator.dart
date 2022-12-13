@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:read_out_loud_app/src/pages/chapter_list/providers/paginate.dart';
+import 'package:read_out_loud_app/services/paginate.dart';
 
 void main() {
   test('Testing Paginator', () {

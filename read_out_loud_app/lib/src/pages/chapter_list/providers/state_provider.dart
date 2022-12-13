@@ -3,7 +3,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manage_content/manage_content.dart';
 
-import 'paginate.dart';
+import '../../../../services/paginate.dart';
 
 class ContentPageNotifier extends StateNotifier<ListPaginate<Chapter>> {
   ContentPageNotifier(ListPaginate<Chapter> contentPage) : super(contentPage);
@@ -16,4 +16,17 @@ class ContentPageNotifier extends StateNotifier<ListPaginate<Chapter>> {
 final contentPageProvider =
     StateNotifierProvider<ContentPageNotifier, ListPaginate<Chapter>>((ref) {
   throw Exception("Override with appropriate value");
+});
+
+class IsAnimatingNotifier extends StateNotifier<bool> {
+  IsAnimatingNotifier() : super(false);
+
+  set isAnimating(bool val) {
+    state = val;
+  }
+}
+
+final isAnimatingProvider =
+    StateNotifierProvider<IsAnimatingNotifier, bool>((ref) {
+  return IsAnimatingNotifier();
 });

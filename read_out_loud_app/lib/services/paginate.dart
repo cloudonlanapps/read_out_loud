@@ -67,7 +67,6 @@ class ListPaginate<T> {
   }
 
   List<T> getcurrentPage() {
-    print(this);
     int pageNum = currentPage;
     return items.sublist(pageNum * itemsPerPage,
         min(items.length, (pageNum + 1) * itemsPerPage));
@@ -108,6 +107,9 @@ class ListPaginate<T> {
 
   @override
   String toString() {
-    return 'ListPaginate(items: $items, minTileSize: $minTileSize, maxTileSize: $maxTileSize, height: $height, width: $width, currentPage: $currentPage, _itemsPerPage: $_itemsPerPage, _tileSize: $_tileSize, _numPages: $_numPages)';
+    return 'ListPaginate(items: $items, minTileSize: $minTileSize, '
+        'maxTileSize: $maxTileSize, height: $height, width: $width,'
+        ' currentPage: $currentPage, _itemsPerPage: $_itemsPerPage,'
+        ' _tileSize: $_tileSize, _numPages: $_numPages)';
   }
 }

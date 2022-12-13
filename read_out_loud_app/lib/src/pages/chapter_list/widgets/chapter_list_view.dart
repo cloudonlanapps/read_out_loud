@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:manage_content/manage_content.dart';
-import 'package:read_out_loud_app/src/pages/chapter_list/providers/paginate.dart';
+import 'package:read_out_loud_app/services/paginate.dart';
 
 import '../../chapter/page.dart';
-import '../providers/animate_state.dart';
+
 import '../providers/state_provider.dart';
 import 'chapter_view.dart';
 
@@ -43,7 +43,7 @@ class ListItemsState extends ConsumerState<ChapterListView> {
   void addItems(Size tileSize) async {
     items.clear();
     ref.read(isAnimatingProvider.notifier).isAnimating = true;
-    print("curr Page has ${widget.chapters.length} chapters");
+
     for (var item in widget.chapters) {
       if (_listKey.currentState == null) {
         return;
