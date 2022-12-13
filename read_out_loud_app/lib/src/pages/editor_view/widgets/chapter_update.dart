@@ -113,22 +113,11 @@ class ChapterUpdateState extends ConsumerState<ChapterUpdate>
                             child: ShowExistingWords(
                                 readonly: widget.readOnly,
                                 wordsFilename: widget.wordsFilename,
-                                newlyAddedWords: addedWords,
+                                addedWords: addedWords,
                                 deletedWords: deletedWords,
-                                onDeleteString: ((string) {
-                                  setState(() {
-                                    addedWords = addedWords
-                                        .where((element) => element != string)
-                                        .toList();
-                                  });
-                                }),
-                                onDeleteWord: (Word word) {
-                                  setState(() {
-                                    deletedWords = [
-                                      ...{...deletedWords, word}
-                                    ];
-                                  });
-                                }),
+                                onDeleteString: onDeleteString,
+                                onRestoreDeletedWord: onRestoreDeletedWord,
+                                onDeleteWord: onDeleteWord),
                           ),
                         ),
                       ),
@@ -137,34 +126,14 @@ class ChapterUpdateState extends ConsumerState<ChapterUpdate>
                         height: 50,
                         children: [
                           TextButton(
-                              onPressed: () async {
-                                await close();
-                              },
+                              onPressed: closeEditor,
                               child: const Text("Cancel")),
                           TextButton(
-                              onPressed: () async {
-                                final validate =
-                                    _formKey.currentState!.validate();
-                                if (validate) {
-                                  addedWords = [
-                                    ...{
-                                      ...addedWords,
-                                      ...wordsController.text
-                                          .split("\n")
-                                          .where((e) => e.isNotEmpty)
-                                          .toList()
-                                    }
-                                  ];
-                                  setState(() {});
-
-                                  await close();
-                                }
-                              },
+                              onPressed: addToList,
                               child: const Text("Add to List")),
                           if (isKeyboardVisible)
                             IconButton(
-                                onPressed: () =>
-                                    FocusScope.of(context).unfocus(),
+                                onPressed: () => closeKeyboard,
                                 icon: const Icon(Icons.keyboard_hide))
                           else
                             null
@@ -182,20 +151,7 @@ class ChapterUpdateState extends ConsumerState<ChapterUpdate>
                             null
                           else
                             TextButton(
-                                onPressed: deletedWords.isEmpty &&
-                                        addedWords.isEmpty
-                                    ? null
-                                    : () async {
-                                        await ref
-                                            .read(wordsProvider(
-                                                    widget.wordsFilename)
-                                                .notifier)
-                                            .updateWords(
-                                                wordListToRemove: deletedWords,
-                                                newWordStrings: addedWords);
-
-                                        widget.onClose();
-                                      },
+                                onPressed: needSave ? onSave : null,
                                 child: const Text("Save")),
                         ],
                       )
@@ -222,15 +178,64 @@ class ChapterUpdateState extends ConsumerState<ChapterUpdate>
     return true;
   }
 
-  close() async {
-    wordsController.clear();
-    if (isKeyboardVisible) {
-      FocusScope.of(context).unfocus();
+  addToList() async {
+    final validate = _formKey.currentState!.validate();
+    if (validate) {
+      addedWords = [
+        ...{
+          ...addedWords,
+          ...wordsController.text
+              .split("\n")
+              .where((e) => e.isNotEmpty)
+              .toList()
+        }
+      ];
+      setState(() {});
+
+      await closeEditor();
     }
-    //await Future.delayed(const Duration(microseconds: 1000));
+  }
+
+  closeEditor() async {
+    wordsController.clear();
+    closeKeyboard();
     setState(() {
       addingNewWords = !addingNewWords;
     });
+  }
+
+  closeKeyboard() {
+    if (isKeyboardVisible) {
+      FocusScope.of(context).unfocus();
+    }
+  }
+
+  onRestoreDeletedWord(Word word) {
+    setState(() {
+      deletedWords = deletedWords.where((element) => element != word).toList();
+    });
+  }
+
+  onDeleteString(string) {
+    setState(() {
+      addedWords = addedWords.where((element) => element != string).toList();
+    });
+  }
+
+  onDeleteWord(Word word) {
+    setState(() {
+      deletedWords = [
+        ...{...deletedWords, word}
+      ];
+    });
+  }
+
+  bool get needSave => !(deletedWords.isEmpty && addedWords.isEmpty);
+  onSave() async {
+    await ref.read(wordsProvider(widget.wordsFilename).notifier).updateWords(
+        wordListToRemove: deletedWords, newWordStrings: addedWords);
+
+    widget.onClose();
   }
 }
 
