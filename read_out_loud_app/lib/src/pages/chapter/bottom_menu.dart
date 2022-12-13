@@ -19,23 +19,24 @@ class BottomMenu extends ConsumerWidget {
     if (words == null) {
       return Container();
     }
-    const bool isAnimating = false;
+
     return CustomMenu(menuItems: [
-      (words.isFirst || playState != PlayState.idle)
+      (words.isFirst)
           ? null
-          : playState != PlayState.idle
-              ? null
-              : CustomMenuItem(
-                  alignment: Alignment.bottomCenter,
-                  icon: Icons.arrow_circle_left,
-                  onTap: () async {
-                    ref.read(sttRecordProvider.notifier).clearWord();
-                    await ref
-                        .read(
-                            wordsProvider(contentListConfig.filename).notifier)
-                        .prev();
-                  },
-                  title: 'Prev'),
+          : CustomMenuItem(
+              color: Colors.white,
+              alignment: Alignment.bottomCenter,
+              icon: Icons.arrow_circle_left,
+              onTap: playState != PlayState.idle
+                  ? null
+                  : () async {
+                      ref.read(sttRecordProvider.notifier).clearWord();
+                      await ref
+                          .read(wordsProvider(contentListConfig.filename)
+                              .notifier)
+                          .prev();
+                    },
+              title: 'Prev'),
       /* if ([PlayState.intro, PlayState.reading].contains(playState))
         CustomMenuItem(
             alignment: Alignment.bottomCenter,
@@ -46,21 +47,22 @@ class BottomMenu extends ConsumerWidget {
             title: 'Stop')
       else */
       null,
-      (words.isLast || isAnimating)
+      (words.isLast)
           ? null
-          : playState != PlayState.idle
-              ? null
-              : CustomMenuItem(
-                  alignment: Alignment.bottomCenter,
-                  icon: Icons.arrow_circle_right,
-                  onTap: () async {
-                    ref.read(sttRecordProvider.notifier).clearWord();
-                    await ref
-                        .read(
-                            wordsProvider(contentListConfig.filename).notifier)
-                        .next();
-                  },
-                  title: 'Next')
+          : CustomMenuItem(
+              color: Colors.white,
+              alignment: Alignment.bottomCenter,
+              icon: Icons.arrow_circle_right,
+              onTap: playState != PlayState.idle
+                  ? null
+                  : () async {
+                      ref.read(sttRecordProvider.notifier).clearWord();
+                      await ref
+                          .read(wordsProvider(contentListConfig.filename)
+                              .notifier)
+                          .next();
+                    },
+              title: 'Next')
     ]);
   }
 }

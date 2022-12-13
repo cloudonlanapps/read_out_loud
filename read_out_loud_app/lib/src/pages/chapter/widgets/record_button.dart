@@ -23,53 +23,53 @@ class RecordButton extends ConsumerWidget {
           height: 40,
           child: Stack(
             children: [
-              if ([PlayState.listening, PlayState.idle].contains(playState))
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    const SizedBoxDecorated(
-                      width: 40,
-                      height: 40,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  const SizedBoxDecorated(
+                    width: 40,
+                    height: 40,
+                  ),
+                  Container(
+                    width: 40,
+                    height: 40,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                            blurRadius: .26,
+                            spreadRadius: sttRecord.level * 2,
+                            color: Colors.grey)
+                      ],
+                      color: Colors.white,
+                      borderRadius: const BorderRadius.all(Radius.circular(50)),
                     ),
-                    Container(
-                      width: 40,
-                      height: 40,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                              blurRadius: .26,
-                              spreadRadius: sttRecord.level * 2,
-                              color: Colors.grey)
-                        ],
-                        color: Colors.white,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(50)),
-                      ),
-                      child: IconButton(
-                          icon: const Icon(Icons.mic),
-                          onPressed: () {
-                            if (!kIsWeb &&
-                                (Platform.isAndroid || Platform.isIOS)) {
-                              ref
-                                  .read(playWordStateProvider.notifier)
-                                  .sttListen();
-                            } else {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar((const SnackBar(
-                                content: Text(
-                                    "This platform don't support Speech to Text"),
-                              )));
-                            }
-                          }),
-                    ),
-                    const SizedBoxDecorated(
-                      width: 40,
-                      height: 40,
-                    ),
-                  ],
-                ),
-              if (playState == PlayState.idle)
+                    child: IconButton(
+                        icon: const Icon(Icons.mic),
+                        onPressed: (PlayState.idle != playState)
+                            ? null
+                            : () {
+                                if (!kIsWeb &&
+                                    (Platform.isAndroid || Platform.isIOS)) {
+                                  ref
+                                      .read(playWordStateProvider.notifier)
+                                      .sttListen();
+                                } else {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar((const SnackBar(
+                                    content: Text(
+                                        "This platform don't support Speech to Text"),
+                                  )));
+                                }
+                              }),
+                  ),
+                  const SizedBoxDecorated(
+                    width: 40,
+                    height: 40,
+                  ),
+                ],
+              ),
+              if (playState != PlayState.listening)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -101,7 +101,7 @@ class RecordButton extends ConsumerWidget {
           ),
         ),
         Container(
-          child: (playState != PlayState.idle)
+          child: (playState == PlayState.listening)
               ? null
               : Align(
                   alignment: Alignment.center,
