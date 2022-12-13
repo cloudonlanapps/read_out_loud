@@ -41,9 +41,7 @@ class _PlayWordState extends ConsumerState<PlayWord> {
   Widget build(BuildContext context) {
     final playState = ref.watch(playWordStateProvider);
     listener();
-    print(widget.size);
     double part = widget.size.height / 13;
-    print("part = $part");
     if (part < 35) {
       return const Center(child: Text("Too small screen to play"));
     }
