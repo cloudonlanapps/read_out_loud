@@ -47,49 +47,47 @@ class EnterNewWords extends StatelessWidget {
           ),
         ),
         Expanded(
-          child: Scrollbar(
-            child: TextFormField(
-              focusNode: focusNode,
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r"[a-zA-Z\r\n]")),
-              ],
-              expands: true,
-              decoration: InputDecoration(
-                label: const Text("Enter Words, one word per line"),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(
-                      width: 2, color: Colors.blueGrey), //<-- SEE HERE
-                  borderRadius: BorderRadius.circular(5.0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(
-                      width: 2, color: Colors.blueGrey), //<-- SEE HERE
-                  borderRadius: BorderRadius.circular(5.0),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(
-                      width: 2, color: Colors.red), //<-- SEE HERE
-                  borderRadius: BorderRadius.circular(5.0),
-                ),
-                focusedErrorBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(
-                      width: 2, color: Colors.red), //<-- SEE HERE
-                  borderRadius: BorderRadius.circular(5.0),
-                ),
+          child: TextFormField(
+            focusNode: focusNode,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r"[a-zA-Z\r\n]")),
+            ],
+            expands: true,
+            decoration: InputDecoration(
+              label: const Text("Enter Words, one word per line"),
+              enabledBorder: OutlineInputBorder(
+                borderSide: const BorderSide(
+                    width: 2, color: Colors.blueGrey), //<-- SEE HERE
+                borderRadius: BorderRadius.circular(5.0),
               ),
-              controller: controller,
-              minLines: null,
-              maxLines: null,
-              textAlign: TextAlign.start,
-              textAlignVertical: TextAlignVertical.top,
-              textInputAction: TextInputAction.newline,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
-                }
-                return null;
-              },
+              focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(
+                    width: 2, color: Colors.blueGrey), //<-- SEE HERE
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderSide: const BorderSide(
+                    width: 2, color: Colors.red), //<-- SEE HERE
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderSide: const BorderSide(
+                    width: 2, color: Colors.red), //<-- SEE HERE
+                borderRadius: BorderRadius.circular(5.0),
+              ),
             ),
+            controller: controller,
+            minLines: null,
+            maxLines: null,
+            textAlign: TextAlign.start,
+            textAlignVertical: TextAlignVertical.top,
+            textInputAction: TextInputAction.newline,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter some text';
+              }
+              return null;
+            },
           ),
         ),
       ],
