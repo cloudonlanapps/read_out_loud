@@ -6,6 +6,8 @@ import '../../../custom_widgets/menu3.dart';
 
 class EnterNewWords extends StatelessWidget {
   final Future<bool> Function(List<String>) onMultiWords;
+  final Function() onClearController;
+  final Function() onTextChanged;
 
   final TextEditingController controller;
   final FocusNode focusNode;
@@ -14,7 +16,9 @@ class EnterNewWords extends StatelessWidget {
     super.key,
     required this.controller,
     required this.onMultiWords,
+    required this.onClearController,
     required this.focusNode,
+    required this.onTextChanged,
   });
 
   @override
@@ -26,7 +30,12 @@ class EnterNewWords extends StatelessWidget {
           child: Menu3(
             height: 50,
             children: [
-              null,
+              if (controller.text.isEmpty)
+                null
+              else
+                TextButton(
+                    onPressed: onClearController,
+                    child: const Text("Clear", textAlign: TextAlign.start)),
               null,
               TextButton(
                   onPressed: () async {
@@ -36,10 +45,7 @@ class EnterNewWords extends StatelessWidget {
                         .split(RegExp(r"[\s\r\n]"));
                     await onMultiWords(words);
                   },
-                  child: const Text(
-                    "Paste",
-                    textAlign: TextAlign.end,
-                  )),
+                  child: const Text("Paste", textAlign: TextAlign.end)),
             ],
           ),
         ),
@@ -52,6 +58,7 @@ class EnterNewWords extends StatelessWidget {
             expands: true,
             decoration: InputDecoration(
               label: const Text("Enter Words, one word per line"),
+              alignLabelWithHint: true,
               enabledBorder: OutlineInputBorder(
                 borderSide: const BorderSide(
                     width: 2, color: Colors.blueGrey), //<-- SEE HERE
@@ -79,6 +86,7 @@ class EnterNewWords extends StatelessWidget {
             textAlign: TextAlign.start,
             textAlignVertical: TextAlignVertical.top,
             textInputAction: TextInputAction.newline,
+            onChanged: (_) => onTextChanged(),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter some text';

@@ -95,64 +95,45 @@ class ChapterCreateState extends ConsumerState<ChapterCreate>
                       ),
                       Expanded(
                           child: EnterNewWords(
-                        focusNode: wordsfocusNode,
-                        controller: wordsController,
-                        onMultiWords: ((List<String> words) async {
-                          var currText = wordsController.text;
-                          if (currText.isNotEmpty &&
-                              currText[currText.length - 1] != "\n") {
-                            currText = "$currText\n";
-                          }
-                          currText = "$currText${words.join("\n")}\n";
-                          setState(() {
-                            wordsController.text = currText;
-                            wordsController.selection =
-                                TextSelection.fromPosition(TextPosition(
-                                    offset: wordsController.text.length));
-                          });
-                          if (wordsfocusNode.canRequestFocus) {
-                            wordsfocusNode.requestFocus();
-                          }
-                          return true;
-                        }),
-                      )),
+                              focusNode: wordsfocusNode,
+                              controller: wordsController,
+                              onMultiWords: ((List<String> words) async {
+                                var currText = wordsController.text;
+                                if (currText.isNotEmpty &&
+                                    currText[currText.length - 1] != "\n") {
+                                  currText = "$currText\n";
+                                }
+                                currText = "$currText${words.join("\n")}\n";
+                                setState(() {
+                                  wordsController.text = currText;
+                                  wordsController.selection =
+                                      TextSelection.fromPosition(TextPosition(
+                                          offset: wordsController.text.length));
+                                });
+                                if (wordsfocusNode.canRequestFocus) {
+                                  wordsfocusNode.requestFocus();
+                                }
+                                return true;
+                              }),
+                              onTextChanged: () {
+                                setState(() {});
+                              },
+                              onClearController: () {
+                                setState(() {
+                                  wordsController.clear();
+                                });
+                              })),
                       Menu3(
                         height: 50,
                         children: [
                           TextButton(
-                            onPressed: widget.onClose,
-                            child: const Text("Cancel"),
-                          ),
+                              onPressed: widget.onClose,
+                              child: const Text("Cancel")),
                           TextButton(
-                              onPressed: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  context.pop();
-                                  String title = titleController.text;
-                                  Words words = Words(
-                                      title: title,
-                                      words: wordsController.text
-                                          .split("\n")
-                                          .where((e) => e.isNotEmpty)
-                                          .map((e) => Word.fromString(e))
-                                          .toList());
-
-                                  final fname = "$title.json";
-                                  await words.save(fname);
-                                  Chapter chapter =
-                                      Chapter(filename: fname, title: title);
-                                  await ref
-                                      .read(repositoryProvider("index.json")
-                                          .notifier)
-                                      .addChapter(widget.repository, chapter);
-                                }
-                              },
-                              child: const Text("Save")),
+                              onPressed: onSave, child: const Text("Save")),
                           if (isKeyboardVisible)
                             IconButton(
-                                color: Colors.blue,
-                                onPressed: () {
-                                  FocusScope.of(context).unfocus();
-                                },
+                                onPressed: closeKeyboard,
                                 icon: const Icon(Icons.keyboard_hide))
                           else
                             null
@@ -167,5 +148,36 @@ class ChapterCreateState extends ConsumerState<ChapterCreate>
         loading: () => const Center(
               child: CircularProgressIndicator(),
             ));
+  }
+
+  onSave() async {
+    if (_formKey.currentState!.validate()) {
+      context.pop();
+      String title = titleController.text;
+      List<String> newWords = [
+        ...{
+          ...wordsController.text
+              .split("\n")
+              .where((e) => e.isNotEmpty)
+              .toList()
+        }
+      ];
+      Words words = Words(
+          title: title,
+          words: newWords.map((e) => Word.fromString(e)).toList());
+
+      final fname = "$title.json";
+      await words.save(fname);
+      Chapter chapter = Chapter(filename: fname, title: title);
+      await ref
+          .read(repositoryProvider("index.json").notifier)
+          .addChapter(widget.repository, chapter);
+    }
+  }
+
+  closeKeyboard() {
+    if (isKeyboardVisible) {
+      FocusScope.of(context).unfocus();
+    }
   }
 }

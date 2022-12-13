@@ -101,10 +101,17 @@ class ChapterUpdateState extends ConsumerState<ChapterUpdate>
                     if (addingNewWords || isKeyboardVisible)
                       Expanded(
                           child: EnterNewWords(
-                        focusNode: wordsfocusNode,
-                        controller: wordsController,
-                        onMultiWords: onMultiWords,
-                      ))
+                              focusNode: wordsfocusNode,
+                              controller: wordsController,
+                              onMultiWords: onMultiWords,
+                              onTextChanged: () {
+                                setState(() {});
+                              },
+                              onClearController: () {
+                                setState(() {
+                                  wordsController.clear();
+                                });
+                              }))
                     else
                       Expanded(
                         child: SingleChildScrollView(

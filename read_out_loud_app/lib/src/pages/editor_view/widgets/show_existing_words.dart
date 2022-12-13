@@ -111,7 +111,7 @@ class ShowExistingWords extends ConsumerWidget {
                   elevation: 6.0,
                   shadowColor: Colors.grey[60],
                   padding: const EdgeInsets.all(8.0),
-                  onDeleted: readonly ? null : () {},
+                  onDeleted: readonly ? null : () => onRestoreDeletedWord(word),
                 ),
             ],
           ),
