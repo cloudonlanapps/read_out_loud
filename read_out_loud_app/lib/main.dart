@@ -41,7 +41,7 @@ void main() {
           AdvancedSettingsPage(),
           EditorPage(),
         ],
-        defaultIndex: 4,
+        defaultIndex: 0,
       )),
     ),
   );
