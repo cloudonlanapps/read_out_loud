@@ -19,6 +19,7 @@ class BottomMenu extends ConsumerWidget {
       (listProvider.isFirst || isAnimating)
           ? null
           : CustomMenuItem(
+              color: Colors.black,
               alignment: Alignment.bottomCenter,
               icon: Icons.arrow_circle_left,
               onTap: () async {
@@ -26,6 +27,7 @@ class BottomMenu extends ConsumerWidget {
               },
               title: 'Prev'),
       CustomMenuItem(
+          color: Colors.black,
           alignment: Alignment.bottomCenter,
           icon: Icons.density_medium,
           onTap: () {},
@@ -33,6 +35,7 @@ class BottomMenu extends ConsumerWidget {
       (listProvider.isLast || isAnimating)
           ? null
           : CustomMenuItem(
+              color: Colors.black,
               alignment: Alignment.bottomCenter,
               icon: Icons.arrow_circle_right,
               onTap: () async {

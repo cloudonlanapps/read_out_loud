@@ -36,10 +36,10 @@ class Background extends StatelessWidget {
                         colors: [
                           Colors.white,
                           Color.fromARGB(0xFF, 0xF0, 0xF0, 0xF0),
-                          Colors.yellow,
+                          Colors.orange,
                           Colors.red,
                           Colors.red,
-                          Colors.yellow,
+                          Colors.orange,
                           Color.fromARGB(0xFF, 0xF0, 0xF0, 0xF0),
                           Colors.white,
                         ])),

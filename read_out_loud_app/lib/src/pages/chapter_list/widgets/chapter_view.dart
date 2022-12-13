@@ -95,10 +95,12 @@ class ChapterView extends ConsumerWidget {
                     ),
                     width: 50,
                     height: tileSize.height,
-                    child: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Colors.blue.shade400,
-                    ),
+                    child: words == null
+                        ? null
+                        : Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.blue.shade400,
+                          ),
                   ),
                 ),
               ],

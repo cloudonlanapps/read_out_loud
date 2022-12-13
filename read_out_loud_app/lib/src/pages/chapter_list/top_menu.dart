@@ -12,6 +12,7 @@ class TopMenu extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return CustomMenu(menuItems: [
       CustomMenuItem(
+        color: Colors.black,
         alignment: Alignment.centerLeft,
         icon: Icons.arrow_back,
         onTap: onClose,
