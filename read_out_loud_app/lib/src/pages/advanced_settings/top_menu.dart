@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../custom_widgets/custom_menu.dart';
+import '../../custom_widgets/menu3.dart';
 
 class TopMenu extends ConsumerWidget {
   final Size size;
@@ -10,7 +11,8 @@ class TopMenu extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Row(
+    return Menu3(
+      height: 65,
       children: [
         CustomMenuButton(
           menuItem: CustomMenuItem(
@@ -19,18 +21,14 @@ class TopMenu extends ConsumerWidget {
             onTap: onClose,
           ),
         ),
-        const Expanded(
-          child: Center(
-            child: Text(
-              "Advanced Settings",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 40),
-            ),
+        Center(
+          child: Text(
+            "Advanced",
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodyLarge,
           ),
         ),
+        null
       ],
     );
   }
