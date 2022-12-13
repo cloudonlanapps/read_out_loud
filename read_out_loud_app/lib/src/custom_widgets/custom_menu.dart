@@ -33,22 +33,30 @@ class CustomMenuButton extends StatelessWidget {
         //splashColor: const Color.fromARGB(128, 255, 0, 0),
         onTap: menuItem.onTap,
         onLongPress: menuItem.onLongPress,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            if (menuItem.icon != null)
-              Icon(menuItem.icon!, size: 40, color: color),
-            if (menuItem.title != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 2),
-                child: Text(
-                  menuItem.title!,
-                  style: TextStyle(color: color, fontSize: 12),
+        child: SizedBox(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              if (menuItem.icon != null)
+                Expanded(
+                    child: FittedBox(
+                        child: Icon(menuItem.icon!, size: 40, color: color))),
+              if (menuItem.title != null)
+                Expanded(
+                  child: FittedBox(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 2),
+                      child: Text(
+                        menuItem.title!,
+                        style: TextStyle(color: color, fontSize: 12),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
       ),
     );

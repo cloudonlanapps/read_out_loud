@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:manage_content/manage_content.dart';
 import 'package:read_out_loud_app/services/paginate.dart';
 
+import '../../../custom_widgets/sizedbox_decorated.dart';
 import '../../chapter/page.dart';
 
 import '../providers/state_provider.dart';
@@ -108,44 +109,6 @@ class ListItemsState extends ConsumerState<ChapterListView> {
               }),
         ),
       ],
-    );
-  }
-}
-
-const bool debug = true;
-
-class SizedBoxDecorated extends StatelessWidget {
-  final double width;
-  final double height;
-  final Widget? child;
-  final bool debug;
-  const SizedBoxDecorated(
-      {super.key,
-      required this.width,
-      required this.height,
-      this.child,
-      this.debug = false});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: height,
-      width: width,
-      child: debug
-          ? DecoratedBox(
-              decoration: BoxDecoration(border: Border.all()),
-              child: Stack(
-                children: [
-                  if (child != null) child!,
-                  Positioned(
-                    bottom: 4,
-                    right: 4,
-                    child: Text("${width}x$height"),
-                  ),
-                ],
-              ),
-            )
-          : child,
     );
   }
 }

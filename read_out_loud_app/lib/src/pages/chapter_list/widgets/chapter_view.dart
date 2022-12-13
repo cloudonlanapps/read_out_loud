@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manage_content/manage_content.dart';
 
 import '../../../custom_widgets/progress_bar.dart';
+import '../../../custom_widgets/sizedbox_decorated.dart';
 import 'progress_corner.dart';
 
 class ChapterView extends ConsumerWidget {
@@ -49,7 +50,7 @@ class ChapterView extends ConsumerWidget {
                 ),
                 GestureDetector(
                   onTap: words == null ? null : () => onSelectItem(),
-                  child: SizedBox(
+                  child: SizedBoxDecorated(
                     width: tileSize.width - 100,
                     height: tileSize.height,
                     child: Padding(

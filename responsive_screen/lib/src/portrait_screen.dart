@@ -15,9 +15,10 @@ class PortraitScreen extends StatelessWidget {
     this.bottomMenubuilder,
   });
 
-  double get hTop => ResponsiveScreen.topHeight(topMenuBuilder != null);
-  double get hBottom =>
-      ResponsiveScreen.bottomHeight(bottomMenubuilder != null);
+  double get hTop =>
+      ResponsiveScreen.topHeight(size: size, isTop: topMenuBuilder != null);
+  double get hBottom => ResponsiveScreen.bottomHeight(
+      size: size, isBottom: bottomMenubuilder != null);
   double get hContent => ResponsiveScreen.contentHeight(
       size: size,
       isBottom: bottomMenubuilder != null,

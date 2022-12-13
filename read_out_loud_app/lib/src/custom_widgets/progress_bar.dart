@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'sizedbox_decorated.dart';
+
 class ProgressBar extends StatelessWidget {
   final Size size;
 
@@ -36,7 +38,7 @@ class ProgressBar extends StatelessWidget {
         children: [
           Container(
               decoration: BoxDecoration(color: primaryColor), //Customize:
-              child: SizedBox.fromSize(size: size1)),
+              child: SizedBoxDecorated.fromSize(size: size1)),
           Container(
               decoration: BoxDecoration(color: secondaryColor),
               child: SizedBox.fromSize(size: size2)),

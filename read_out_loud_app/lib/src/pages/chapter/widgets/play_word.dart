@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manage_content/manage_content.dart';
 import 'package:read_out_loud_app/src/tts/stt_record.dart';
 
+import '../../../custom_widgets/sizedbox_decorated.dart';
 import 'intro_widget.dart';
 import 'main_word.dart';
 import 'record_button.dart';
@@ -61,12 +62,16 @@ class _PlayWordState extends ConsumerState<PlayWord> {
             child: Column(
               //mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(
+                SizedBoxDecorated(
                     height: part * 2,
                     child: Align(
-                        alignment: Alignment.topRight,
-                        child: Score(words: widget.words))),
-                SizedBox(
+                      alignment: Alignment.topRight,
+                      child: FittedBox(
+                        fit: BoxFit.fitHeight,
+                        child: Score(words: widget.words),
+                      ),
+                    )),
+                SizedBoxDecorated(
                   height: part * 4,
                 ),
                 Container(
@@ -89,7 +94,7 @@ class _PlayWordState extends ConsumerState<PlayWord> {
                   ),
                 ),
                 if (playState == PlayState.intro)
-                  SizedBox(
+                  SizedBoxDecorated(
                     height: part * 4,
                     width: widget.size.width,
                     child: Align(
@@ -97,7 +102,7 @@ class _PlayWordState extends ConsumerState<PlayWord> {
                         child: IntroWidget(introText: introText)),
                   )
                 else ...[
-                  SizedBox(
+                  SizedBoxDecorated(
                       height: part * 2,
                       width: widget.size.width,
                       child: Padding(
@@ -106,7 +111,7 @@ class _PlayWordState extends ConsumerState<PlayWord> {
                           highlight: widget.word.original,
                         ),
                       )),
-                  SizedBox(
+                  SizedBoxDecorated(
                       height: part * 2,
                       width: widget.size.width,
                       child: Padding(

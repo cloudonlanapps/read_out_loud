@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:manage_content/manage_content.dart';
 
 import '../../../custom_widgets/custom_menu.dart';
+import '../../../custom_widgets/sizedbox_decorated.dart';
 import 'new_title.dart';
 import 'enter_new_words.dart';
 
@@ -112,7 +113,7 @@ class ChapterCreateState extends ConsumerState<ChapterCreate>
                           return true;
                         }),
                       )),
-                      SizedBox(
+                      SizedBoxDecorated(
                         height: 50,
                         child: CustomMenu(
                           menuItems: [

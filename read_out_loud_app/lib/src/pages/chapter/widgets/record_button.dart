@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:read_out_loud_app/src/tts/stt_record.dart';
 
+import '../../../custom_widgets/sizedbox_decorated.dart';
 import '../providers/state_provider.dart';
 
 class RecordButton extends ConsumerWidget {
@@ -15,7 +16,7 @@ class RecordButton extends ConsumerWidget {
     final playState = ref.watch(playWordStateProvider);
     return Column(
       children: [
-        SizedBox(
+        SizedBoxDecorated(
           height: 40,
           child: Stack(
             children: [
@@ -23,7 +24,7 @@ class RecordButton extends ConsumerWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    const SizedBox(
+                    const SizedBoxDecorated(
                       width: 40,
                       height: 40,
                     ),
@@ -50,7 +51,7 @@ class RecordButton extends ConsumerWidget {
                                 .sttListen();
                           }),
                     ),
-                    const SizedBox(
+                    const SizedBoxDecorated(
                       width: 40,
                       height: 40,
                     ),
@@ -62,7 +63,7 @@ class RecordButton extends ConsumerWidget {
                   children: [
                     Transform.translate(
                       offset: const Offset(8, 0),
-                      child: SizedBox(
+                      child: SizedBoxDecorated(
                         //margin: const EdgeInsets.all(4.0),
                         width: 40,
                         height: 40,
@@ -71,7 +72,7 @@ class RecordButton extends ConsumerWidget {
                             "assets/42193-hand-pointing-icon.json"),
                       ),
                     ),
-                    const SizedBox(
+                    const SizedBoxDecorated(
                       width: 40,
                       height: 40,
                     ),

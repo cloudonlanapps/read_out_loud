@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import 'landscape_screen.dart';
@@ -17,11 +19,15 @@ class ResponsiveScreen extends StatelessWidget {
 
   static double contentHeight(
       {required Size size, required bool isBottom, required bool isTop}) {
-    return size.height - topHeight(isTop) - bottomHeight(isBottom);
+    return size.height -
+        topHeight(size: size, isTop: isTop) -
+        bottomHeight(size: size, isBottom: isBottom);
   }
 
-  static double topHeight(bool isTop) => isTop ? 65 : 0;
-  static double bottomHeight(bool isBottom) => isBottom ? 65 : 0;
+  static double topHeight({required Size size, required bool isTop}) =>
+      isTop ? max((size.height * 0.1), 65) : 0;
+  static double bottomHeight({required Size size, required bool isBottom}) =>
+      isBottom ? max((size.height * 0.1), 65) : 0;
 
   @override
   Widget build(BuildContext context) {

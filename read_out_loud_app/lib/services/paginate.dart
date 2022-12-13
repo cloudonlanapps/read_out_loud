@@ -4,9 +4,6 @@ import 'dart:math';
 class ListPaginate<T> {
   final List<T> items;
 
-  final double minTileSize;
-  final double maxTileSize;
-
   final double height;
   final double width;
 
@@ -26,8 +23,6 @@ class ListPaginate<T> {
       {required this.items,
       required this.width,
       required this.height,
-      this.minTileSize = 50,
-      this.maxTileSize = 75,
       this.currentPage = 0,
       int? itemsPerPage,
       double? tileSize}) {
@@ -45,7 +40,9 @@ class ListPaginate<T> {
     } else {
       double tileSizeLocal;
       int itemsPerPageLocal = 0;
-
+      double minTileSize = 55;
+      double maxTileSize = max(55, (height ~/ 60 * 5).toDouble());
+      print("$height $maxTileSize");
       for (tileSizeLocal = maxTileSize;
           tileSizeLocal > minTileSize - 1;
           tileSizeLocal -= 5) {
@@ -57,6 +54,7 @@ class ListPaginate<T> {
       }
 
       _itemsPerPage = itemsPerPageLocal;
+      print(_itemsPerPage);
       _tileSize = tileSizeLocal;
     }
     if (_itemsPerPage > 0) {
@@ -77,8 +75,6 @@ class ListPaginate<T> {
   }) {
     return ListPaginate<T>(
         items: items,
-        minTileSize: minTileSize,
-        maxTileSize: maxTileSize,
         width: width,
         height: height,
         currentPage: currentPage ?? this.currentPage,
@@ -107,8 +103,8 @@ class ListPaginate<T> {
 
   @override
   String toString() {
-    return 'ListPaginate(items: $items, minTileSize: $minTileSize, '
-        'maxTileSize: $maxTileSize, height: $height, width: $width,'
+    return 'ListPaginate(items: $items, '
+        'height: $height, width: $width,'
         ' currentPage: $currentPage, _itemsPerPage: $_itemsPerPage,'
         ' _tileSize: $_tileSize, _numPages: $_numPages)';
   }
