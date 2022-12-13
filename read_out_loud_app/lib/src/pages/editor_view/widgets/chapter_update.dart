@@ -84,6 +84,7 @@ class ChapterUpdateState extends ConsumerState<ChapterUpdate>
                       ),
                     if (addingNewWords)
                       Menu3(
+                        height: 65,
                         children: [
                           TextButton(
                               onPressed: () {
@@ -116,10 +117,12 @@ class ChapterUpdateState extends ConsumerState<ChapterUpdate>
                     else ...[
                       const Spacer(),
                       Menu3(
+                        height: 65,
                         children: [
                           TextButton(
                               onPressed: () {},
                               child: const Text("Clear all words")),
+                          null,
                           TextButton(
                               onPressed: () {
                                 setState(() {
