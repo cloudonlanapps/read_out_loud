@@ -42,10 +42,15 @@ class CustomMenuButton extends StatelessWidget {
               Icon(menuItem.icon!, size: 40, color: color),
             if (menuItem.title != null)
               Padding(
-                padding: const EdgeInsets.only(top: 2),
+                padding: (menuItem.icon != null)
+                    ? EdgeInsets.zero
+                    : const EdgeInsets.only(top: 2),
                 child: Text(
                   menuItem.title!,
-                  style: TextStyle(color: color, fontSize: 12),
+                  style: Theme.of(context)
+                      .textTheme
+                      .labelLarge!
+                      .copyWith(color: color),
                 ),
               ),
           ],

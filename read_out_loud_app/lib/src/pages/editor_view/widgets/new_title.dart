@@ -21,8 +21,14 @@ class NewTitle extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
+        Center(
+            child: Text(
+          controller.text.isNotEmpty ? controller.text : "Untitled",
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.bodyLarge,
+        )),
         Padding(
-          padding: const EdgeInsets.only(),
+          padding: const EdgeInsets.only(top: 12),
           child: TextFormField(
             focusNode: focusNode,
             inputFormatters: [

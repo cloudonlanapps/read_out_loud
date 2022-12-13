@@ -25,7 +25,7 @@ void main() {
     //DeviceOrientation.landscapeRight,
   ]);
 
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   return runApp(
     DevicePreview(
       enabled: Platform.isMacOS ? !kReleaseMode : false,

@@ -47,11 +47,11 @@ class ScreenBackground extends StatelessWidget {
             borderRadius: borderRadius,
           ),
           SafeArea(
-            minimum: EdgeInsets.all(padding),
+            //minimum: EdgeInsets.all(padding),
             child: Container(
                 decoration: BoxDecoration(
                   //color: Colors.white,
-                  borderRadius: BorderRadius.circular(borderRadius),
+                  //borderRadius: BorderRadius.circular(borderRadius),
                   border: viewConfig.showContentBorder ? Border.all() : null,
                 ),
                 child: builder(context)),
