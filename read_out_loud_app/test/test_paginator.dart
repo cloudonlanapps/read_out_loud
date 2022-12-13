@@ -10,6 +10,7 @@ void main() {
     double height = (tileCount + 1.5) * tileHeight;
 
     final ListPaginate<int> paginator = ListPaginate<int>(
+        width: 100,
         height: height,
         items: List.generate(totalCount, (index) => index),
         minTileSize: 45,
