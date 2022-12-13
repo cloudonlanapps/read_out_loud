@@ -31,7 +31,7 @@ void main() {
       enabled: Platform.isMacOS ? !kReleaseMode : false,
       builder: (context) => ProviderScope(
           child: RouteManager(
-        appName: "Read Out Loud",
+        appName: "ReadOutLoud",
         pageRoutes: [
           MainPage(),
           ContentListPage(),

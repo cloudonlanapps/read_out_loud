@@ -10,12 +10,21 @@ class TopMenu extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return CustomMenu(menuItems: [
-      CustomMenuItem(
-        alignment: Alignment.centerRight,
-        icon: Icons.settings,
-        onTap: onSettings,
-      ),
-    ]);
+    double verticalPad = size.height > 65 ? (size.height - 65) / 2 : 0;
+
+    return Padding(
+      padding:
+          EdgeInsets.symmetric(vertical: verticalPad + 8.0, horizontal: 8.0),
+      child: CustomMenu(menuItems: [
+        null,
+        null,
+        CustomMenuItem(
+          color: Colors.black,
+          alignment: Alignment.centerRight,
+          icon: Icons.settings,
+          onTap: onSettings,
+        ),
+      ]),
+    );
   }
 }

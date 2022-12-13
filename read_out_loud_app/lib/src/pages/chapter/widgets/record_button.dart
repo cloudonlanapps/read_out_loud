@@ -38,8 +38,16 @@ class RecordButton extends ConsumerWidget {
                       boxShadow: [
                         BoxShadow(
                             blurRadius: .26,
+                            spreadRadius: sttRecord.level * 1,
+                            color: Colors.red),
+                        BoxShadow(
+                            blurRadius: .26,
                             spreadRadius: sttRecord.level * 2,
-                            color: Colors.grey)
+                            color: Colors.lightBlue.withOpacity(0.5)),
+                        BoxShadow(
+                            blurRadius: .26,
+                            spreadRadius: sttRecord.level * 3,
+                            color: Colors.blue.withOpacity(0.3))
                       ],
                       color: Colors.white,
                       borderRadius: const BorderRadius.all(Radius.circular(50)),

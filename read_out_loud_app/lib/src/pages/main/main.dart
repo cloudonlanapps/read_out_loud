@@ -8,14 +8,11 @@ class MainContent extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const Center(
+    return Center(
       child: Text(
         'Ready to Play?',
         textAlign: TextAlign.center,
-        style: TextStyle(
-          fontSize: 55,
-          height: 1,
-        ),
+        style: Theme.of(context).textTheme.bodyLarge,
       ),
     );
   }

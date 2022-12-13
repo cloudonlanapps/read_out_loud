@@ -19,50 +19,54 @@ class BottomMenu extends ConsumerWidget {
     if (words == null) {
       return Container();
     }
+    double verticalPad = size.height > 50 ? (size.height - 65) / 2 : 0;
 
-    return CustomMenu(menuItems: [
-      (words.isFirst)
-          ? null
-          : CustomMenuItem(
-              color: Colors.white,
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: verticalPad),
+      child: CustomMenu(menuItems: [
+        (words.isFirst)
+            ? null
+            : CustomMenuItem(
+                color: Colors.white,
+                alignment: Alignment.bottomCenter,
+                icon: Icons.arrow_circle_left,
+                onTap: playState != PlayState.idle
+                    ? null
+                    : () async {
+                        ref.read(sttRecordProvider.notifier).clearWord();
+                        await ref
+                            .read(wordsProvider(contentListConfig.filename)
+                                .notifier)
+                            .prev();
+                      },
+                title: 'Prev'),
+        /* if ([PlayState.intro, PlayState.reading].contains(playState))
+          CustomMenuItem(
               alignment: Alignment.bottomCenter,
-              icon: Icons.arrow_circle_left,
-              onTap: playState != PlayState.idle
-                  ? null
-                  : () async {
-                      ref.read(sttRecordProvider.notifier).clearWord();
-                      await ref
-                          .read(wordsProvider(contentListConfig.filename)
-                              .notifier)
-                          .prev();
-                    },
-              title: 'Prev'),
-      /* if ([PlayState.intro, PlayState.reading].contains(playState))
-        CustomMenuItem(
-            alignment: Alignment.bottomCenter,
-            icon: Icons.stop,
-            onTap: () async {
-              await ref.watch(ttsSpeakerProvider.notifier).stop();
-            },
-            title: 'Stop')
-      else */
-      null,
-      (words.isLast)
-          ? null
-          : CustomMenuItem(
-              color: Colors.white,
-              alignment: Alignment.bottomCenter,
-              icon: Icons.arrow_circle_right,
-              onTap: playState != PlayState.idle
-                  ? null
-                  : () async {
-                      ref.read(sttRecordProvider.notifier).clearWord();
-                      await ref
-                          .read(wordsProvider(contentListConfig.filename)
-                              .notifier)
-                          .next();
-                    },
-              title: 'Next')
-    ]);
+              icon: Icons.stop,
+              onTap: () async {
+                await ref.watch(ttsSpeakerProvider.notifier).stop();
+              },
+              title: 'Stop')
+        else */
+        null,
+        (words.isLast)
+            ? null
+            : CustomMenuItem(
+                color: Colors.white,
+                alignment: Alignment.bottomCenter,
+                icon: Icons.arrow_circle_right,
+                onTap: playState != PlayState.idle
+                    ? null
+                    : () async {
+                        ref.read(sttRecordProvider.notifier).clearWord();
+                        await ref
+                            .read(wordsProvider(contentListConfig.filename)
+                                .notifier)
+                            .next();
+                      },
+                title: 'Next')
+      ]),
+    );
   }
 }
