@@ -83,14 +83,11 @@ class WordsNotifier extends StateNotifier<Words?> {
     }
   }
 
-  Future<void> addMoreWords(List<String> newWordStrings) async {
-    final Words? updated = state?.addMoreWords(newWordStrings);
-    await updated?.save(filename);
-    state = updated;
-  }
-
-  Future<void> removeWords(List<Word> wordListToRemove) async {
-    final Words? updated = state?.deleteWords(wordListToRemove);
+  Future<void> updateWords(
+      {required List<Word> wordListToRemove,
+      required List<String> newWordStrings}) async {
+    final Words? updated = state?.updateWords(
+        wordListToRemove: wordListToRemove, newWordStrings: newWordStrings);
     await updated?.save(filename);
     state = updated;
   }

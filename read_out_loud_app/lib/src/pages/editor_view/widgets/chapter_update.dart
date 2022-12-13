@@ -4,14 +4,20 @@ import 'package:manage_content/manage_content.dart';
 
 import '../../../custom_widgets/menu3.dart';
 import 'enter_new_words.dart';
+import 'new_title.dart';
 import 'show_existing_words.dart';
 
 class ChapterUpdate extends ConsumerStatefulWidget {
+  final Function() onClose;
   final String wordsFilename;
 
   final bool readOnly;
-  const ChapterUpdate(
-      {super.key, required this.wordsFilename, required this.readOnly});
+  const ChapterUpdate({
+    super.key,
+    required this.wordsFilename,
+    required this.readOnly,
+    required this.onClose,
+  });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => ChapterUpdateState();
@@ -25,6 +31,8 @@ class ChapterUpdateState extends ConsumerState<ChapterUpdate>
   late final FocusNode wordsfocusNode;
   var isKeyboardVisible = false;
   late bool addingNewWords;
+  List<Word> deletedWords = [];
+  List<String> addedWords = [];
 
   @override
   void initState() {
@@ -67,7 +75,30 @@ class ChapterUpdateState extends ConsumerState<ChapterUpdate>
                 key: _formKey,
                 child: Column(
                   children: [
-                    if (addingNewWords)
+                    ChapterTitle(
+                      readonly: true,
+                      title: ref.watch(wordsProvider(widget.wordsFilename)
+                          .select((value) => value?.title ?? "")),
+                    ),
+                    if (!addingNewWords)
+                      Menu3(
+                        height: 50,
+                        children: [
+                          null,
+                          null,
+                          if (widget.readOnly)
+                            null
+                          else
+                            TextButton(
+                                onPressed: () {
+                                  setState(() {
+                                    addingNewWords = !addingNewWords;
+                                  });
+                                },
+                                child: const Text("Add more words")),
+                        ],
+                      ),
+                    if (addingNewWords || isKeyboardVisible)
                       Expanded(
                           child: EnterNewWords(
                         focusNode: wordsfocusNode,
@@ -75,61 +106,97 @@ class ChapterUpdateState extends ConsumerState<ChapterUpdate>
                         onMultiWords: onMultiWords,
                       ))
                     else
-                      Container(
-                        padding: const EdgeInsets.all(16.0),
-                        child: ShowExistingWords(
-                          readonly: widget.readOnly,
-                          wordsFilename: widget.wordsFilename,
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Container(
+                            padding: const EdgeInsets.all(16.0),
+                            child: ShowExistingWords(
+                                readonly: widget.readOnly,
+                                wordsFilename: widget.wordsFilename,
+                                newlyAddedWords: addedWords,
+                                deletedWords: deletedWords,
+                                onDeleteString: ((string) {
+                                  setState(() {
+                                    addedWords = addedWords
+                                        .where((element) => element != string)
+                                        .toList();
+                                  });
+                                }),
+                                onDeleteWord: (Word word) {
+                                  setState(() {
+                                    deletedWords = [
+                                      ...{...deletedWords, word}
+                                    ];
+                                  });
+                                }),
+                          ),
                         ),
                       ),
                     if (addingNewWords)
                       Menu3(
-                        height: 65,
+                        height: 50,
                         children: [
                           TextButton(
-                              onPressed: () {
-                                setState(() {
-                                  addingNewWords = !addingNewWords;
-                                });
+                              onPressed: () async {
+                                await close();
                               },
                               child: const Text("Cancel")),
                           TextButton(
                               onPressed: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  await ref
-                                      .read(wordsProvider(widget.wordsFilename)
-                                          .notifier)
-                                      .addMoreWords(wordsController.text
+                                final validate =
+                                    _formKey.currentState!.validate();
+                                if (validate) {
+                                  addedWords = [
+                                    ...{
+                                      ...addedWords,
+                                      ...wordsController.text
                                           .split("\n")
                                           .where((e) => e.isNotEmpty)
-                                          .toList());
+                                          .toList()
+                                    }
+                                  ];
+                                  setState(() {});
+
+                                  await close();
                                 }
                               },
                               child: const Text("Add Words")),
-                          (!isKeyboardVisible)
-                              ? null
-                              : IconButton(
-                                  onPressed: () =>
-                                      FocusScope.of(context).unfocus(),
-                                  icon: const Icon(Icons.keyboard_hide))
+                          if (isKeyboardVisible)
+                            IconButton(
+                                onPressed: () =>
+                                    FocusScope.of(context).unfocus(),
+                                icon: const Icon(Icons.keyboard_hide))
+                          else
+                            null
                         ],
-                      )
-                    else ...[
-                      const Spacer(),
+                      ),
+                    if (!addingNewWords) ...[
                       Menu3(
-                        height: 65,
+                        height: 50,
                         children: [
                           TextButton(
-                              onPressed: () {},
-                              child: const Text("Clear all words")),
+                              onPressed: widget.onClose,
+                              child: Text(widget.readOnly ? "Done" : "Cancel")),
                           null,
-                          TextButton(
-                              onPressed: () {
-                                setState(() {
-                                  addingNewWords = !addingNewWords;
-                                });
-                              },
-                              child: const Text("Add more words")),
+                          if (widget.readOnly)
+                            null
+                          else
+                            TextButton(
+                                onPressed: deletedWords.isEmpty &&
+                                        addedWords.isEmpty
+                                    ? null
+                                    : () async {
+                                        await ref
+                                            .read(wordsProvider(
+                                                    widget.wordsFilename)
+                                                .notifier)
+                                            .updateWords(
+                                                wordListToRemove: deletedWords,
+                                                newWordStrings: addedWords);
+
+                                        widget.onClose();
+                                      },
+                                child: const Text("Save")),
                         ],
                       )
                     ]
@@ -153,6 +220,17 @@ class ChapterUpdateState extends ConsumerState<ChapterUpdate>
     setState(() {});
 
     return true;
+  }
+
+  close() async {
+    wordsController.clear();
+    if (isKeyboardVisible) {
+      FocusScope.of(context).unfocus();
+    }
+    //await Future.delayed(const Duration(microseconds: 1000));
+    setState(() {
+      addingNewWords = !addingNewWords;
+    });
   }
 }
 

@@ -6,15 +6,11 @@ import 'widgets/chapter_create.dart';
 import 'widgets/chapter_update.dart';
 
 class MainContent extends ConsumerWidget {
-  final Size size;
   final String filename;
   final int? index;
-  const MainContent({
-    super.key,
-    required this.filename,
-    this.index,
-    required this.size,
-  });
+  final Function() onClose;
+  const MainContent(
+      {super.key, required this.filename, this.index, required this.onClose});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -32,6 +28,7 @@ class MainContent extends ConsumerWidget {
               child: index == null
                   ? ChapterCreate(
                       repository: repository,
+                      onClose: onClose,
                     )
                   : FutureBuilder(
                       future: ContentStorage.hasAsset(
@@ -41,10 +38,10 @@ class MainContent extends ConsumerWidget {
                             !snapshot.hasData || snapshot.data as bool;
 
                         return ChapterUpdate(
-                          key: ObjectKey(repository.chapters[index!]),
-                          wordsFilename: repository.chapters[index!].filename,
-                          readOnly: readOnly,
-                        );
+                            key: ObjectKey(repository.chapters[index!]),
+                            wordsFilename: repository.chapters[index!].filename,
+                            readOnly: readOnly,
+                            onClose: onClose);
                       },
                     ),
             ),

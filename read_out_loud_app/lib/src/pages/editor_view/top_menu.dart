@@ -35,14 +35,6 @@ class TopMenu extends ConsumerWidget {
             onTap: onClose,
           ),
         ),
-        Expanded(
-            child: Center(
-                child: Text(
-          title,
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 40),
-        ))),
       ],
     );
   }

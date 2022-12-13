@@ -127,26 +127,31 @@ class Words {
     return copyWith(words: wordList);
   }
 
-  Word getWordByString(String string) {
+  static Word getWordByString(Words words, String string) {
     try {
-      return _words.where((element) => element.original == string).first;
+      return words._words.where((element) => element.original == string).first;
     } catch (e) {
       return Word.fromString(string);
     }
   }
 
-  Words addMoreWords(List<String> newWords) {
-    List<String> allWordsOriginal =
-        {..._words.map((e) => e.original).toList(), ...newWords}.toList();
+  updateWords(
+      {required List<Word> wordListToRemove,
+      required List<String> newWordStrings}) {
+    final afterDelete = copyWith(
+        words: _words
+            .where((element) => !wordListToRemove.contains(element))
+            .toList());
 
-    return copyWith(
-        words: allWordsOriginal.map((e) => getWordByString(e)).toList());
-  }
+    List<String> allWordsOriginal = {
+      ...afterDelete._words.map((e) => e.original).toList(),
+      ...newWordStrings
+    }.toList();
 
-  Words deleteWords(List<Word> wordsList) {
-    return copyWith(
-        words:
-            _words.where((element) => !wordsList.contains(element)).toList());
+    return afterDelete.copyWith(
+        words: allWordsOriginal
+            .map((e) => getWordByString(afterDelete, e))
+            .toList());
   }
 
   Words newTitle(String title) {

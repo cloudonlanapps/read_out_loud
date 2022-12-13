@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../../../services/clipboard/clipboard.dart';
+import '../../../custom_widgets/menu3.dart';
 
 class EnterNewWords extends StatelessWidget {
   final Future<bool> Function(List<String>) onMultiWords;
@@ -22,9 +23,11 @@ class EnterNewWords extends StatelessWidget {
       children: [
         Align(
           alignment: Alignment.centerRight,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+          child: Menu3(
+            height: 50,
             children: [
+              null,
+              null,
               TextButton(
                   onPressed: () async {
                     final text = await ClipboardManager.paste();
@@ -37,12 +40,6 @@ class EnterNewWords extends StatelessWidget {
                     "Paste",
                     textAlign: TextAlign.end,
                   )),
-              /* TextButton(
-                  onPressed: () {},
-                  child: const Text(
-                    "Import",
-                    textAlign: TextAlign.end,
-                  )), */
             ],
           ),
         ),

@@ -4,17 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:manage_content/manage_content.dart';
+import 'package:read_out_loud_app/src/custom_widgets/menu3.dart';
 
-import '../../../custom_widgets/custom_menu.dart';
-import '../../../custom_widgets/sizedbox_decorated.dart';
 import 'new_title.dart';
 import 'enter_new_words.dart';
 
 class ChapterCreate extends ConsumerStatefulWidget {
+  final Function() onClose;
   final Repository repository;
   const ChapterCreate({
     super.key,
     required this.repository,
+    required this.onClose,
   });
 
   @override
@@ -77,7 +78,9 @@ class ChapterCreateState extends ConsumerState<ChapterCreate>
                   },
                   child: Column(
                     children: [
-                      NewTitle(
+                      ChapterTitle(
+                        readonly: false,
+                        title: titleController.text,
                         controller: titleController,
                         focusNode: titlefocusNode,
                         onValidateFileName: ((fname) {
@@ -113,46 +116,47 @@ class ChapterCreateState extends ConsumerState<ChapterCreate>
                           return true;
                         }),
                       )),
-                      SizedBoxDecorated(
+                      Menu3(
                         height: 50,
-                        child: CustomMenu(
-                          menuItems: [
-                            null,
-                            CustomMenuItem(
-                                color: Colors.blue,
-                                onTap: () async {
-                                  if (_formKey.currentState!.validate()) {
-                                    context.pop();
-                                    String title = titleController.text;
-                                    Words words = Words(
-                                        title: title,
-                                        words: wordsController.text
-                                            .split("\n")
-                                            .where((e) => e.isNotEmpty)
-                                            .map((e) => Word.fromString(e))
-                                            .toList());
+                        children: [
+                          TextButton(
+                            onPressed: widget.onClose,
+                            child: const Text("Cancel"),
+                          ),
+                          TextButton(
+                              onPressed: () async {
+                                if (_formKey.currentState!.validate()) {
+                                  context.pop();
+                                  String title = titleController.text;
+                                  Words words = Words(
+                                      title: title,
+                                      words: wordsController.text
+                                          .split("\n")
+                                          .where((e) => e.isNotEmpty)
+                                          .map((e) => Word.fromString(e))
+                                          .toList());
 
-                                    final fname = "$title.json";
-                                    await words.save(fname);
-                                    Chapter chapter =
-                                        Chapter(filename: fname, title: title);
-                                    await ref
-                                        .read(repositoryProvider("index.json")
-                                            .notifier)
-                                        .addChapter(widget.repository, chapter);
-                                  }
+                                  final fname = "$title.json";
+                                  await words.save(fname);
+                                  Chapter chapter =
+                                      Chapter(filename: fname, title: title);
+                                  await ref
+                                      .read(repositoryProvider("index.json")
+                                          .notifier)
+                                      .addChapter(widget.repository, chapter);
+                                }
+                              },
+                              child: const Text("Save")),
+                          if (isKeyboardVisible)
+                            IconButton(
+                                color: Colors.blue,
+                                onPressed: () {
+                                  FocusScope.of(context).unfocus();
                                 },
-                                title: "Save"),
-                            (isKeyboardVisible)
-                                ? CustomMenuItem(
-                                    color: Colors.blue,
-                                    onTap: () {
-                                      FocusScope.of(context).unfocus();
-                                    },
-                                    icon: Icons.keyboard_hide)
-                                : null
-                          ],
-                        ),
+                                icon: const Icon(Icons.keyboard_hide))
+                          else
+                            null
+                        ],
                       )
                     ],
                   ),
