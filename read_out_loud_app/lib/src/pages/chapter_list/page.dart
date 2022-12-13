@@ -23,11 +23,8 @@ class ContentListPage implements AppRoute {
   @override
   Widget Function(BuildContext context, GoRouterState state) get builder =>
       (BuildContext context, GoRouterState state) {
-        ContentListConfig contentListConfig =
-            ContentListConfig(repoPath: 'index.json', itemsPerPage: 10);
-        //TODO Avoid this
         return PageView(
-          contentListConfig: contentListConfig,
+          filename: 'index.json',
           onClose: () {
             context.goNamed(MainPage().name);
           },
@@ -36,19 +33,18 @@ class ContentListPage implements AppRoute {
 }
 
 class PageView extends ConsumerWidget {
-  final ContentListConfig contentListConfig;
+  final String filename;
   final Function() onClose;
 
   const PageView({
     super.key,
-    required this.contentListConfig,
+    required this.filename,
     required this.onClose,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    AsyncValue<Repository> asyncValue =
-        ref.watch(repositoryProvider(contentListConfig.repoPath));
+    AsyncValue<Repository> asyncValue = ref.watch(repositoryProvider(filename));
     return asyncValue.when(
         data: (Repository repository) => LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) =>
@@ -57,7 +53,11 @@ class PageView extends ConsumerWidget {
                   contentPageProvider.overrideWith((ref) => ContentPageNotifier(
                       ListPaginate<Chapter>(
                           width: constraints.maxWidth,
-                          height: constraints.maxHeight - 130,
+                          height: ResponsiveScreen.contentHeight(
+                              size: Size(
+                                  constraints.maxWidth, constraints.maxHeight),
+                              isBottom: true,
+                              isTop: true),
                           items: repository.chapters)))
                 ],
                 child: ResponsiveScreen(
