@@ -42,7 +42,7 @@ class ListPaginate<T> {
       int itemsPerPageLocal = 0;
       double minTileSize = 55;
       double maxTileSize = max(55, (height ~/ 60 * 5).toDouble());
-      print("$height $maxTileSize");
+
       for (tileSizeLocal = maxTileSize;
           tileSizeLocal > minTileSize - 1;
           tileSizeLocal -= 5) {
@@ -54,7 +54,7 @@ class ListPaginate<T> {
       }
 
       _itemsPerPage = itemsPerPageLocal;
-      print(_itemsPerPage);
+
       _tileSize = tileSizeLocal;
     }
     if (_itemsPerPage > 0) {
