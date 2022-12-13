@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:read_out_loud_app/src/custom_widgets/custom_menu.dart';
+import 'package:read_out_loud_app/src/custom_widgets/menu4.dart';
 
-import '../../custom_widgets/custom_menu.dart';
 import '../../tts/tts_speaker.dart';
 import 'audio_parameters.dart';
 
@@ -34,7 +35,7 @@ class AudioPlayerConfigState extends ConsumerState<AudioPlayerConfig> {
     return Padding(
       padding: const EdgeInsets.only(top: 24, bottom: 8, left: 8, right: 8),
       child: Column(
-        mainAxisSize: MainAxisSize.max,
+        mainAxisSize: MainAxisSize.min,
         children: [
           TextFormField(
               decoration: InputDecoration(
@@ -55,31 +56,35 @@ class AudioPlayerConfigState extends ConsumerState<AudioPlayerConfig> {
                   onPressed: () async {
                     textEditingController.text = ttsSpeaker.sampleText;
                   },
-                  child: const Text("Resetore sample text"))),
+                  child: const Text("Restore sample text"))),
           Padding(
             padding:
                 const EdgeInsets.only(top: 0, bottom: 8, left: 8, right: 8),
-            child: CustomMenu(menuItems: [
+            child: Menu4(height: 65, children: [
               null,
-              CustomMenuItem(
-                  alignment: Alignment.bottomCenter,
-                  icon: Icons.play_arrow,
-                  color: Colors.greenAccent,
-                  onTap: () async {
-                    await ref.read(ttsSpeakerProvider.notifier).play(
-                        textEditingController.text,
-                        onComplete: () {},
-                        onCancel: () {});
-                  },
-                  title: 'Play'),
-              CustomMenuItem(
-                  alignment: Alignment.bottomCenter,
-                  icon: Icons.stop,
-                  color: Colors.redAccent,
-                  onTap: () async {
-                    await ref.read(ttsSpeakerProvider.notifier).stop();
-                  },
-                  title: 'Stop'),
+              CustomMenuButton(
+                menuItem: CustomMenuItem(
+                    alignment: Alignment.bottomCenter,
+                    icon: Icons.play_arrow,
+                    color: Colors.greenAccent,
+                    onTap: () async {
+                      await ref.read(ttsSpeakerProvider.notifier).play(
+                          textEditingController.text,
+                          onComplete: () {},
+                          onCancel: () {});
+                    },
+                    title: 'Play'),
+              ),
+              CustomMenuButton(
+                menuItem: CustomMenuItem(
+                    alignment: Alignment.bottomCenter,
+                    icon: Icons.stop,
+                    color: Colors.redAccent,
+                    onTap: () async {
+                      await ref.read(ttsSpeakerProvider.notifier).stop();
+                    },
+                    title: 'Stop'),
+              ),
               null,
             ]),
           ),

@@ -40,11 +40,11 @@ class CustomMenuButton extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               if (menuItem.icon != null)
-                Expanded(
+                Flexible(
                     child: FittedBox(
                         child: Icon(menuItem.icon!, size: 40, color: color))),
               if (menuItem.title != null)
-                Expanded(
+                Flexible(
                   child: FittedBox(
                     child: Padding(
                       padding: const EdgeInsets.only(top: 2),

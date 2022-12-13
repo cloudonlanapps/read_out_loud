@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -18,6 +20,7 @@ class _AudioParametersState extends ConsumerState<AudioParameters> {
     return Stack(
       children: [
         Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Align(
                 alignment: Alignment.centerRight,
@@ -26,96 +29,99 @@ class _AudioParametersState extends ConsumerState<AudioParameters> {
                       ref.read(ttsSpeakerProvider.notifier).restoreDefault();
                     },
                     child: const Text("Reset"))),
-            FutureBuilder<dynamic>(
-              future: ttsSpeaker.getEngines(),
-              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                if (snapshot.hasData) {
-                  if ((snapshot.data as List<dynamic>).length == 1) {
-                    return Container();
-                  } else {
-                    return Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Flexible(
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              child: Padding(
-                                padding: const EdgeInsets.only(right: 8.0),
-                                child: Text(
-                                  "Engines: ",
-                                  style:
-                                      Theme.of(context).textTheme.bodyMedium!,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Flexible(
-                            child: FittedBox(
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: DropdownButton(
-                                  value: ttsSpeaker.engine,
-                                  items: getEnginesDropDownMenuItems(
-                                      snapshot.data),
-                                  onChanged: (val) =>
-                                      changedEnginesDropDownItem(
-                                          ttsSpeaker, val),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ]);
-                  }
-                } else if (snapshot.hasError) {
-                  return const Text('Error loading engines...');
-                } else {
-                  return const Text('Loading engines...');
-                }
-              },
-            ),
-            FutureBuilder<dynamic>(
-                future: ttsSpeaker.getLanguages(),
+            if (Platform.isAndroid)
+              FutureBuilder<dynamic>(
+                future: ttsSpeaker.getEngines(),
                 builder:
                     (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                   if (snapshot.hasData) {
-                    return Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Flexible(
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              child: Padding(
-                                padding: const EdgeInsets.only(right: 8.0),
-                                child: Text(
-                                  "Language: ",
-                                  style:
-                                      Theme.of(context).textTheme.bodyMedium!,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Flexible(
-                            child: FittedBox(
+                    if ((snapshot.data as List<dynamic>).length == 1) {
+                      return Container();
+                    } else {
+                      return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Flexible(
                               child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: DropdownButton(
-                                  value: ttsSpeaker.language,
-                                  items: getLanguageDropDownMenuItems(
-                                      snapshot.data),
-                                  onChanged: (val) =>
-                                      changedLanguageDropDownItem(
-                                          ttsSpeaker, val),
+                                alignment: Alignment.centerRight,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: Text(
+                                    "Engines: ",
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium!,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ]);
+                            Flexible(
+                              child: FittedBox(
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: DropdownButton(
+                                    value: ttsSpeaker.engine,
+                                    items: getEnginesDropDownMenuItems(
+                                        snapshot.data),
+                                    onChanged: (val) =>
+                                        changedEnginesDropDownItem(
+                                            ttsSpeaker, val),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ]);
+                    }
                   } else if (snapshot.hasError) {
-                    return const Text('Error loading languages...');
+                    return const Text('Error loading engines...');
                   } else {
-                    return const Text('Loading Languages...');
+                    return const Text('Loading engines...');
                   }
-                }),
+                },
+              ),
+            if (Platform.isAndroid)
+              FutureBuilder<dynamic>(
+                  future: ttsSpeaker.getLanguages(),
+                  builder:
+                      (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                    if (snapshot.hasData) {
+                      return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Flexible(
+                              child: Align(
+                                alignment: Alignment.centerRight,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: Text(
+                                    "Language: ",
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium!,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Flexible(
+                              child: FittedBox(
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: DropdownButton(
+                                    value: ttsSpeaker.language,
+                                    items: getLanguageDropDownMenuItems(
+                                        snapshot.data),
+                                    onChanged: (val) =>
+                                        changedLanguageDropDownItem(
+                                            ttsSpeaker, val),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ]);
+                    } else if (snapshot.hasError) {
+                      return const Text('Error loading languages...');
+                    } else {
+                      return const Text('Loading Languages...');
+                    }
+                  }),
             Slider(
                 value: ttsSpeaker.volume,
                 onChanged: (value) {
