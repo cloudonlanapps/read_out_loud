@@ -160,7 +160,7 @@ class ChapterUpdateState extends ConsumerState<ChapterUpdate>
                                   await close();
                                 }
                               },
-                              child: const Text("Add Words")),
+                              child: const Text("Add to List")),
                           if (isKeyboardVisible)
                             IconButton(
                                 onPressed: () =>
