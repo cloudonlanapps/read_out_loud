@@ -32,9 +32,9 @@ class ChapterView extends ConsumerWidget {
     double? progress = words?.progress;
 
     return Padding(
-      padding: EdgeInsets.all(pad),
+      padding: EdgeInsets.only(left: pad, right: pad, bottom: pad),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(50),
+        borderRadius: BorderRadius.circular(40),
         child: Stack(
           children: [
             ProgressBar(size: tileSize, progress: progress ?? 0),
@@ -95,10 +95,12 @@ class ChapterView extends ConsumerWidget {
                     ),
                     width: 50,
                     height: tileSize.height,
-                    child: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Colors.blue.shade400,
-                    ),
+                    child: (words == null)
+                        ? null
+                        : Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.blue.shade400,
+                          ),
                   ),
                 ),
               ],

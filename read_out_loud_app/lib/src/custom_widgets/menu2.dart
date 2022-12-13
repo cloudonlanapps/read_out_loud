@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
-class Menu3 extends StatelessWidget {
+class Menu2 extends StatelessWidget {
   final double height;
   final List<Widget?> children;
-  const Menu3({super.key, required this.height, required this.children});
+  const Menu2({super.key, required this.height, required this.children});
 
   @override
   Widget build(BuildContext context) {
-    if (children.length != 3) {
+    if (children.length != 2) {
       throw Exception("Must have exactly 3 children");
     }
-    List<Widget> widgets;
-    if (height < 75) {
+    List<Widget?> widgets = children;
+    /* if (height < 75) {
       widgets = children
           .map((e) => FittedBox(fit: BoxFit.fitHeight, child: e))
           .toList();
@@ -21,7 +21,7 @@ class Menu3 extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: (height - 75) / 2),
               child: FittedBox(fit: BoxFit.fitHeight, child: e)))
           .toList();
-    }
+    } */
     return SizedBox(
       height: height,
       child: Row(
@@ -32,15 +32,11 @@ class Menu3 extends StatelessWidget {
             child: widgets.first,
           )),
           Expanded(
+              flex: 3,
               child: Align(
-            //alignment: Alignment.center,
-            child: widgets[1],
-          )),
-          Expanded(
-              child: Align(
-            //alignment: Alignment.centerRight,
-            child: widgets.last,
-          )),
+                //alignment: Alignment.center,
+                child: widgets[1],
+              )),
         ],
       ),
     );

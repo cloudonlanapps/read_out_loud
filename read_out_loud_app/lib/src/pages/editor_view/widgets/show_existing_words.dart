@@ -29,7 +29,7 @@ class ShowExistingWords extends ConsumerWidget {
             .toList() ??
         [];
 
-    if (words.isEmpty) {
+    if (words.isEmpty && addedWords.isEmpty && deletedWords.isEmpty) {
       return const Center(
         child: Text(
           "This is an empty list, add more words ",

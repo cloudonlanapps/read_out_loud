@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:manage_content/manage_content.dart';
 import 'package:read_out_loud_app/services/paginate.dart';
 
-import '../../../custom_widgets/sizedbox_decorated.dart';
 import '../../chapter/page.dart';
 
 import '../providers/state_provider.dart';
@@ -85,18 +84,6 @@ class ListItemsState extends ConsumerState<ChapterListView> {
     }
     return Column(
       children: [
-        SizedBoxDecorated(
-          //debug: true,
-          width: ref.read(contentPageProvider).titleWidth,
-          height: ref.read(contentPageProvider).titleHeight,
-          child: Align(
-            alignment: Alignment.topCenter,
-            child: Text(
-              "Select one",
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-          ),
-        ),
         Expanded(
           child: AnimatedList(
               key: _listKey,

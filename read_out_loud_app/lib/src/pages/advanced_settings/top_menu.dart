@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../custom_widgets/custom_menu.dart';
-import '../../custom_widgets/menu3.dart';
+import '../../custom_widgets/menu2.dart';
 
 class TopMenu extends ConsumerWidget {
   final Size size;
@@ -11,7 +11,7 @@ class TopMenu extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Menu3(
+    return Menu2(
       height: 65,
       children: [
         CustomMenuButton(
@@ -25,10 +25,9 @@ class TopMenu extends ConsumerWidget {
           child: Text(
             "Advanced",
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyLarge,
+            style: Theme.of(context).textTheme.displayLarge,
           ),
         ),
-        null
       ],
     );
   }

@@ -46,7 +46,7 @@ class ListPaginate<T> {
       for (tileSizeLocal = maxTileSize;
           tileSizeLocal > minTileSize - 1;
           tileSizeLocal -= 5) {
-        final count = ((height / tileSizeLocal) - 1).toInt();
+        final count = height ~/ tileSizeLocal;
         if (count > 2) {
           itemsPerPageLocal = count;
           break;
