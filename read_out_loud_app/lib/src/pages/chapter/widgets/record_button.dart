@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
@@ -46,9 +49,18 @@ class RecordButton extends ConsumerWidget {
                       child: IconButton(
                           icon: const Icon(Icons.mic),
                           onPressed: () {
-                            ref
-                                .read(playWordStateProvider.notifier)
-                                .sttListen();
+                            if (!kIsWeb &&
+                                (Platform.isAndroid || Platform.isIOS)) {
+                              ref
+                                  .read(playWordStateProvider.notifier)
+                                  .sttListen();
+                            } else {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar((const SnackBar(
+                                content: Text(
+                                    "This platform don't support Speech to Text"),
+                              )));
+                            }
                           }),
                     ),
                     const SizedBoxDecorated(
