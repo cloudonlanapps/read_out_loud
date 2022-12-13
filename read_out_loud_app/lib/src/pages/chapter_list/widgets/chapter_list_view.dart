@@ -2,27 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:manage_content/manage_content.dart';
+import 'package:read_out_loud_app/src/pages/chapter_list/providers/paginate.dart';
 
 import '../../chapter/page.dart';
 import '../providers/animate_state.dart';
+import '../providers/state_provider.dart';
 import 'chapter_view.dart';
 
 class ChapterListView extends ConsumerStatefulWidget {
-  final Repository repository;
-  final List<Chapter> items;
-  final Size size;
-  const ChapterListView({
-    super.key,
-    required this.repository,
-    required this.items,
-    required this.size,
-  });
-  static double get tileHeight => 75;
+  final List<Chapter> chapters;
+  const ChapterListView({super.key, required this.chapters});
   @override
   ConsumerState<ChapterListView> createState() => ListItemsState();
 }
 
 class ListItemsState extends ConsumerState<ChapterListView> {
+  late ListPaginate<Chapter> pageHandler;
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   final List<Widget> items = [];
   final Tween<Offset> _offset =
@@ -31,10 +26,12 @@ class ListItemsState extends ConsumerState<ChapterListView> {
 
   @override
   void initState() {
-    super.initState();
+    Size tileSize = Size(ref.read(contentPageProvider).tileWidth,
+        ref.read(contentPageProvider).tileHeight);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      addItems();
+      addItems(tileSize);
     });
+    super.initState();
   }
 
   @override
@@ -43,15 +40,16 @@ class ListItemsState extends ConsumerState<ChapterListView> {
     super.dispose();
   }
 
-  void addItems() async {
+  void addItems(Size tileSize) async {
     items.clear();
     ref.read(isAnimatingProvider.notifier).isAnimating = true;
-    for (var item in widget.items) {
+    print("curr Page has ${widget.chapters.length} chapters");
+    for (var item in widget.chapters) {
       if (_listKey.currentState == null) {
         return;
       } else {
         await Future.delayed(const Duration(milliseconds: 100), () {
-          items.add(_buildTile(item));
+          items.add(_buildTile(item, tileSize));
           if (_listKey.currentState == null) {
             return;
           } else {
@@ -63,8 +61,7 @@ class ListItemsState extends ConsumerState<ChapterListView> {
     ref.read(isAnimatingProvider.notifier).isAnimating = false;
   }
 
-  Size get tileSize => Size(widget.size.width, ChapterListView.tileHeight);
-  Widget _buildTile(Chapter chapter) {
+  Widget _buildTile(Chapter chapter, Size tileSize) {
     return ChapterView(
       chapter: chapter,
       size: tileSize,
@@ -82,24 +79,20 @@ class ListItemsState extends ConsumerState<ChapterListView> {
 
   @override
   Widget build(BuildContext context) {
-    final titleHeight =
-        widget.size.height - (widget.items.length * tileSize.height);
     if (itemSelected) {
       return const CircularProgressIndicator();
     }
     return Column(
       children: [
-        SizedBox(
-          height: titleHeight,
-          width: widget.size.width,
-          child: const Center(
+        SizedBoxDecorated(
+          //debug: true,
+          width: ref.read(contentPageProvider).titleWidth,
+          height: ref.read(contentPageProvider).titleHeight,
+          child: Align(
+            alignment: Alignment.topCenter,
             child: Text(
               "Select one",
-              style: TextStyle(
-                fontSize: 40.0,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Horizon',
-              ),
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
           ),
         ),
@@ -115,6 +108,44 @@ class ListItemsState extends ConsumerState<ChapterListView> {
               }),
         ),
       ],
+    );
+  }
+}
+
+const bool debug = true;
+
+class SizedBoxDecorated extends StatelessWidget {
+  final double width;
+  final double height;
+  final Widget? child;
+  final bool debug;
+  const SizedBoxDecorated(
+      {super.key,
+      required this.width,
+      required this.height,
+      this.child,
+      this.debug = false});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: height,
+      width: width,
+      child: debug
+          ? DecoratedBox(
+              decoration: BoxDecoration(border: Border.all()),
+              child: Stack(
+                children: [
+                  if (child != null) child!,
+                  Positioned(
+                    bottom: 4,
+                    right: 4,
+                    child: Text("${width}x$height"),
+                  ),
+                ],
+              ),
+            )
+          : child,
     );
   }
 }

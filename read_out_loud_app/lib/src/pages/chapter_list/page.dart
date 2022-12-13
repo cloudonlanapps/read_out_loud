@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
+import 'package:manage_content/manage_content.dart';
+import 'package:read_out_loud_app/src/pages/chapter_list/providers/paginate.dart';
 import 'package:responsive_screen/responsive_screen.dart';
+
 import 'package:route_manager/route_manager.dart';
 
 import '../main/page.dart';
 import 'bottom_menu.dart';
-import 'widgets/chapter_list_view.dart';
 import 'main.dart';
 import 'providers/state_provider.dart';
 import 'top_menu.dart';
@@ -21,8 +23,9 @@ class ContentListPage implements AppRoute {
   @override
   Widget Function(BuildContext context, GoRouterState state) get builder =>
       (BuildContext context, GoRouterState state) {
-        ContentListConfig contentListConfig = ContentListConfig(
-            repoPath: 'index.json', itemsPerPage: 10); //TODO Avoid this
+        ContentListConfig contentListConfig =
+            ContentListConfig(repoPath: 'index.json', itemsPerPage: 10);
+        //TODO Avoid this
         return PageView(
           contentListConfig: contentListConfig,
           onClose: () {
@@ -30,12 +33,9 @@ class ContentListPage implements AppRoute {
           },
         );
       };
-
-  static int itemsPerPage(double totalHeight) =>
-      (totalHeight - 75.0) ~/ ChapterListView.tileHeight;
 }
 
-class PageView extends StatelessWidget {
+class PageView extends ConsumerWidget {
   final ContentListConfig contentListConfig;
   final Function() onClose;
 
@@ -46,13 +46,29 @@ class PageView extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ResponsiveScreen(
-      contentBuilder: (context, size) =>
-          MainContent(contentListConfig: contentListConfig, size: size),
-      topMenuBuilder: (context, size) => TopMenu(onClose: onClose, size: size),
-      bottomMenubuilder: (context, size) =>
-          BottomMenu(contentListConfig: contentListConfig, size: size),
-    );
+  Widget build(BuildContext context, WidgetRef ref) {
+    AsyncValue<Repository> asyncValue =
+        ref.watch(repositoryProvider(contentListConfig.repoPath));
+    return asyncValue.when(
+        data: (Repository repository) => LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) =>
+                  ProviderScope(
+                overrides: [
+                  contentPageProvider.overrideWith((ref) => ContentPageNotifier(
+                      ListPaginate<Chapter>(
+                          width: constraints.maxWidth,
+                          height: constraints.maxHeight - 130,
+                          items: repository.chapters)))
+                ],
+                child: ResponsiveScreen(
+                  contentBuilder: (context, size) => const MainContent(),
+                  topMenuBuilder: (context, size) =>
+                      TopMenu(onClose: onClose, size: size),
+                  bottomMenubuilder: (context, size) => const BottomMenu(),
+                ),
+              ),
+            ),
+        error: (error, stackTrace) => Container(),
+        loading: () => const CircularProgressIndicator());
   }
 }

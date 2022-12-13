@@ -4,6 +4,8 @@ import 'dart:math';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manage_content/manage_content.dart';
 
+import 'paginate.dart';
+
 class ContentListConfig {
   final String repoPath;
   final int itemsPerPage;
@@ -115,4 +117,17 @@ final contentListStateProvider = StateNotifierProvider.family<
       error: ((error, stackTrace) =>
           ContentListStateNotifier(AsyncValue.error(error, stackTrace))),
       loading: () => ContentListStateNotifier(const AsyncValue.loading()));
+});
+
+class ContentPageNotifier extends StateNotifier<ListPaginate<Chapter>> {
+  ContentPageNotifier(ListPaginate<Chapter> contentPage) : super(contentPage);
+
+  prev() => state = state.prev();
+
+  next() => state = state.next();
+}
+
+final contentPageProvider =
+    StateNotifierProvider<ContentPageNotifier, ListPaginate<Chapter>>((ref) {
+  throw Exception("Override with appropriate value");
 });
