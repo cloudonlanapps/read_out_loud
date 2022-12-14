@@ -30,11 +30,9 @@ class WordsNotifier extends StateNotifier<Words?> {
   }
 
   updateState(Words words) async {
-    await save();
+    await words.save(filename);
     state = words;
   }
-
-  save() async => await state?.save(filename);
 
   prev() async {
     if (state == null) return;
@@ -86,10 +84,10 @@ class WordsNotifier extends StateNotifier<Words?> {
   Future<void> updateWords(
       {required List<Word> wordListToRemove,
       required List<String> newWordStrings}) async {
-    final Words? updated = state?.updateWords(
-        wordListToRemove: wordListToRemove, newWordStrings: newWordStrings);
-    await updated?.save(filename);
-    state = updated;
+    if (state != null) {
+      await updateState(state!.updateWords(
+          wordListToRemove: wordListToRemove, newWordStrings: newWordStrings));
+    }
   }
 }
 
