@@ -32,7 +32,8 @@ class MainContent extends ConsumerWidget {
               child: SizedBox(
                   width: 200,
                   height: 200,
-                  child: Lottie.asset("assets/59928-press-start-button.json")),
+                  child: Lottie.asset(
+                      "assets/Lotties/59928-press-start-button.json")),
             ),
           )
         ],

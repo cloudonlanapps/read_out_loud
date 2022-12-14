@@ -45,11 +45,15 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/wordlist1.json
-    - assets/wordlist2.json
-    - assets/wordlist3.json
-    - assets/wordlist4.json
+    - assets/Sample Words List 1.json
+    - assets/Sample Words List 2.json
+    - assets/Sample Words List 3.json
+    - assets/Animals.json
+    - assets/Colours.json
+    - assets/Family.json
+    - assets/Seasons  Weather.json
+    - assets/Shapes.json
     - assets/index.json
-    - assets/42193-hand-pointing-icon.json
-    - assets/83583-tap-hand-gest.json
-    - assets/59928-press-start-button.json
+    
+    - assets/Lotties/42193-hand-pointing-icon.json
+    - assets/Lotties/59928-press-start-button.json

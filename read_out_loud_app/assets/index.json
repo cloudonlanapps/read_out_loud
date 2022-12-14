@@ -1,24 +1,36 @@
 {
     "chapters": [
         {
-            "title": "Chapter 1",
-            "filename": "wordlist1.json"
+            "title": "Sample Words List 1",
+            "filename": "Sample Words List 1.json"
         },
         {
-            "title": "Chapter 2",
-            "filename": "wordlist2.json"
+            "title": "Sample Words List 2",
+            "filename": "Sample Words List 2.json"
         },
         {
-            "title": "Chapter 3",
-            "filename": "wordlist3.json"
+            "title": "Sample Words List 3",
+            "filename": "Sample Words List 3.json"
         },
         {
-            "title": "Chapter 4",
-            "filename": "wordlist4.json"
+            "title": "Animals",
+            "filename": "Animals.json"
         },
         {
-            "title": "Chapter 5",
-            "filename": "wordlist5.json"
+            "title": "Colours",
+            "filename": "Colours.json"
+        },
+        {
+            "title": "Family",
+            "filename": "Family.json"
+        },
+        {
+            "title": "Seasons  Weather",
+            "filename": "Seasons  Weather.json"
+        },
+        {
+            "title": "Shapes",
+            "filename": "Shapes.json"
         }
     ]
 }

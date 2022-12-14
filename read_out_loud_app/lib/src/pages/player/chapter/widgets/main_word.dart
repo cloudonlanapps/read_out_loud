@@ -65,18 +65,6 @@ class MainWord extends ConsumerWidget {
                   ),
                 ),
               ))
-        /* if (playState == PlayState.idle)
-          Transform.translate(
-              offset: const Offset(0, 90),
-              child: Center(
-                  child: Transform(
-                alignment: Alignment.center,
-                transform: Matrix4.rotationY(pi),
-                child: Transform.rotate(
-                    angle: -pi / 2,
-                    child:
-                        Lottie.asset("assets/42193-hand-pointing-icon.json")),
-              ))) */
       ],
     );
   }

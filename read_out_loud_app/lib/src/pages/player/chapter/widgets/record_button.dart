@@ -76,12 +76,10 @@ class RecordButton extends ConsumerWidget {
                     Transform.translate(
                       offset: const Offset(8, 0),
                       child: SizedBoxDecorated(
-                        //margin: const EdgeInsets.all(4.0),
                         width: 40,
                         height: 40,
-                        //color: Colors.blue,
                         child: Lottie.asset(
-                            "assets/42193-hand-pointing-icon.json"),
+                            "assets/Lotties/42193-hand-pointing-icon.json"),
                       ),
                     ),
                     const SizedBoxDecorated(
@@ -93,7 +91,6 @@ class RecordButton extends ConsumerWidget {
                       width: 40,
                       height: 40,
                       alignment: Alignment.center,
-                      //color: Colors.blue,
                     ),
                   ],
                 ),

@@ -21,40 +21,69 @@ class MainContent extends ConsumerWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          SettingsMenuButton(
-            title: "Chapters",
-            subTitle:
-                "Add/Remove chapters, edit existing chapters, reset progress etc.",
-            onTap: () => context.pushNamed(SettingsChapterPage().name),
+          SettingsMenuWrapper(
+            child: SettingsMenuButton(
+              title: "Chapters",
+              subTitle:
+                  "Add/Remove chapters, edit existing chapters, reset progress etc.",
+              onTap: () => context.pushNamed(SettingsChapterPage().name),
+            ),
           ),
           if (length > 0)
-            SettingsMenuButton(
-              title: "Report",
-              subTitle: (length == 0)
-                  ? "There is nothing to report"
-                  : "You have marked $length words as problematic. "
-                      "You could report them to developer. ",
-              onTap: () {
-                showModalBottomSheet(
-                    isScrollControlled: true,
-                    context: context,
-                    builder: (context) {
-                      return ReportPopup(reportedWords: reportedWords!);
-                    });
-              },
+            SettingsMenuWrapper(
+              child: SettingsMenuButton(
+                title: "Report",
+                subTitle: (length == 0)
+                    ? "There is nothing to report"
+                    : "You have marked $length words as problematic. "
+                        "You could report them to developer. ",
+                onTap: () {
+                  showModalBottomSheet(
+                      isScrollControlled: true,
+                      context: context,
+                      builder: (context) {
+                        return ReportPopup(reportedWords: reportedWords!);
+                      });
+                },
+              ),
             ),
-          SettingsMenuButton(
-            title: "Audio Settings",
-            subTitle: "Expert level settings",
-            onTap: () => context.pushNamed(AdvancedSettingsPage().name),
+          SettingsMenuWrapper(
+            child: SettingsMenuButton(
+              title: "Audio Settings",
+              subTitle: "Expert level settings",
+              onTap: () => context.pushNamed(AdvancedSettingsPage().name),
+            ),
           ),
-          SettingsMenuButton(
-            title: "About",
-            subTitle: "About this app, options to backup, restore, reset etc",
-            onTap: () => context.pushNamed(SettingsAboutPage().name),
+          SettingsMenuWrapper(
+            child: SettingsMenuButton(
+              title: "About",
+              subTitle: "About this app, options to backup, restore, reset etc",
+              onTap: () => context.pushNamed(SettingsAboutPage().name),
+            ),
           )
         ],
       ),
+    );
+  }
+}
+
+class SettingsMenuWrapper extends ConsumerWidget {
+  final Widget child;
+  const SettingsMenuWrapper({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        side: const BorderSide(width: 1),
+        borderRadius: BorderRadius.circular(5),
+      ),
+      margin: const EdgeInsets.only(
+        bottom: 8.0,
+        left: 8,
+        right: 8,
+      ),
+      child: child,
     );
   }
 }
