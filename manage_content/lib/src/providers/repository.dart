@@ -49,8 +49,8 @@ class RepositoryNotifier extends StateNotifier<AsyncValue<Repository>> {
     return;
   }
 
-  log(string) => print(string);
-  //log(string) {}
+  //log(string) => print(string);
+  log(string) {}
 
   Future<bool> loadFromZip(
       {required Repository repository,

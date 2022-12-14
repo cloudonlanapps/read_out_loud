@@ -2,6 +2,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manage_content/manage_content.dart';
+import 'package:services/services.dart';
 
 import '../../../../custom_widgets/blink.dart';
 
@@ -39,7 +40,7 @@ class MainWord extends ConsumerWidget {
                       child: Text(
                         word.original,
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: TextStyles.chapterTitle(context).copyWith(
                             color: word.succeeded
                                 ? const Color.fromARGB(255, 39, 242, 46)
                                 : Colors.blueGrey,

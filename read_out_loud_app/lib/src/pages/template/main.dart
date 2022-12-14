@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:services/services.dart';
 
 class MainContent extends ConsumerWidget {
   final Size size;
@@ -8,14 +9,11 @@ class MainContent extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const Center(
+    return Center(
       child: Text(
         "This is a template",
         textAlign: TextAlign.center,
-        style: TextStyle(
-          fontSize: 55,
-          height: 1,
-        ),
+        style: TextStyles.fullPageText(context),
       ),
     );
   }

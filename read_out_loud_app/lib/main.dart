@@ -54,7 +54,7 @@ void main() {
           /* 6 */ EditorPage(),
           /* 7 */ SettingsAboutPage(),
         ],
-        defaultIndex: 7,
+        defaultIndex: 1,
       )),
     ),
   );

@@ -65,7 +65,7 @@ class _PlayWordState extends ConsumerState<PlayWord> {
                 SizedBoxDecorated(
                     height: part * 2,
                     child: Align(
-                      alignment: Alignment.topRight,
+                      alignment: Alignment.center,
                       child: FittedBox(
                         fit: BoxFit.fitHeight,
                         child: Score(words: widget.words),

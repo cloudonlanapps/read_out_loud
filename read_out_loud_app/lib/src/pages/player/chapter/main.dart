@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manage_content/manage_content.dart';
+import 'package:services/services.dart';
 
 import 'widgets/play_word.dart';
 import 'providers/state_provider.dart';
@@ -15,14 +16,10 @@ class MainContent extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     Words? words = ref.watch(wordsProvider(contentListConfig.filename));
     if (words == null) {
-      return const Center(
+      return Center(
         child: Text(
           "Nothing to show here",
-          style: TextStyle(
-            fontSize: 40.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'Horizon',
-          ),
+          style: TextStyles.fullPageText(context),
         ),
       );
     }

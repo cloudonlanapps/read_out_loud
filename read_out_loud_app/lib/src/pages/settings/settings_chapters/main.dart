@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:manage_content/manage_content.dart';
+import 'package:services/services.dart';
 
 import 'widgets/list_chapters.dart';
 
@@ -11,14 +12,10 @@ class MainContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (repository.isEmpty) {
-      return const Center(
+      return Center(
         child: Text(
           "Nothing to show here",
-          style: TextStyle(
-            fontSize: 40.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'Horizon',
-          ),
+          style: TextStyles.fullPageText(context),
         ),
       );
     }

@@ -50,7 +50,7 @@ class CustomMenuButton extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 2),
                     child: Text(
                       menuItem.title!,
-                      style: TextStyle(color: color, fontSize: 12),
+                      style: TextStyles.menuIcon(context),
                     ),
                   ),
                 ),

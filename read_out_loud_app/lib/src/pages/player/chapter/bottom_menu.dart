@@ -24,7 +24,6 @@ class BottomMenu extends ConsumerWidget {
       (words.isFirst)
           ? null
           : CustomMenuItem(
-              color: Colors.white,
               alignment: Alignment.bottomCenter,
               icon: Icons.arrow_circle_left,
               onTap: playState != PlayState.idle
@@ -50,7 +49,6 @@ class BottomMenu extends ConsumerWidget {
       (words.isLast)
           ? null
           : CustomMenuItem(
-              color: Colors.white,
               alignment: Alignment.bottomCenter,
               icon: Icons.arrow_circle_right,
               onTap: playState != PlayState.idle

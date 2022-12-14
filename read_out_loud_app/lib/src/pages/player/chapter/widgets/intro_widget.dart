@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:services/services.dart';
 
 class IntroWidget extends StatelessWidget {
   const IntroWidget({
@@ -13,8 +14,7 @@ class IntroWidget extends StatelessWidget {
     return Text(
       introText,
       textAlign: TextAlign.center,
-      style: const TextStyle(
-          color: Colors.white, fontWeight: FontWeight.bold, fontSize: 40),
+      style: TextStyles.fullPageText(context),
     );
   }
 }

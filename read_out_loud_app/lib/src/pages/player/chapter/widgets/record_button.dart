@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:read_out_loud_app/src/tts/stt_record.dart';
+import 'package:services/services.dart';
 
 import '../../../../custom_widgets/sizedbox_decorated.dart';
 import '../providers/state_provider.dart';
@@ -41,7 +42,6 @@ class RecordButton extends ConsumerWidget {
                             spreadRadius: sttRecord.level * 2,
                             color: Colors.grey)
                       ],
-                      color: Colors.white,
                       borderRadius: const BorderRadius.all(Radius.circular(50)),
                     ),
                     child: IconButton(
@@ -107,7 +107,7 @@ class RecordButton extends ConsumerWidget {
                   alignment: Alignment.center,
                   child: Text(
                     succeeded ? "Try again? " : "Tap to Speak",
-                    style: const TextStyle(color: Colors.white),
+                    style: TextStyles.menuIcon(context),
                   ),
                 ),
         )

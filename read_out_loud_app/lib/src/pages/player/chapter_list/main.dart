@@ -16,14 +16,10 @@ class MainContent extends ConsumerWidget {
     ListPaginate<Chapter> listProvider = ref.watch(contentPageProvider);
 
     if (listProvider.isEmpty) {
-      return const Center(
+      return Center(
         child: Text(
           "Nothing to show here",
-          style: TextStyle(
-            fontSize: 40.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'Horizon',
-          ),
+          style: TextStyles.fullPageText(context),
         ),
       );
     }

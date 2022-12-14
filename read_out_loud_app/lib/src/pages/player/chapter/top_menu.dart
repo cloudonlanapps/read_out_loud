@@ -23,7 +23,6 @@ class TopMenu extends ConsumerWidget {
 
     return CustomMenu(menuItems: [
       CustomMenuItem(
-        color: Colors.white,
         alignment: Alignment.centerLeft,
         icon: Icons.arrow_back,
         onTap: playState != PlayState.idle
@@ -37,7 +36,6 @@ class TopMenu extends ConsumerWidget {
       null,
       null,
       CustomMenuItem(
-          color: Colors.white,
           alignment: Alignment.center,
           icon: Icons.report,
           scale: 0.8,

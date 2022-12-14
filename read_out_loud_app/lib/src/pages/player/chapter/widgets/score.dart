@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:manage_content/manage_content.dart';
+import 'package:services/services.dart';
 
 class Score extends StatelessWidget {
   final Words words;
@@ -15,7 +16,7 @@ class Score extends StatelessWidget {
         else
           const TextSpan(text: "___"),
       ]),
-      style: const TextStyle(color: Colors.white, fontSize: 40),
+      style: TextStyles.chapterContent(context),
     );
   }
 }

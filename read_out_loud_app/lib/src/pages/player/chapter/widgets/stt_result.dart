@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:services/services.dart';
 
 import '../../../../tts/stt_record.dart';
 
@@ -27,10 +28,6 @@ extension Highlight on String {
 
 class STTResult extends ConsumerWidget {
   final String highlight;
-  TextStyle get normalStyle =>
-      const TextStyle(color: Colors.white, fontSize: 30);
-  TextStyle get highlightStyle => const TextStyle(
-      fontWeight: FontWeight.bold, color: Colors.lightGreen, fontSize: 45);
   const STTResult({
     this.highlight = '',
     Key? key,
@@ -38,6 +35,12 @@ class STTResult extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    TextStyle normalStyle = TextStyles.chapterTitle(context);
+    TextStyle highlightStyle = TextStyles.chapterTitle(context).copyWith(
+      fontWeight: FontWeight.bold,
+      color: Colors.lightGreen,
+    );
+
     STTRecord sttRecord = ref.watch(sttRecordProvider);
     if (sttRecord.lastWords.isEmpty) return Container();
     List<String> textBlocks =
