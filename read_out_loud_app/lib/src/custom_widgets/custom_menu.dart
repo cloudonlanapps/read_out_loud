@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:services/services.dart';
 
 class CustomMenuItem {
   String? title;
@@ -80,5 +81,65 @@ class CustomMenu extends StatelessWidget {
                   ),
                 ))
             .toList());
+  }
+}
+
+class CardMenu extends StatelessWidget {
+  final List<CustomMenuItem?> menuItems;
+  const CardMenu({
+    Key? key,
+    required this.menuItems,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.count(
+        crossAxisCount: 3,
+        crossAxisSpacing: 4.0,
+        mainAxisSpacing: 4.0,
+        children: List.generate(menuItems.length, (index) {
+          return Center(
+            child: CardMenuButton(choice: menuItems[index]),
+          );
+        }));
+  }
+}
+
+class CardMenuButton extends StatelessWidget {
+  const CardMenuButton({Key? key, required this.choice}) : super(key: key);
+  final CustomMenuItem? choice;
+
+  @override
+  Widget build(BuildContext context) {
+    if (choice == null) return Container();
+    return SizedBox(
+      width: 80,
+      height: 80,
+      child: Card(
+          child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(4),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                if (choice!.icon != null)
+                  Expanded(
+                      child: IconButton(
+                    icon: Icon(
+                      choice!.icon,
+                      color: choice!.color,
+                      size: TextStyles.menuIcon(context).fontSize! * 2,
+                    ),
+                    onPressed: () {},
+                  )),
+                if (choice!.title != null)
+                  Text(choice!.title!,
+                      style: TextStyles.menuIcon(context)
+                          .copyWith(color: choice!.color)),
+              ]),
+        ),
+      )),
+    );
   }
 }

@@ -74,6 +74,8 @@ class _RouteManagerState extends State<RouteManager> {
         bodyMedium: TextStyle(color: Colors.blueGrey, fontSize: 20),
         bodySmall: TextStyle(color: Colors.blueGrey, fontSize: 16),
         labelLarge: TextStyle(color: Colors.black, fontSize: 16),
+        labelMedium: TextStyle(color: Colors.black, fontSize: 14),
+        labelSmall: TextStyle(color: Colors.black, fontSize: 12),
       )),
     );
   }
