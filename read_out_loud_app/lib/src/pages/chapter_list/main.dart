@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manage_content/manage_content.dart';
+import 'package:services/services.dart';
 
-import '../../../services/paginate.dart';
 import 'widgets/chapter_list_view.dart';
 import 'providers/state_provider.dart';
 

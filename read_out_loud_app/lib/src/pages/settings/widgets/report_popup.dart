@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:services/services.dart';
 
-import '../../../../services/clipboard/clipboard.dart';
-
-class ReportPopup extends ConsumerWidget {
+class ReportPopup extends StatelessWidget {
   final List<String> reportedWords;
   final bool allowReport;
   const ReportPopup({
@@ -13,7 +11,7 @@ class ReportPopup extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final text = reportedWords.join(', ');
     return Padding(
       padding: const EdgeInsets.all(8.0),

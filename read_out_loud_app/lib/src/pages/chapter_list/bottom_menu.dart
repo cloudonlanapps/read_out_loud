@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manage_content/manage_content.dart';
+import 'package:services/services.dart';
 
 import '../../custom_widgets/custom_menu.dart';
-import '../../../services/paginate.dart';
+
 import 'providers/state_provider.dart';
 
 class BottomMenu extends ConsumerWidget {

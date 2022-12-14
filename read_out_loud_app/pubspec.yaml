@@ -24,6 +24,8 @@ dependencies:
     path: ../responsive_screen
   manage_content:
     path: ../manage_content
+  services:
+    path: ../services
   dotted_border: ^2.0.0+3
   flutter_tts: ^3.6.2
   speech_to_text: ^6.1.1

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../../services/text_style.dart';
+import 'package:services/services.dart';
 
 class TitleMenu extends StatelessWidget {
   final String title;
@@ -30,7 +29,7 @@ class TitleMenu extends StatelessWidget {
               child: Text(
                 title,
                 textAlign: TextAlign.center,
-                style: CustomTextStyle.pageTitle(context),
+                style: TextStyles.pageTitle(context),
               ),
             ),
           ),

@@ -378,6 +378,13 @@ packages:
       relative: true
     source: path
     version: "0.0.1"
+  services:
+    dependency: "direct main"
+    description:
+      path: "../services"
+      relative: true
+    source: path
+    version: "0.0.1"
   shared_preferences:
     dependency: transitive
     description:

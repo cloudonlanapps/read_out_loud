@@ -2,8 +2,7 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manage_content/manage_content.dart';
-
-import '../../../../services/paginate.dart';
+import 'package:services/services.dart';
 
 class ContentPageNotifier extends StateNotifier<ListPaginate<Chapter>> {
   ContentPageNotifier(ListPaginate<Chapter> contentPage) : super(contentPage);

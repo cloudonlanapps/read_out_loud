@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manage_content/manage_content.dart';
-
-import '../../../services/clipboard/clipboard.dart';
+import 'package:services/services.dart';
 
 class ReportWidget extends ConsumerWidget {
   const ReportWidget({

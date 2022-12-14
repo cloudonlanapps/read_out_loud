@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:services/services.dart';
 
-import '../../../../services/clipboard/clipboard.dart';
 import '../../../custom_widgets/menu3.dart';
 
 class EnterNewWords extends StatelessWidget {
