@@ -30,7 +30,16 @@ class RepositoryNotifier extends StateNotifier<AsyncValue<Repository>> {
 
         return await repository.remove(chapter, filename: filename);
       });
-
+  Future<void> reset(Repository repository) async {
+    final List<String> currentFiles = repository.files;
+    for (var file in currentFiles) {
+      await ContentStorage.delete(file);
+      await ref.read(wordsProvider(file).notifier).reload();
+    }
+    await ContentStorage.delete("index.json");
+    await load();
+    return;
+  }
   /* Future<void> addMoreWords(Repository repository, int index,
           List<String> newWordStrings) async =>
       await _guard(() async {

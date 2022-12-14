@@ -50,6 +50,7 @@ class PageView extends ConsumerWidget {
         data: (Repository repository) => ResponsiveScreen(
               contentBuilder: (context, size) => MainContent(
                 repository: repository,
+                filename: filename,
               ),
               topMenuBuilder: (context, size) => TitleMenu(
                 action: onClose,

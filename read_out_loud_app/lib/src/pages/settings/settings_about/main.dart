@@ -11,7 +11,9 @@ import '../../../custom_widgets/custom_menu.dart';
 
 class MainContent extends ConsumerStatefulWidget {
   final Repository repository;
-  const MainContent({super.key, required this.repository});
+  final String filename;
+  const MainContent(
+      {super.key, required this.repository, required this.filename});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _MainContentState();
@@ -59,7 +61,6 @@ class _MainContentState extends ConsumerState<MainContent> {
                             });
                             final archive = await widget.repository
                                 .archive(path, "ReadOutLoudArchive.zip");
-                            print("Archive Created $archive");
 
                             if (mounted) {
                               if (archive != null) {
@@ -87,7 +88,28 @@ class _MainContentState extends ConsumerState<MainContent> {
                       CustomMenuItem(
                           title: 'Reset',
                           icon: FontAwesomeIcons.arrowsRotate,
-                          color: Colors.redAccent),
+                          color: Colors.redAccent,
+                          onTap: () async {
+                            setState(() {
+                              inProgress = true;
+                            });
+                            await ref
+                                .read(repositoryProvider(widget.filename)
+                                    .notifier)
+                                .reset(widget.repository);
+
+                            if (mounted) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar((const SnackBar(
+                                content: Text("Reset Done"),
+                              )));
+                            }
+                            if (mounted) {
+                              setState(() {
+                                inProgress = false;
+                              });
+                            }
+                          }),
                     ],
                   ),
                 ),

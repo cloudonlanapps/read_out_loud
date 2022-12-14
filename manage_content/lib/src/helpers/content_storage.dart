@@ -67,6 +67,8 @@ mixin ContentStorage {
 
   static delete(String filename) async {
     File file = File("${await path}/$filename");
-    file.deleteSync();
+    if (file.existsSync()) {
+      file.deleteSync();
+    }
   }
 }
