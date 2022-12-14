@@ -5,6 +5,7 @@ import 'package:responsive_screen/responsive_screen.dart';
 import 'package:route_manager/route_manager.dart';
 
 import '../../../custom_widgets/title_menu.dart';
+import '../../main/page.dart';
 import 'main.dart';
 
 class SettingsAboutPage implements AppRoute {
@@ -20,7 +21,11 @@ class SettingsAboutPage implements AppRoute {
         return PageView(
           filename: 'index.json',
           onClose: () {
-            context.pop();
+            try {
+              context.pop();
+            } catch (e) {
+              context.goNamed(MainPage().name);
+            }
           },
         );
       };

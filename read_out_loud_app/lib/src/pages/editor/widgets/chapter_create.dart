@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:manage_content/manage_content.dart';
 import 'package:read_out_loud_app/src/custom_widgets/menu3.dart';
 
+import '../../main/page.dart';
 import 'title_editor.dart';
 import 'add_words.dart';
 
@@ -166,7 +167,11 @@ class ChapterCreateState extends ConsumerState<ChapterCreate>
 
   onSave() async {
     if (_formKey.currentState!.validate()) {
-      context.pop();
+      try {
+        context.pop();
+      } catch (e) {
+        context.goNamed(MainPage().name);
+      }
       String title = titleController.text;
       List<String> newWords = [
         ...{

@@ -5,6 +5,7 @@ import 'package:manage_content/manage_content.dart';
 
 import 'package:route_manager/route_manager.dart';
 
+import '../main/page.dart';
 import 'main.dart';
 
 class EditorPage implements AppRoute {
@@ -22,7 +23,11 @@ class EditorPage implements AppRoute {
           filename: 'index.json',
           index: indexString == null ? null : int.parse(indexString),
           onClose: () {
-            context.pop();
+            try {
+              context.pop();
+            } catch (e) {
+              context.goNamed(MainPage().name);
+            }
           },
         );
       };
