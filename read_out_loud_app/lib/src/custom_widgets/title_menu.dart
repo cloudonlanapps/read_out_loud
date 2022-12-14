@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../services/text_style.dart';
+
 class TitleMenu extends StatelessWidget {
   final String title;
   final Size size;
@@ -25,10 +27,10 @@ class TitleMenu extends StatelessWidget {
               )),
           Expanded(
             child: Center(
-              child: /*CHECK*/ Text(
+              child: Text(
                 title,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.displayMedium,
+                style: CustomTextStyle.pageTitle(context),
               ),
             ),
           ),
