@@ -26,37 +26,35 @@ class CustomMenuButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color =
-        menuItem.color ?? (menuItem.onTap == null ? Colors.grey : Colors.white);
+        (menuItem.onTap == null ? Colors.grey : menuItem.color ?? Colors.black);
     return Transform.scale(
       scale: menuItem.scale ?? 1.0,
       child: InkWell(
         //splashColor: const Color.fromARGB(128, 255, 0, 0),
         onTap: menuItem.onTap,
         onLongPress: menuItem.onLongPress,
-        child: SizedBox(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              if (menuItem.icon != null)
-                Flexible(
-                    child: FittedBox(
-                        child: Icon(menuItem.icon!, size: 40, color: color))),
-              if (menuItem.title != null)
-                Flexible(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            if (menuItem.icon != null)
+              Flexible(
                   child: FittedBox(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 2),
-                      child: Text(
-                        menuItem.title!,
-                        style: TextStyle(color: color, fontSize: 12),
-                      ),
+                      child: Icon(menuItem.icon!, size: 40, color: color))),
+            if (menuItem.title != null)
+              Flexible(
+                child: FittedBox(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 2),
+                    child: Text(
+                      menuItem.title!,
+                      style: TextStyle(color: color, fontSize: 12),
                     ),
                   ),
                 ),
-            ],
-          ),
+              ),
+          ],
         ),
       ),
     );

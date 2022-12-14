@@ -16,6 +16,7 @@ class ListChapters extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListView.builder(
+        padding: EdgeInsets.zero,
         itemCount: repository.chapters.length,
         itemBuilder: (BuildContext context, int index) {
           return FutureBuilder(

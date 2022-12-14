@@ -18,13 +18,13 @@ class MainContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 6,
-      color: Theme.of(context).colorScheme.surface,
-      shape: RoundedRectangleBorder(
-        side: const BorderSide(width: 2),
+    return Container(
+      //elevation: 0,
+      //color: Theme.of(context).colorScheme.surface,
+      /* shape: RoundedRectangleBorder(
+        //side: const BorderSide(width: 2),
         borderRadius: BorderRadius.circular(5),
-      ),
+      ), */
       //margin: const EdgeInsets.only(bottom: 8, left: 8, right: 8, top: 8),
       child: index == null
           ? ChapterCreate(

@@ -43,7 +43,7 @@ class PageView extends StatelessWidget {
       contentBuilder: (context, size) =>
           MainContent(filename: filename, size: size),
       topMenuBuilder: (context, size) => TitleMenu(
-        onClose: onClose,
+        action: onClose,
         size: size,
         title: "Settings",
       ),

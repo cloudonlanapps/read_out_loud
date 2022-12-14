@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:manage_content/manage_content.dart';
 import 'package:read_out_loud_app/src/pages/settings/settings_home/page.dart';
 
 import 'package:responsive_screen/responsive_screen.dart';
 import 'package:route_manager/route_manager.dart';
 
+import '../../../custom_widgets/custom_menu.dart';
+import '../../../custom_widgets/title_menu.dart';
+import '../../editor/page.dart';
 import 'main.dart';
-import 'top_menu.dart';
 
 class SettingsChapterPage implements AppRoute {
   @override
@@ -27,7 +31,7 @@ class SettingsChapterPage implements AppRoute {
       };
 }
 
-class PageView extends StatelessWidget {
+class PageView extends ConsumerWidget {
   final String filename;
   final Function() onClose;
 
@@ -38,12 +42,29 @@ class PageView extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ResponsiveScreen(
-      contentBuilder: (context, size) =>
-          MainContent(filename: filename, size: size),
-      topMenuBuilder: (context, size) =>
-          TopMenu(onClose: onClose, filename: filename, size: size),
-    );
+  Widget build(BuildContext context, WidgetRef ref) {
+    AsyncValue<Repository> asyncValue = ref.watch(repositoryProvider(filename));
+    return asyncValue.when(
+        data: (Repository repository) => ResponsiveScreen(
+              contentBuilder: (context, size) =>
+                  MainContent(repository: repository),
+              topMenuBuilder: (context, size) => TitleMenu(
+                title: "Chapters",
+                action: onClose,
+                size: size,
+                rightWidget: Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: CustomMenuButton(
+                    menuItem: CustomMenuItem(
+                        alignment: Alignment.centerRight,
+                        icon: Icons.add,
+                        onTap: () => context.pushNamed(EditorPage().name),
+                        title: "New"),
+                  ),
+                ),
+              ),
+            ),
+        error: (error, stackTrace) => Container(),
+        loading: () => const CircularProgressIndicator());
   }
 }

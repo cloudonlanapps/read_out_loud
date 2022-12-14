@@ -64,7 +64,7 @@ class PageView extends ConsumerWidget {
                 child: ResponsiveScreen(
                   contentBuilder: (context, size) => const MainContent(),
                   topMenuBuilder: (context, size) => TitleMenu(
-                    onClose: onClose,
+                    action: onClose,
                     size: size,
                     title: 'Select One',
                   ),

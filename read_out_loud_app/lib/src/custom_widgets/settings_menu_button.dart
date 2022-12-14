@@ -18,10 +18,10 @@ class SettingsMenuButton extends StatelessWidget {
     return Card(
       color: onTap == null ? Colors.grey : null,
       shape: RoundedRectangleBorder(
-        side: const BorderSide(width: 2),
-        borderRadius: BorderRadius.circular(20),
+        side: const BorderSide(width: 1),
+        borderRadius: BorderRadius.circular(5),
       ),
-      margin: const EdgeInsets.only(bottom: 16.0, left: 8, right: 8, top: 8),
+      margin: const EdgeInsets.only(bottom: 8.0, left: 8, right: 8, top: 8),
       child: ListTile(
         onTap: onTap,
         title: Text(title, style: Theme.of(context).textTheme.bodyLarge),

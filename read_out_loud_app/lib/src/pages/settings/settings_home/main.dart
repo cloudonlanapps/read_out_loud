@@ -6,7 +6,7 @@ import 'package:read_out_loud_app/src/pages/settings/settings_audio/page.dart';
 
 import '../../../custom_widgets/settings_menu_button.dart';
 import '../settings_chapters/page.dart';
-import 'widgets/report_popup.dart';
+import '../../../custom_widgets/report_popup.dart';
 
 class MainContent extends ConsumerWidget {
   final Size size;
@@ -43,7 +43,7 @@ class MainContent extends ConsumerWidget {
               },
             ),
           SettingsMenuButton(
-            title: "Advanced Settings",
+            title: "Audio Settings",
             subTitle: "Expert level settings",
             onTap: () => context.goNamed(AdvancedSettingsPage().name),
           )

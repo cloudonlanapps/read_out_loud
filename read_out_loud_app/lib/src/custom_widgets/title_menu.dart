@@ -4,13 +4,15 @@ import 'package:services/services.dart';
 class TitleMenu extends StatelessWidget {
   final String title;
   final Size size;
-  final Function() onClose;
+  final Widget? rightWidget;
+  final Function() action;
 
   const TitleMenu(
       {super.key,
       required this.title,
-      required this.onClose,
-      required this.size});
+      required this.action,
+      required this.size,
+      this.rightWidget});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,7 @@ class TitleMenu extends StatelessWidget {
       child: Row(
         children: [
           IconButton(
-              onPressed: onClose,
+              onPressed: action,
               icon: Icon(
                 Icons.arrow_back,
                 size: Theme.of(context).textTheme.displayMedium!.fontSize,
@@ -33,6 +35,7 @@ class TitleMenu extends StatelessWidget {
               ),
             ),
           ),
+          if (rightWidget != null) rightWidget!
         ],
       ),
     );

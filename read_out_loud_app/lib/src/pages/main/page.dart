@@ -5,9 +5,10 @@ import 'package:read_out_loud_app/src/pages/settings/settings_home/page.dart';
 import 'package:responsive_screen/responsive_screen.dart';
 import 'package:route_manager/route_manager.dart';
 
+import '../../custom_widgets/custom_menu.dart';
+import '../../custom_widgets/menu3.dart';
 import '../player/chapter_list/page.dart';
 import 'main.dart';
-import 'top_menu.dart';
 
 class MainPage implements AppRoute {
   @override
@@ -45,12 +46,19 @@ class PageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ResponsiveScreen(
-      contentBuilder: (context, size) =>
-          MainContent(filename: filename, onPlay: onPlay),
-      topMenuBuilder: (context, size) =>
-          TopMenu(onSettings: onSettings, size: size),
-      /*  bottomMenubuilder: (context, size) =>
-          BottomMenu(onPlay: onPlay, size: size), */
-    );
+        contentBuilder: (context, size) =>
+            MainContent(filename: filename, onPlay: onPlay),
+        topMenuBuilder: (context, size) =>
+            Menu3(height: size.height, children: [
+              null,
+              null,
+              Center(
+                child: CustomMenuButton(
+                    menuItem: CustomMenuItem(
+                        icon: Icons.settings,
+                        onTap: onSettings,
+                        title: "Settings")),
+              ),
+            ]));
   }
 }
