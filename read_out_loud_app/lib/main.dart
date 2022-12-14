@@ -18,6 +18,18 @@ import 'src/pages/settings/settings_chapters/page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  /* AdaptiveDialog.instance.updateConfiguration(
+    macOS: AdaptiveDialogMacOSConfiguration(
+      applicationIcon: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: TODO: _applicationIconImage,
+      ),
+    ),
+  ); 
+  final _applicationIconImage = Image.asset(
+  'assets/images/love.png',
+);
+  */
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,

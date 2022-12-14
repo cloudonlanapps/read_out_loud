@@ -1,3 +1,4 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manage_content/manage_content.dart';
@@ -133,10 +134,23 @@ class ChapterUpdateState extends ConsumerState<ChapterUpdate>
                         height: 50,
                         children: [
                           TextButton(
-                              onPressed: closeEditor,
-                              child: const Text("Cancel")),
+                              onPressed: () async {
+                                if (wordsController.text.isEmpty) {
+                                  closeEditor();
+                                } else {
+                                  confirmBeforeCall(context,
+                                      message:
+                                          "This will discard all the words you have enterred. Do you want to preceed?",
+                                      action: closeEditor);
+                                }
+                              },
+                              child: Text(wordsController.text.isEmpty
+                                  ? "Cancel"
+                                  : "Discard")),
                           TextButton(
-                              onPressed: addToList,
+                              onPressed: wordsController.text.isEmpty
+                                  ? null
+                                  : addToList,
                               child: const Text("Add to List")),
                           if (isKeyboardVisible)
                             IconButton(
@@ -151,8 +165,19 @@ class ChapterUpdateState extends ConsumerState<ChapterUpdate>
                         height: 50,
                         children: [
                           TextButton(
-                              onPressed: widget.onClose,
-                              child: Text(widget.readOnly ? "Done" : "Cancel")),
+                              onPressed: () async {
+                                if (!needSave) {
+                                  widget.onClose();
+                                } else {
+                                  confirmBeforeCall(context,
+                                      message:
+                                          "This will discard all the changed you have done in this chapter. Do you want to preceed?",
+                                      action: widget.onClose);
+                                }
+                              },
+                              child: Text(widget.readOnly || !needSave
+                                  ? "Done"
+                                  : "Cancel, Don't Save")),
                           null,
                           if (widget.readOnly)
                             null
@@ -243,6 +268,20 @@ class ChapterUpdateState extends ConsumerState<ChapterUpdate>
         wordListToRemove: deletedWords, newWordStrings: addedWords);
 
     widget.onClose();
+  }
+
+  confirmBeforeCall(BuildContext context,
+      {required String message, required Function() action}) {
+    showOkCancelAlertDialog(
+      context: context,
+      message: message,
+      okLabel: "Yes",
+      cancelLabel: "No",
+    ).then((result) {
+      if (result == OkCancelResult.ok) {
+        action();
+      }
+    });
   }
 }
 

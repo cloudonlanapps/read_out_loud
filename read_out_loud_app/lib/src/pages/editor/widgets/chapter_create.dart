@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -127,10 +128,23 @@ class ChapterCreateState extends ConsumerState<ChapterCreate>
                         height: 50,
                         children: [
                           TextButton(
-                              onPressed: widget.onClose,
-                              child: const Text("Cancel")),
+                              onPressed: () async {
+                                if (wordsController.text.isEmpty) {
+                                  widget.onClose();
+                                } else {
+                                  confirmBeforeCall(context,
+                                      message:
+                                          "This will discard all the words you have enterred. Do you want to preceed?",
+                                      action: widget.onClose);
+                                }
+                              },
+                              child: Text(wordsController.text.isEmpty
+                                  ? "Cancel"
+                                  : "Discard")),
                           TextButton(
-                              onPressed: onSave, child: const Text("Save")),
+                              onPressed:
+                                  wordsController.text.isEmpty ? null : onSave,
+                              child: const Text("Save")),
                           if (isKeyboardVisible)
                             IconButton(
                                 onPressed: closeKeyboard,
@@ -179,5 +193,19 @@ class ChapterCreateState extends ConsumerState<ChapterCreate>
     if (isKeyboardVisible) {
       FocusScope.of(context).unfocus();
     }
+  }
+
+  confirmBeforeCall(BuildContext context,
+      {required String message, required Function() action}) {
+    showOkCancelAlertDialog(
+      context: context,
+      message: message,
+      okLabel: "Yes",
+      cancelLabel: "No",
+    ).then((result) {
+      if (result == OkCancelResult.ok) {
+        action();
+      }
+    });
   }
 }
