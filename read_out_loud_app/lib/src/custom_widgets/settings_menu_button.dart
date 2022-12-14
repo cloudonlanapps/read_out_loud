@@ -21,7 +21,11 @@ class SettingsMenuButton extends StatelessWidget {
         side: const BorderSide(width: 1),
         borderRadius: BorderRadius.circular(5),
       ),
-      margin: const EdgeInsets.only(bottom: 8.0, left: 8, right: 8, top: 8),
+      margin: const EdgeInsets.only(
+        bottom: 8.0,
+        left: 8,
+        right: 8,
+      ),
       child: ListTile(
         onTap: onTap,
         title: Text(title, style: Theme.of(context).textTheme.bodyLarge),
