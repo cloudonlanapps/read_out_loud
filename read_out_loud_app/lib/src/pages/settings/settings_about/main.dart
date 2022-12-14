@@ -71,7 +71,18 @@ class _MainContentState extends ConsumerState<MainContent> {
                           title: 'Reset',
                           icon: FontAwesomeIcons.arrowsRotate,
                           color: Colors.redAccent,
-                          onTap: onReset),
+                          onTap: () {
+                            confirmBeforeCall(context,
+                                message:
+                                    "Are you sure you want to reset the complete app. This will "
+                                    "remove the chapter you added, clear all the progress. "
+                                    "Please make sure you back up your data before resetting",
+                                action: (bool yes) {
+                              if (yes) {
+                                onReset();
+                              }
+                            });
+                          }),
                     ],
                   ),
                 ),
