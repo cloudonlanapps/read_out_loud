@@ -34,6 +34,7 @@ class Background extends StatelessWidget {
                         begin: Alignment.bottomCenter,
                         end: Alignment.topCenter,
                         colors: [
+                          Colors.blueGrey,
                           Colors.white,
                           Color.fromARGB(0xFF, 0xF0, 0xF0, 0xF0),
                           Colors.yellow,
@@ -41,8 +42,9 @@ class Background extends StatelessWidget {
                           Colors.red,
                           Colors.yellow,
                           Color.fromARGB(0xFF, 0xF0, 0xF0, 0xF0),
-                          Colors
-                              .white, /* 
+                          Colors.white,
+                          Colors.blueGrey,
+                          /* 
                           Color.fromARGB(0xFF, 0x00, 0x8F, 0x8F),
                           Color.fromARGB(0xFF, 0x8F, 0x8F, 0x00), */
                         ])),
