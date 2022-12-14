@@ -26,7 +26,7 @@ class ChapterView extends ConsumerWidget {
             SlidableAction(
               onPressed: (ctx) => onResetProgress?.call(),
               icon: Icons.restore_page,
-              label: 'Reset Progress',
+              label: 'Reset',
               foregroundColor: Colors.amber.shade300,
               backgroundColor: Colors.transparent,
             ),

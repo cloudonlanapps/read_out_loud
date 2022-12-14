@@ -10,45 +10,6 @@ class MainContent extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Card(
-                shape: RoundedRectangleBorder(
-                  side: const BorderSide(width: 2),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                margin: const EdgeInsets.only(bottom: 8.0),
-                child: ExpansionTile(
-                  initiallyExpanded: true,
-                  title: Text("AudioPlayer Settings",
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyLarge!
-                          .copyWith(fontWeight: FontWeight.bold)),
-                  children: const [AudioPlayerConfig()],
-                )),
-            Card(
-                shape: RoundedRectangleBorder(
-                  side: const BorderSide(width: 2),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                margin: const EdgeInsets.only(bottom: 8.0),
-                child: ExpansionTile(
-                  initiallyExpanded: true,
-                  title: Text("AudioPlayer Settings",
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyLarge!
-                          .copyWith(fontWeight: FontWeight.bold)),
-                  children: const [AudioPlayerConfig()],
-                )),
-          ],
-        ),
-      ),
-    );
+    return const AudioPlayer();
   }
 }
