@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:read_out_loud_app/src/tts/tts_speaker.dart';
 
 import 'package:responsive_screen/responsive_screen.dart';
 import 'package:route_manager/route_manager.dart';
@@ -27,7 +29,7 @@ class AdvancedSettingsPage implements AppRoute {
       };
 }
 
-class PageView extends StatelessWidget {
+class PageView extends ConsumerWidget {
   final String? filename;
   final Function() onClose;
 
@@ -38,12 +40,15 @@ class PageView extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ResponsiveScreen(
       contentBuilder: (context, size) =>
           MainContent(filename: filename, size: size),
       topMenuBuilder: (context, size) => TitleMenu(
-        action: onClose,
+        action: () async {
+          await ref.read(ttsSpeakerProvider.notifier).stop();
+          onClose();
+        },
         size: size,
         title: "Audio Settings",
       ),

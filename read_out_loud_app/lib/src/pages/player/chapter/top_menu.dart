@@ -4,6 +4,7 @@ import 'package:manage_content/manage_content.dart';
 
 import '../../../custom_widgets/custom_menu.dart';
 import '../../../tts/stt_record.dart';
+import '../../../tts/tts_speaker.dart';
 import 'providers/state_provider.dart';
 
 class TopMenu extends ConsumerWidget {
@@ -27,8 +28,9 @@ class TopMenu extends ConsumerWidget {
         icon: Icons.arrow_back,
         onTap: playState != PlayState.idle
             ? null
-            : () {
+            : () async {
                 ref.read(sttRecordProvider.notifier).clearWord();
+                await ref.read(ttsSpeakerProvider.notifier).stop();
                 onClose();
               },
       ),
