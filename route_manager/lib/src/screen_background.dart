@@ -14,7 +14,7 @@ class ScreenBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
 
-    final padding = MediaQuery.of(context).size.shortestSide * 0.01;
+    //TODO: final padding = MediaQuery.of(context).size.shortestSide * 0.01;
     final double borderRadius = viewConfig.borderRadius ?? 15;
 
     /// Flutter starts quicker in release mode and the native platform
@@ -47,7 +47,7 @@ class ScreenBackground extends StatelessWidget {
             borderRadius: borderRadius,
           ),
           SafeArea(
-            minimum: EdgeInsets.all(padding),
+            minimum: const EdgeInsets.all(0),
             child: Container(
                 decoration: BoxDecoration(
                   //color: Colors.white,

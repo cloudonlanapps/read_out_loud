@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manage_content/manage_content.dart';
 
 import '../../../custom_widgets/menu3.dart';
-import 'enter_new_words.dart';
-import 'new_title.dart';
-import 'show_existing_words.dart';
+import 'add_words.dart';
+import 'title_editor.dart';
+import 'show_words.dart';
 
 class ChapterUpdate extends ConsumerStatefulWidget {
   final Function() onClose;
@@ -75,7 +75,7 @@ class ChapterUpdateState extends ConsumerState<ChapterUpdate>
                 key: _formKey,
                 child: Column(
                   children: [
-                    ChapterTitle(
+                    TitleEditor(
                       readonly: true,
                       title: ref.watch(wordsProvider(widget.wordsFilename)
                           .select((value) => value?.title ?? "")),
@@ -100,7 +100,7 @@ class ChapterUpdateState extends ConsumerState<ChapterUpdate>
                       ),
                     if (addingNewWords || isKeyboardVisible)
                       Expanded(
-                          child: EnterNewWords(
+                          child: AddWords(
                               focusNode: wordsfocusNode,
                               controller: wordsController,
                               onMultiWords: onMultiWords,
@@ -117,7 +117,7 @@ class ChapterUpdateState extends ConsumerState<ChapterUpdate>
                         child: SingleChildScrollView(
                           child: Container(
                             padding: const EdgeInsets.all(16.0),
-                            child: ShowExistingWords(
+                            child: ShowWords(
                                 readonly: widget.readOnly,
                                 wordsFilename: widget.wordsFilename,
                                 addedWords: addedWords,

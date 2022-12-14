@@ -4,7 +4,7 @@ import 'package:services/services.dart';
 
 import '../../../custom_widgets/menu3.dart';
 
-class EnterNewWords extends StatelessWidget {
+class AddWords extends StatelessWidget {
   final Future<bool> Function(List<String>) onMultiWords;
   final Function() onClearController;
   final Function() onTextChanged;
@@ -12,7 +12,7 @@ class EnterNewWords extends StatelessWidget {
   final TextEditingController controller;
   final FocusNode focusNode;
 
-  const EnterNewWords({
+  const AddWords({
     super.key,
     required this.controller,
     required this.onMultiWords,

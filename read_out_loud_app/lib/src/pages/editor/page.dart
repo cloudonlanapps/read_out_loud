@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:manage_content/manage_content.dart';
 
 import 'package:route_manager/route_manager.dart';
 
@@ -16,7 +18,7 @@ class EditorPage implements AppRoute {
   Widget Function(BuildContext context, GoRouterState state) get builder =>
       (BuildContext context, GoRouterState state) {
         final String? indexString = state.queryParams['index'];
-        return MainContent(
+        return _EditorPage(
           filename: 'index.json',
           index: indexString == null ? null : int.parse(indexString),
           onClose: () {
@@ -24,4 +26,26 @@ class EditorPage implements AppRoute {
           },
         );
       };
+}
+
+class _EditorPage extends ConsumerWidget {
+  final String filename;
+  final int? index;
+  final Function() onClose;
+  const _EditorPage(
+      {required this.filename, this.index, required this.onClose});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final asyncValue = ref.watch(repositoryProvider(filename));
+
+    return asyncValue.when(
+        data: (Repository repository) => MainContent(
+              repository: repository,
+              onClose: onClose,
+              index: index,
+            ),
+        error: (error, stackTrace) => Container(),
+        loading: () => const CircularProgressIndicator());
+  }
 }

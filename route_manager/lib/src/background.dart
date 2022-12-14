@@ -34,8 +34,17 @@ class Background extends StatelessWidget {
                         begin: Alignment.bottomCenter,
                         end: Alignment.topCenter,
                         colors: [
+                          Colors.white,
+                          Color.fromARGB(0xFF, 0xF0, 0xF0, 0xF0),
+                          Colors.yellow,
+                          Colors.red,
+                          Colors.red,
+                          Colors.yellow,
+                          Color.fromARGB(0xFF, 0xF0, 0xF0, 0xF0),
+                          Colors
+                              .white, /* 
                           Color.fromARGB(0xFF, 0x00, 0x8F, 0x8F),
-                          Color.fromARGB(0xFF, 0x8F, 0x8F, 0x00),
+                          Color.fromARGB(0xFF, 0x8F, 0x8F, 0x00), */
                         ])),
               )),
           BackdropFilter(

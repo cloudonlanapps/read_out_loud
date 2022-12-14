@@ -6,7 +6,7 @@ class ViewConfig {
 
   ViewConfig({
     this.hideContent = false,
-    this.showContentBorder = true,
+    this.showContentBorder = false,
     this.borderRadius,
     this.scheme = "size",
   });

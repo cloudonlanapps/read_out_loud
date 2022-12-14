@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:services/services.dart';
 
-class ChapterTitle extends StatelessWidget {
+class TitleEditor extends StatelessWidget {
   final TextEditingController? controller;
   final String title;
   final FocusNode? focusNode;
@@ -10,7 +11,7 @@ class ChapterTitle extends StatelessWidget {
   final Function(String fname)? onValidateFileName;
   final bool readonly;
 
-  const ChapterTitle(
+  const TitleEditor(
       {super.key,
       required this.title,
       this.controller,
@@ -31,7 +32,7 @@ class ChapterTitle extends StatelessWidget {
             child: Text(
           title.isNotEmpty ? title : "Untitled",
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodyLarge,
+          style: TextStyles.chapterTitle(context),
         )),
         if (!readonly)
           Padding(

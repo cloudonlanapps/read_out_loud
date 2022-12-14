@@ -64,7 +64,7 @@ class _RouteManagerState extends State<RouteManager> {
       theme: ThemeData(
           textTheme: const TextTheme(
         displayLarge: TextStyle(
-            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 36),
+            color: Colors.black, fontWeight: FontWeight.bold, fontSize: 36),
         displayMedium: TextStyle(
             color: Colors.black, fontWeight: FontWeight.bold, fontSize: 32),
         displaySmall: TextStyle(

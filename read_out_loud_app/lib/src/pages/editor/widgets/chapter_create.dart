@@ -6,8 +6,8 @@ import 'package:go_router/go_router.dart';
 import 'package:manage_content/manage_content.dart';
 import 'package:read_out_loud_app/src/custom_widgets/menu3.dart';
 
-import 'new_title.dart';
-import 'enter_new_words.dart';
+import 'title_editor.dart';
+import 'add_words.dart';
 
 class ChapterCreate extends ConsumerStatefulWidget {
   final Function() onClose;
@@ -78,7 +78,7 @@ class ChapterCreateState extends ConsumerState<ChapterCreate>
                   },
                   child: Column(
                     children: [
-                      ChapterTitle(
+                      TitleEditor(
                         readonly: false,
                         title: titleController.text,
                         controller: titleController,
@@ -94,7 +94,7 @@ class ChapterCreateState extends ConsumerState<ChapterCreate>
                         },
                       ),
                       Expanded(
-                          child: EnterNewWords(
+                          child: AddWords(
                               focusNode: wordsfocusNode,
                               controller: wordsController,
                               onMultiWords: ((List<String> words) async {
