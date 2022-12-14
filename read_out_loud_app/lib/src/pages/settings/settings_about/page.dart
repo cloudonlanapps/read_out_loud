@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:manage_content/manage_content.dart';
 
 import 'package:responsive_screen/responsive_screen.dart';
 import 'package:route_manager/route_manager.dart';
@@ -31,8 +33,8 @@ class SettingsAboutPage implements AppRoute {
       };
 }
 
-class PageView extends StatelessWidget {
-  final String? filename;
+class PageView extends ConsumerWidget {
+  final String filename;
   final Function() onClose;
 
   const PageView({
@@ -42,15 +44,20 @@ class PageView extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return ResponsiveScreen(
-      contentBuilder: (context, size) =>
-          MainContent(filename: filename, size: size),
-      topMenuBuilder: (context, size) => TitleMenu(
-        action: onClose,
-        size: size,
-        title: "About",
-      ),
-    );
+  Widget build(BuildContext context, WidgetRef ref) {
+    AsyncValue<Repository> asyncValue = ref.watch(repositoryProvider(filename));
+    return asyncValue.when(
+        data: (Repository repository) => ResponsiveScreen(
+              contentBuilder: (context, size) => MainContent(
+                repository: repository,
+              ),
+              topMenuBuilder: (context, size) => TitleMenu(
+                action: onClose,
+                size: size,
+                title: "About",
+              ),
+            ),
+        error: (error, stackTrace) => Container(),
+        loading: () => const CircularProgressIndicator());
   }
 }

@@ -115,31 +115,34 @@ class CardMenuButton extends StatelessWidget {
     return SizedBox(
       width: 80,
       height: 80,
-      child: Card(
-          child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(4),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                if (choice!.icon != null)
-                  Expanded(
-                      child: IconButton(
-                    icon: Icon(
-                      choice!.icon,
-                      color: choice!.color,
-                      size: TextStyles.menuIcon(context).fontSize! * 2,
+      child: InkWell(
+        enableFeedback: true,
+        onTap: choice!.onTap,
+        onLongPress: choice!.onLongPress,
+        child: Card(
+            child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(4),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  if (choice!.icon != null)
+                    Expanded(
+                      child: Icon(
+                        choice!.icon,
+                        color: choice!.color,
+                        size: TextStyles.menuIcon(context).fontSize! * 2,
+                      ),
                     ),
-                    onPressed: () {},
-                  )),
-                if (choice!.title != null)
-                  Text(choice!.title!,
-                      style: TextStyles.menuIcon(context)
-                          .copyWith(color: choice!.color)),
-              ]),
-        ),
-      )),
+                  if (choice!.title != null)
+                    Text(choice!.title!,
+                        style: TextStyles.menuIcon(context)
+                            .copyWith(color: choice!.color)),
+                ]),
+          ),
+        )),
+      ),
     );
   }
 }

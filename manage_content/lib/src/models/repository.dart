@@ -1,7 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:archive/archive_io.dart';
 import 'package:collection/collection.dart';
 
 import '../helpers/content_storage.dart';
@@ -86,5 +88,35 @@ class Repository {
 
   save(String? filename) async {
     if (filename != null) await ContentStorage.saveString(filename, toJson());
+  }
+
+  List<String> get files {
+    return [...chapters.map((e) => e.filename).toList()];
+  }
+
+  /// If older zip file exists already, delete
+  /// zip all the files
+  /// return the filename
+  Future<String?> archive(String dir, String archiveName) async {
+    try {
+      final zipFile = '$dir/$archiveName';
+      if (File(zipFile).existsSync()) {
+        await File(zipFile).delete();
+      }
+      var encoder = ZipFileEncoder();
+      encoder.create(zipFile);
+      for (String file in [
+        ...files,
+        "index.json",
+      ]) {
+        if (File("$dir/$file").existsSync()) {
+          await encoder.addFile(File("$dir/$file"));
+        }
+      }
+      encoder.close();
+      return zipFile;
+    } catch (e) {
+      return null;
+    }
   }
 }

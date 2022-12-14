@@ -1,17 +1,28 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:manage_content/manage_content.dart';
 import 'package:services/services.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../custom_widgets/custom_menu.dart';
 
-class MainContent extends ConsumerWidget {
-  final Size size;
-  final String? filename;
-  const MainContent({super.key, required this.filename, required this.size});
+class MainContent extends ConsumerStatefulWidget {
+  final Repository repository;
+  const MainContent({super.key, required this.repository});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _MainContentState();
+}
+
+class _MainContentState extends ConsumerState<MainContent> {
+  bool inProgress = false;
+  @override
+  Widget build(BuildContext context) {
+    final repositoryPath = ref.watch(repositoryPathProvider);
+    String? path = repositoryPath.whenOrNull(data: (data) => data);
     return Column(
       children: [
         Expanded(
@@ -27,37 +38,67 @@ class MainContent extends ConsumerWidget {
           color: Colors.blueGrey,
           thickness: 2,
         ),
-        Expanded(
-          flex: 2,
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: CardMenu(
-              menuItems: <CustomMenuItem?>[
-                CustomMenuItem(
-                    title: 'Import', icon: FontAwesomeIcons.download),
-                null,
-                CustomMenuItem(
-                    title: 'Archive', icon: FontAwesomeIcons.fileZipper),
-                null,
-                CustomMenuItem(
-                    title: 'Reset',
-                    icon: FontAwesomeIcons.arrowsRotate,
-                    color: Colors.redAccent),
+        if (path != null)
+          Expanded(
+            flex: 2,
+            child: Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: CardMenu(
+                    menuItems: <CustomMenuItem?>[
+                      CustomMenuItem(
+                          title: 'Import', icon: FontAwesomeIcons.download),
+                      null,
+                      CustomMenuItem(
+                          title: 'Archive',
+                          icon: FontAwesomeIcons.fileZipper,
+                          onTap: () async {
+                            setState(() {
+                              inProgress = true;
+                            });
+                            final archive = await widget.repository
+                                .archive(path, "ReadOutLoudArchive.zip");
+                            print("Archive Created $archive");
+
+                            if (mounted) {
+                              if (archive != null) {
+                                Share.shareXFiles([XFile(archive)],
+                                    text:
+                                        'The Archive is ready, Please download');
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar((SnackBar(
+                                  content: Text("Archive Created $archive"),
+                                  // behavior: SnackBarBehavior.floating,
+                                )));
+                              } else {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar((const SnackBar(
+                                  content: Text("Archive failed"),
+                                  // behavior: SnackBarBehavior.floating,
+                                )));
+                              }
+                            }
+                            setState(() {
+                              inProgress = false;
+                            });
+                          }),
+                      null,
+                      CustomMenuItem(
+                          title: 'Reset',
+                          icon: FontAwesomeIcons.arrowsRotate,
+                          color: Colors.redAccent),
+                    ],
+                  ),
+                ),
+                if (inProgress)
+                  Container(
+                    decoration: BoxDecoration(color: Colors.blueGrey.shade100),
+                    child: const Center(child: CircularProgressIndicator()),
+                  )
               ],
             ),
           ),
-        ),
-
-        /* Center(
-          child: GridView.count(
-            crossAxisCount: 2,
-            children: [
-              ElevatedButton(onPressed: () {}, child: const Text("Import")),
-              ElevatedButton(onPressed: () {}, child: const Text("Export")),
-              ElevatedButton(onPressed: () {}, child: const Text("Reset")),
-            ],
-          ),
-        ), */
         const SizedBox(height: 32)
       ],
     );
