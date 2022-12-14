@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:manage_content/manage_content.dart';
 
 import '../../../editor/page.dart';
-import 'chapter_view.dart';
+import '../../../../custom_widgets/chapter_view.dart';
 
 class ListChapters extends ConsumerWidget {
   final Repository repository;
@@ -40,7 +40,7 @@ class ListChapters extends ConsumerWidget {
                             .notifier)
                         .clearProgress();
                   },
-                  onEdit: () {
+                  onTap: () {
                     context.pushNamed(EditorPage().name,
                         queryParams: {"index": index.toString()});
                   });

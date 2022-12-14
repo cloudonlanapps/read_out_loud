@@ -4,20 +4,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:manage_content/manage_content.dart';
 
-import '../../../../custom_widgets/settings_menu_button.dart';
+import 'settings_menu_button.dart';
 
 class ChapterView extends ConsumerStatefulWidget {
   final Chapter chapter;
 
   final Function()? onDelete;
-  final Function()? onEdit;
+  final Function()? onTap;
   final Function()? onResetProgress;
 
   const ChapterView({
     Key? key,
     required this.chapter,
     this.onDelete,
-    this.onEdit,
+    this.onTap,
     this.onResetProgress,
   }) : super(key: key);
 
@@ -70,7 +70,7 @@ class _ChapterViewState extends ConsumerState<ChapterView> {
         key: ObjectKey(widget.chapter),
         child: SettingsMenuButton(
           title: widget.chapter.title,
-          onTap: widget.onEdit,
+          onTap: widget.onTap,
           subTitle: (words == null)
               ? "This chapter is missing"
               : words.words.isEmpty

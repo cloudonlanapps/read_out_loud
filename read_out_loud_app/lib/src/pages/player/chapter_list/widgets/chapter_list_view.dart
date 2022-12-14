@@ -4,10 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:manage_content/manage_content.dart';
 import 'package:services/services.dart';
 
+import '../../../../custom_widgets/chapter_view.dart';
 import '../../chapter/page.dart';
 
 import '../providers/state_provider.dart';
-import 'chapter_view.dart';
 
 class ChapterListView extends ConsumerStatefulWidget {
   final List<Chapter> chapters;
@@ -64,8 +64,7 @@ class ListItemsState extends ConsumerState<ChapterListView> {
   Widget _buildTile(Chapter chapter, Size tileSize) {
     return ChapterView(
       chapter: chapter,
-      size: tileSize,
-      onSelectItem: () => onSelectItem(chapter),
+      onTap: () => onSelectItem(chapter),
     );
   }
 
