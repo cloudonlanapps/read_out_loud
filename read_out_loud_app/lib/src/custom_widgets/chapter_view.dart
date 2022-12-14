@@ -42,7 +42,7 @@ class _ChapterViewState extends ConsumerState<ChapterView> {
               },
               icon: Icons.restore_page,
               label: 'Reset',
-              foregroundColor: Colors.amber.shade300,
+              foregroundColor: Colors.blue.shade300,
               backgroundColor: Colors.transparent,
             ),
           if (widget.onDelete != null)
