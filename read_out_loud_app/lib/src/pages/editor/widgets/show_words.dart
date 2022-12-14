@@ -3,6 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:manage_content/manage_content.dart';
 import 'package:services/services.dart';
 
+import '../../../custom_widgets/custom_chip.dart';
+import '../../../custom_widgets/titled_wrap.dart';
+
 class ShowWords extends ConsumerWidget {
   final String wordsFilename;
   final List<Word> deletedWords;
@@ -39,7 +42,7 @@ class ShowWords extends ConsumerWidget {
     }
     return Column(
       children: [
-        WrapWithTitle(
+        TitledWrap(
           children: words
               .map((word) => CustomChip(
                   chipStyle: word.report
@@ -55,7 +58,7 @@ class ShowWords extends ConsumerWidget {
         ),
         if (addedWords.isNotEmpty) ...[
           const Divider(thickness: 1, height: 8),
-          WrapWithTitle(
+          TitledWrap(
             title: "Added words",
             children: addedWords
                 .map((string) => CustomChip(
@@ -67,7 +70,7 @@ class ShowWords extends ConsumerWidget {
         ],
         if (deletedWords.isNotEmpty) ...[
           const Divider(thickness: 1, height: 8),
-          WrapWithTitle(
+          TitledWrap(
             title: "Deleted Words",
             children: deletedWords
                 .map((word) => CustomChip(
@@ -79,69 +82,6 @@ class ShowWords extends ConsumerWidget {
                 .toList(),
           )
         ]
-      ],
-    );
-  }
-}
-
-class CustomChip extends ConsumerWidget {
-  final CustChipStyle chipStyle;
-  final String label;
-  final IconData? iconData;
-  final Function()? onTap;
-
-  const CustomChip(
-      {super.key,
-      required this.chipStyle,
-      required this.label,
-      this.iconData,
-      this.onTap});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Theme(
-      data: Theme.of(context).copyWith(
-          chipTheme: AppChipTheme.of(context, chipStyles: chipStyle).data),
-      child: Chip(
-          label: Text(label),
-          deleteIcon: Icon(iconData ?? Icons.close),
-          onDeleted: onTap),
-    );
-  }
-}
-
-class WrapWithTitle extends StatelessWidget {
-  final String? title;
-  final List<Widget> children;
-  const WrapWithTitle({super.key, required this.children, this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (title != null)
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  title!,
-                  style: TextStyles.chapterTitle(context),
-                )),
-          ),
-        Card(
-            margin: const EdgeInsets.all(4.0),
-            elevation: 4,
-            child: SizedBox(
-                width: double.infinity,
-                child: Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Wrap(
-                      spacing: 6.0,
-                      runSpacing: 6.0,
-                      children: children,
-                    )))),
       ],
     );
   }
