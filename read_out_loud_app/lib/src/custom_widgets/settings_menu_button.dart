@@ -15,32 +15,20 @@ class SettingsMenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: onTap == null ? Colors.grey : null,
-      shape: RoundedRectangleBorder(
-        side: const BorderSide(width: 1),
-        borderRadius: BorderRadius.circular(5),
-      ),
-      margin: const EdgeInsets.only(
-        bottom: 8.0,
-        left: 8,
-        right: 8,
-      ),
-      child: ListTile(
-        onTap: onTap,
-        title: Text(title, style: Theme.of(context).textTheme.bodyLarge),
-        subtitle: (subTitle == null)
-            ? null
-            : Padding(
-                padding: const EdgeInsets.only(left: 12.0),
-                child: Text(
-                  subTitle!,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
+    return ListTile(
+      onTap: onTap,
+      title: Text(title, style: Theme.of(context).textTheme.bodyLarge),
+      subtitle: (subTitle == null)
+          ? null
+          : Padding(
+              padding: const EdgeInsets.only(left: 12.0),
+              child: Text(
+                subTitle!,
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
-        contentPadding: const EdgeInsets.all(8),
-        trailing: Icon(iconData),
-      ),
+            ),
+      contentPadding: const EdgeInsets.all(8),
+      trailing: Icon(iconData),
     );
   }
 }

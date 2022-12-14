@@ -33,7 +33,9 @@ class ProgressBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(radius), //Customize:
+      borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(5),
+          bottomRight: Radius.circular(5)), //Customize:
       child: Row(
         children: [
           Container(

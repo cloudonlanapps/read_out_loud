@@ -64,6 +64,7 @@ class ListItemsState extends ConsumerState<ChapterListView> {
   Widget _buildTile(Chapter chapter, Size tileSize) {
     return ChapterView(
       chapter: chapter,
+      size: tileSize,
       onTap: () => onSelectItem(chapter),
     );
   }
