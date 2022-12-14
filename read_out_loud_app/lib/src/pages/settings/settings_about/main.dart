@@ -1,5 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'dart:io';
+
+import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -50,66 +54,24 @@ class _MainContentState extends ConsumerState<MainContent> {
                   child: CardMenu(
                     menuItems: <CustomMenuItem?>[
                       CustomMenuItem(
-                          title: 'Import', icon: FontAwesomeIcons.download),
+                          title: 'Import',
+                          icon: FontAwesomeIcons.download,
+                          onTap: () => confirmBeforeCall(context,
+                              message:
+                                  "If the chapter with same file name exists, do you want to overwrite?",
+                              action: (bool overwrite) =>
+                                  onImport(path, overwrite))),
                       null,
                       CustomMenuItem(
                           title: 'Archive',
                           icon: FontAwesomeIcons.fileZipper,
-                          onTap: () async {
-                            setState(() {
-                              inProgress = true;
-                            });
-                            final archive = await widget.repository
-                                .archive(path, "ReadOutLoudArchive.zip");
-
-                            if (mounted) {
-                              if (archive != null) {
-                                Share.shareXFiles([XFile(archive)],
-                                    text:
-                                        'The Archive is ready, Please download');
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar((SnackBar(
-                                  content: Text("Archive Created $archive"),
-                                  // behavior: SnackBarBehavior.floating,
-                                )));
-                              } else {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar((const SnackBar(
-                                  content: Text("Archive failed"),
-                                  // behavior: SnackBarBehavior.floating,
-                                )));
-                              }
-                            }
-                            setState(() {
-                              inProgress = false;
-                            });
-                          }),
+                          onTap: () => onArchive(path)),
                       null,
                       CustomMenuItem(
                           title: 'Reset',
                           icon: FontAwesomeIcons.arrowsRotate,
                           color: Colors.redAccent,
-                          onTap: () async {
-                            setState(() {
-                              inProgress = true;
-                            });
-                            await ref
-                                .read(repositoryProvider(widget.filename)
-                                    .notifier)
-                                .reset(widget.repository);
-
-                            if (mounted) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar((const SnackBar(
-                                content: Text("Reset Done"),
-                              )));
-                            }
-                            if (mounted) {
-                              setState(() {
-                                inProgress = false;
-                              });
-                            }
-                          }),
+                          onTap: onReset),
                     ],
                   ),
                 ),
@@ -124,6 +86,95 @@ class _MainContentState extends ConsumerState<MainContent> {
         const SizedBox(height: 32)
       ],
     );
+  }
+
+  confirmBeforeCall(BuildContext context,
+      {required String message, required Function(bool userChoice) action}) {
+    showOkCancelAlertDialog(
+      context: context,
+      message: message,
+      okLabel: "Yes",
+      cancelLabel: "No",
+    ).then((result) {
+      action(result == OkCancelResult.ok);
+    });
+  }
+
+  onImport(String path, bool overwrite) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result?.files.single.path != null) {
+      File file = File((result?.files.single.path)!);
+      if (file.existsSync()) {
+        await ref
+            .read(repositoryProvider(widget.filename).notifier)
+            .loadFromZip(
+                repository: widget.repository,
+                path: path,
+                zipFileName: (result?.files.single.path)!,
+                overwrite: overwrite);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar((const SnackBar(
+            content: Text("Import complete"),
+          )));
+        }
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar((const SnackBar(
+            content: Text("File not found"),
+          )));
+        }
+      }
+    } else {
+      // User canceled the picker
+    }
+  }
+
+  onReset() async {
+    setState(() {
+      inProgress = true;
+    });
+    await ref
+        .read(repositoryProvider(widget.filename).notifier)
+        .reset(widget.repository);
+
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar((const SnackBar(
+        content: Text("Reset Done"),
+      )));
+    }
+    if (mounted) {
+      setState(() {
+        inProgress = false;
+      });
+    }
+  }
+
+  onArchive(String path) async {
+    setState(() {
+      inProgress = true;
+    });
+    final archive =
+        await widget.repository.archive(path, "ReadOutLoudArchive.zip");
+
+    if (mounted) {
+      if (archive != null) {
+        Share.shareXFiles([XFile(archive)],
+            text: 'The Archive is ready, Please download');
+        ScaffoldMessenger.of(context).showSnackBar((SnackBar(
+          content: Text("Archive Created $archive"),
+          // behavior: SnackBarBehavior.floating,
+        )));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar((const SnackBar(
+          content: Text("Archive failed"),
+          // behavior: SnackBarBehavior.floating,
+        )));
+      }
+    }
+    setState(() {
+      inProgress = false;
+    });
   }
 }
 
