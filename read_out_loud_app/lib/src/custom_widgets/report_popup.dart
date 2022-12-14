@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:read_out_loud_app/src/custom_widgets/custom_chip.dart';
+import 'package:read_out_loud_app/src/custom_widgets/titled_wrap.dart';
 import 'package:services/services.dart';
 
 class ReportPopup extends StatelessWidget {
@@ -18,18 +20,15 @@ class ReportPopup extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 16),
-            child: Text("Reported Words",
-                style: Theme.of(context).textTheme.bodyLarge),
+          const SizedBox(
+            height: 16,
           ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: Text(
-              text,
-              style: Theme.of(context).textTheme.bodyMedium!,
-            ),
-          ),
+          TitledWrap(
+              title: "Reported Words",
+              children: reportedWords
+                  .map<Widget>((String word) =>
+                      CustomChip(chipStyle: CustChipStyle.normal, label: word))
+                  .toList()),
           if (allowReport) ...[
             Padding(
               padding: const EdgeInsets.only(bottom: 8),
@@ -39,14 +38,14 @@ class ReportPopup extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 64),
+              padding: const EdgeInsets.only(bottom: 32),
               child: Center(
                 child: ElevatedButton.icon(
                     onPressed: () async {
                       ClipboardManager.copy(text);
                       Navigator.pop(context);
                     },
-                    icon: const Icon(Icons.copy_outlined),
+                    icon: const Icon(Icons.copy_sharp),
                     label: const Text("Copy")),
               ),
             )
