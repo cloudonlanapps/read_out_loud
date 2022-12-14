@@ -42,29 +42,8 @@ class TitleEditor extends StatelessWidget {
               inputFormatters: [
                 FilteringTextInputFormatter.allow(RegExp(r"[0-9a-zA-Z\ ]")),
               ],
-              decoration: InputDecoration(
-                label: const Text("Edit name of the Chapter"),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(
-                      width: 2, color: Colors.blueGrey), //<-- SEE HERE
-                  borderRadius: BorderRadius.circular(5.0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(
-                      width: 2, color: Colors.blueGrey), //<-- SEE HERE
-                  borderRadius: BorderRadius.circular(5.0),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(
-                      width: 2, color: Colors.red), //<-- SEE HERE
-                  borderRadius: BorderRadius.circular(5.0),
-                ),
-                focusedErrorBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(
-                      width: 2, color: Colors.red), //<-- SEE HERE
-                  borderRadius: BorderRadius.circular(5.0),
-                ),
-              ),
+              decoration: AppTextFieldTheme.inputDecoration(
+                  label: "Edit name of the Chapter"),
               controller: controller,
               minLines: 1,
               maxLines: 1,

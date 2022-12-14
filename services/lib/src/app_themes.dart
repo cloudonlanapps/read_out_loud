@@ -38,14 +38,31 @@ class AppChipTheme {
   TextStyle get textStyle => Theme.of(context).textTheme.labelLarge!;
   Color get color => textStyle.color!;
 }
-/**
- * 
- *   Map<ChipStyles, ChipThemeData> get styles => (switch
-        ChipStyles.normal: ChipThemeData(
-          side: BorderSide(width: 1.0, color: color),
-          labelStyle: textStyle,
-          backgroundColor: Colors.transparent,
-          selectedColor: Colors.transparent,
+
+class AppTextFieldTheme {
+  static InputDecoration inputDecoration({required String label}) =>
+      InputDecoration(
+        label: Text(label),
+        alignLabelWithHint: true,
+        enabledBorder: OutlineInputBorder(
+          borderSide:
+              const BorderSide(width: 2, color: Colors.blueGrey), //<-- SEE HERE
+          borderRadius: BorderRadius.circular(5.0),
         ),
-      });
- */
+        focusedBorder: OutlineInputBorder(
+          borderSide:
+              const BorderSide(width: 2, color: Colors.blueGrey), //<-- SEE HERE
+          borderRadius: BorderRadius.circular(5.0),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide:
+              const BorderSide(width: 2, color: Colors.red), //<-- SEE HERE
+          borderRadius: BorderRadius.circular(5.0),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide:
+              const BorderSide(width: 2, color: Colors.red), //<-- SEE HERE
+          borderRadius: BorderRadius.circular(5.0),
+        ),
+      );
+}
