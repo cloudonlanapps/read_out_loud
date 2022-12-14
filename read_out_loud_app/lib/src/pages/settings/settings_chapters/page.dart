@@ -5,13 +5,12 @@ import 'package:read_out_loud_app/src/pages/settings/settings_home/page.dart';
 import 'package:responsive_screen/responsive_screen.dart';
 import 'package:route_manager/route_manager.dart';
 
-import '../player/chapter_list/page.dart';
 import 'main.dart';
 import 'top_menu.dart';
 
-class MainPage implements AppRoute {
+class SettingsChapterPage implements AppRoute {
   @override
-  String get name => "main";
+  String get name => "settings-chapter";
 
   @override
   String get path => "/$name";
@@ -21,36 +20,30 @@ class MainPage implements AppRoute {
       (BuildContext context, GoRouterState state) {
         return PageView(
           filename: 'index.json',
-          onSettings: () {
+          onClose: () {
             context.goNamed(SettingsPage().name);
-          },
-          onPlay: () {
-            context.goNamed(ContentListPage().name);
           },
         );
       };
 }
 
 class PageView extends StatelessWidget {
-  final String? filename;
-  final Function() onSettings;
-  final Function() onPlay;
+  final String filename;
+  final Function() onClose;
 
-  const PageView(
-      {super.key,
-      required this.filename,
-      required this.onSettings,
-      required this.onPlay});
+  const PageView({
+    super.key,
+    required this.filename,
+    required this.onClose,
+  });
 
   @override
   Widget build(BuildContext context) {
     return ResponsiveScreen(
       contentBuilder: (context, size) =>
-          MainContent(filename: filename, onPlay: onPlay),
+          MainContent(filename: filename, size: size),
       topMenuBuilder: (context, size) =>
-          TopMenu(onSettings: onSettings, size: size),
-      /*  bottomMenubuilder: (context, size) =>
-          BottomMenu(onPlay: onPlay, size: size), */
+          TopMenu(onClose: onClose, filename: filename, size: size),
     );
   }
 }
