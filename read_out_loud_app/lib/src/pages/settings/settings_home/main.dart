@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:manage_content/manage_content.dart';
-import 'package:read_out_loud_app/src/pages/settings/settings_audio/page.dart';
 
 import '../../../custom_widgets/settings_menu_button.dart';
+import '../settings_about/page.dart';
+import '../settings_audio/page.dart';
 import '../settings_chapters/page.dart';
 import '../../../custom_widgets/report_popup.dart';
 
@@ -24,7 +25,7 @@ class MainContent extends ConsumerWidget {
             title: "Chapters",
             subTitle:
                 "Add/Remove chapters, edit existing chapters, reset progress etc.",
-            onTap: () => context.goNamed(SettingsChapterPage().name),
+            onTap: () => context.pushNamed(SettingsChapterPage().name),
           ),
           if (length > 0)
             SettingsMenuButton(
@@ -45,7 +46,12 @@ class MainContent extends ConsumerWidget {
           SettingsMenuButton(
             title: "Audio Settings",
             subTitle: "Expert level settings",
-            onTap: () => context.goNamed(AdvancedSettingsPage().name),
+            onTap: () => context.pushNamed(AdvancedSettingsPage().name),
+          ),
+          SettingsMenuButton(
+            title: "About",
+            subTitle: "About this app, options to backup, restore, reset etc",
+            onTap: () => context.pushNamed(SettingsAboutPage().name),
           )
         ],
       ),
