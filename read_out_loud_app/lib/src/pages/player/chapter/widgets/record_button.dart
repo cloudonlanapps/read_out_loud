@@ -1,52 +1,67 @@
 import 'dart:io';
+import 'dart:math';
 
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
+import 'package:read_out_loud_app/src/custom_widgets/custom_menu.dart';
 import 'package:read_out_loud_app/src/tts/stt_record.dart';
-import 'package:services/services.dart';
 
-import '../../../../custom_widgets/sizedbox_decorated.dart';
 import '../providers/state_provider.dart';
 
-class RecordButton extends ConsumerWidget {
+class RecordButton extends ConsumerStatefulWidget {
+  final Size size;
   final bool succeeded;
-  const RecordButton({Key? key, required this.succeeded}) : super(key: key);
+  const RecordButton({Key? key, required this.succeeded, required this.size})
+      : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _RecordButtonState();
+}
+
+class _RecordButtonState extends ConsumerState<RecordButton> {
+  @override
+  Widget build(BuildContext context) {
+    Size size = widget.size;
     final sttRecord = ref.watch(sttRecordProvider);
     final playState = ref.watch(playWordStateProvider);
-    return Column(
-      children: [
-        SizedBoxDecorated(
-          height: 40,
-          child: Stack(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  const SizedBoxDecorated(
-                    width: 40,
-                    height: 40,
+    double square = max(50, min(size.width, size.height));
+    return Center(
+      child: SizedBox(
+        width: square,
+        height: square,
+        child: Stack(
+          children: [
+            if (playState == PlayState.listening)
+              Center(
+                child: Container(
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                          blurRadius: .26,
+                          spreadRadius: sttRecord.level * 2,
+                          color: Colors.red.withOpacity(.1)),
+                      BoxShadow(
+                          blurRadius: .26,
+                          spreadRadius: sttRecord.level * 1.5,
+                          color: Colors.blue.withOpacity(.1))
+                      //max(1.0, sttRecord.level)*,
+                    ],
+                    borderRadius: BorderRadius.all(Radius.circular(square)),
                   ),
-                  Container(
-                    width: 40,
-                    height: 40,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                            blurRadius: .26,
-                            spreadRadius: sttRecord.level * 2,
-                            color: Colors.grey)
-                      ],
-                      borderRadius: const BorderRadius.all(Radius.circular(50)),
-                    ),
-                    child: IconButton(
-                        icon: const Icon(Icons.mic),
-                        onPressed: (PlayState.idle != playState)
+                  child: CustomMenuButton(
+                      menuItem: CustomMenuItem(icon: Icons.mic, onTap: () {})),
+                ),
+              )
+            else ...[
+              FittedBox(
+                child: CustomMenuButton(
+                    menuItem: CustomMenuItem(
+                        icon: Icons.mic,
+                        title:
+                            widget.succeeded ? "Try again? " : "Tap to Speak",
+                        onTap: (PlayState.idle != playState)
                             ? null
                             : () {
                                 if (!kIsWeb &&
@@ -61,54 +76,24 @@ class RecordButton extends ConsumerWidget {
                                         "This platform don't support Speech to Text"),
                                   )));
                                 }
-                              }),
-                  ),
-                  const SizedBoxDecorated(
-                    width: 40,
-                    height: 40,
-                  ),
-                ],
+                              })),
               ),
-              if (playState != PlayState.listening)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Transform.translate(
-                      offset: const Offset(8, 0),
-                      child: SizedBoxDecorated(
-                        width: 40,
-                        height: 40,
-                        child: Lottie.asset(
-                            "assets/Lotties/42193-hand-pointing-icon.json"),
-                      ),
+              Transform.translate(
+                offset: Offset((-size.height / 2) - 8, 0),
+                child: Center(
+                  child: SizedBox.fromSize(
+                    size: Size(size.height, size.height),
+                    child: FittedBox(
+                      child: Lottie.asset(
+                          "assets/Lotties/42193-hand-pointing-icon.json"),
                     ),
-                    const SizedBoxDecorated(
-                      width: 40,
-                      height: 40,
-                    ),
-                    Container(
-                      margin: const EdgeInsets.all(4.0),
-                      width: 40,
-                      height: 40,
-                      alignment: Alignment.center,
-                    ),
-                  ],
-                ),
-            ],
-          ),
-        ),
-        Container(
-          child: (playState == PlayState.listening)
-              ? null
-              : Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    succeeded ? "Try again? " : "Tap to Speak",
-                    style: TextStyles.menuIcon(context),
                   ),
                 ),
-        )
-      ],
+              ),
+            ]
+          ],
+        ),
+      ),
     );
   }
 }

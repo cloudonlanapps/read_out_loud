@@ -116,10 +116,9 @@ class _PlayWordState extends ConsumerState<PlayWord> {
                       width: widget.size.width,
                       child: Padding(
                         padding: const EdgeInsets.all(15.0),
-                        child: FittedBox(
-                            fit: BoxFit.fitHeight,
-                            child:
-                                RecordButton(succeeded: widget.word.succeeded)),
+                        child: RecordButton(
+                            succeeded: widget.word.succeeded,
+                            size: Size(widget.size.width, part * 2)),
                       )),
                 ],
               ],
