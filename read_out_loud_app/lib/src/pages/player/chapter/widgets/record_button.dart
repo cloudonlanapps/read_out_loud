@@ -36,9 +36,12 @@ class _RecordButtonState extends ConsumerState<RecordButton> {
         child: Stack(
           children: [
             if (playState == PlayState.listening)
-              Center(
+              AspectRatio(
+                aspectRatio: 1.0,
                 child: Container(
                   decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(square / 2),
+                    border: Border.all(),
                     boxShadow: [
                       BoxShadow(
                           blurRadius: .26,
@@ -50,40 +53,71 @@ class _RecordButtonState extends ConsumerState<RecordButton> {
                           color: Colors.blue.withOpacity(.1))
                       //max(1.0, sttRecord.level)*,
                     ],
-                    borderRadius: BorderRadius.all(Radius.circular(square)),
                   ),
-                  child: CustomMenuButton(
-                      menuItem: CustomMenuItem(icon: Icons.mic, onTap: () {})),
+                  child: Padding(
+                    padding: EdgeInsets.all(square * 0.05),
+                    child: FittedBox(
+                      child: CustomMenuButton(
+                          menuItem: CustomMenuItem(
+                              icon: Icons.mic,
+                              title: widget.succeeded
+                                  ? "Try again? "
+                                  : "Tap to Speak",
+                              onTap: () {})),
+                    ),
+                  ),
                 ),
               )
             else ...[
-              FittedBox(
-                child: CustomMenuButton(
-                    menuItem: CustomMenuItem(
-                        icon: Icons.mic,
-                        title:
-                            widget.succeeded ? "Try again? " : "Tap to Speak",
-                        onTap: (PlayState.idle != playState)
-                            ? null
-                            : () {
-                                if (!kIsWeb &&
-                                    (Platform.isAndroid || Platform.isIOS)) {
-                                  timer = Timer(const Duration(seconds: 3), () {
-                                    ref
-                                        .read(playWordStateProvider.notifier)
-                                        .sttStop();
-                                  });
-                                  ref
-                                      .read(playWordStateProvider.notifier)
-                                      .sttListen();
-                                } else {
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar((const SnackBar(
-                                    content: Text(
-                                        "This platform don't support Speech to Text"),
-                                  )));
-                                }
-                              })),
+              AspectRatio(
+                aspectRatio: 1.0,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(square / 2),
+                    border: Border.all(),
+                    boxShadow: [
+                      BoxShadow(
+                          blurRadius: .26, color: Colors.blue.withOpacity(.1))
+                      //max(1.0, sttRecord.level)*,
+                    ],
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(square * 0.05),
+                    child: FittedBox(
+                      child: CustomMenuButton(
+                          menuItem: CustomMenuItem(
+                              icon: Icons.mic,
+                              title: widget.succeeded
+                                  ? "Try again? "
+                                  : "Tap to Speak",
+                              onTap: (PlayState.idle != playState)
+                                  ? null
+                                  : () {
+                                      if (!kIsWeb &&
+                                          (Platform.isAndroid ||
+                                              Platform.isIOS)) {
+                                        timer = Timer(
+                                            const Duration(seconds: 3), () {
+                                          ref
+                                              .read(playWordStateProvider
+                                                  .notifier)
+                                              .sttStop();
+                                        });
+                                        ref
+                                            .read(
+                                                playWordStateProvider.notifier)
+                                            .sttListen();
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar((const SnackBar(
+                                          content: Text(
+                                              "This platform don't support Speech to Text"),
+                                        )));
+                                      }
+                                    })),
+                    ),
+                  ),
+                ),
               ),
               Transform.translate(
                 offset: Offset((-size.height / 2) - 8, 0),
