@@ -63,3 +63,14 @@ final playWordStateProvider =
     StateNotifierProvider<PlayWordStateNotifier, PlayState>((ref) {
   return PlayWordStateNotifier(ref);
 });
+
+class IntroEnableNotifier extends StateNotifier<bool> {
+  IntroEnableNotifier() : super(true);
+
+  set enable(bool val) => state = val;
+}
+
+final introEnableProvider =
+    StateNotifierProvider<IntroEnableNotifier, bool>((ref) {
+  return IntroEnableNotifier();
+});

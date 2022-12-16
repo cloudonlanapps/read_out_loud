@@ -32,7 +32,7 @@ class _PlayWordState extends ConsumerState<PlayWord> {
   @override
   void initState() {
     ref.read(playWordStateProvider.notifier).newState = PlayState.idle;
-    if (!widget.word.succeeded) {
+    if (!widget.word.succeeded && ref.read(introEnableProvider)) {
       WidgetsBinding.instance.addPostFrameCallback((_) => speak());
     }
     super.initState();

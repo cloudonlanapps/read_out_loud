@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:manage_content/manage_content.dart';
 
 import '../../../custom_widgets/custom_menu.dart';
@@ -20,7 +21,7 @@ class TopMenu extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final PlayState playState = ref.watch(playWordStateProvider);
-
+    bool introOff = ref.watch(introEnableProvider);
     return CustomMenu(menuItems: [
       CustomMenuItem(
         alignment: Alignment.centerLeft,
@@ -34,7 +35,15 @@ class TopMenu extends ConsumerWidget {
               },
       ),
       null,
-      null,
+      CustomMenuItem(
+          alignment: Alignment.centerLeft,
+          icon: introOff
+              ? FontAwesomeIcons.volumeHigh
+              : FontAwesomeIcons.volumeXmark,
+          scale: 0.8,
+          onTap: () {
+            ref.read(introEnableProvider.notifier).enable = !introOff;
+          }),
       CustomMenuItem(
           alignment: Alignment.center,
           icon: Icons.report,
