@@ -19,13 +19,18 @@ class ListPaginate<T> {
   double get tileHeight => _tileSize;
   double get titleHeight => height - (_tileSize * itemsPerPage);
 
+  double? minTileSize;
+  double? maxTileSize;
+
   ListPaginate(
       {required this.items,
       required this.width,
       required this.height,
       this.currentPage = 0,
       int? itemsPerPage,
-      double? tileSize}) {
+      double? tileSize,
+      this.minTileSize,
+      this.maxTileSize}) {
     if (itemsPerPage != null && itemsPerPage <= 0) {
       throw Exception(
           "if provided, itemsPerPage must be null or greater than zero");
@@ -40,8 +45,9 @@ class ListPaginate<T> {
     } else {
       double tileSizeLocal;
       int itemsPerPageLocal = 0;
-      double minTileSize = 55;
-      double maxTileSize = max(55, (height ~/ 60 * 5).toDouble());
+      double minTileSize = this.minTileSize ?? 55;
+      double maxTileSize = max(this.maxTileSize ?? this.minTileSize ?? 55,
+          (height ~/ 60 * 5).toDouble());
 
       for (tileSizeLocal = maxTileSize;
           tileSizeLocal > minTileSize - 1;

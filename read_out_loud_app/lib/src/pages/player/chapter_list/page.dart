@@ -48,29 +48,37 @@ class PageView extends ConsumerWidget {
     AsyncValue<Repository> asyncValue = ref.watch(repositoryProvider(filename));
     return asyncValue.when(
         data: (Repository repository) => LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) =>
-                  ProviderScope(
-                overrides: [
-                  contentPageProvider.overrideWith((ref) => ContentPageNotifier(
-                      ListPaginate<Chapter>(
-                          width: constraints.maxWidth,
-                          height: ResponsiveScreen.contentHeight(
-                              size: Size(
-                                  constraints.maxWidth, constraints.maxHeight),
-                              isBottom: true,
-                              isTop: true),
-                          items: repository.chapters)))
-                ],
-                child: ResponsiveScreen(
-                  contentBuilder: (context, size) => const MainContent(),
-                  topMenuBuilder: (context, size) => TitleMenu(
-                    action: onClose,
-                    size: size,
-                    title: 'Select One',
+              builder: (BuildContext context, BoxConstraints constraints) {
+                print(
+                    "Size Total: ${constraints.maxWidth}, ${constraints.maxHeight}");
+                print(
+                    "Height Available: ${ResponsiveScreen.contentHeight(size: Size(constraints.maxWidth, constraints.maxHeight), isBottom: true, isTop: true)}");
+                final Size mainContentSize = Size(
+                    constraints.maxWidth,
+                    ResponsiveScreen.contentHeight(
+                        size: Size(constraints.maxWidth, constraints.maxHeight),
+                        isBottom: true,
+                        isTop: true));
+                return ProviderScope(
+                  overrides: [
+                    contentPageProvider.overrideWith((ref) =>
+                        ContentPageNotifier(ListPaginate<Chapter>(
+                            width: mainContentSize.width,
+                            height: mainContentSize.height,
+                            items: repository.chapters,
+                            minTileSize: 100)))
+                  ],
+                  child: ResponsiveScreen(
+                    contentBuilder: (context, size) => const MainContent(),
+                    topMenuBuilder: (context, size) => TitleMenu(
+                      action: onClose,
+                      size: size,
+                      title: 'Select One',
+                    ),
+                    bottomMenubuilder: (context, size) => const BottomMenu(),
                   ),
-                  bottomMenubuilder: (context, size) => const BottomMenu(),
-                ),
-              ),
+                );
+              },
             ),
         error: (error, stackTrace) => Container(),
         loading: () => const CircularProgressIndicator());

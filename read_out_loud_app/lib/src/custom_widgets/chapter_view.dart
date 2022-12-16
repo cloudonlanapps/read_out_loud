@@ -71,40 +71,49 @@ class _ChapterViewState extends ConsumerState<ChapterView> {
             ? null
             : actionPane,
         key: ObjectKey(widget.chapter),
-        child: Card(
-          color: widget.onTap == null ? Colors.grey : null,
-          shape: RoundedRectangleBorder(
-            side: const BorderSide(width: 1),
-            borderRadius: BorderRadius.circular(5),
-          ),
-          margin: const EdgeInsets.only(
-            bottom: 8.0,
-            left: 8,
-            right: 8,
-          ),
-          child: Stack(
-            children: [
-              if (widget.size != null)
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: ProgressBar(
-                      size: Size(widget.size!.width - 16, 16),
-                      progress: progress ?? 0),
+        child: SizedBox.fromSize(
+          size: widget.size,
+          child: Card(
+            color: widget.onTap == null ? Colors.grey : null,
+            shape: RoundedRectangleBorder(
+              side: const BorderSide(width: 1),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            margin: const EdgeInsets.only(
+              bottom: 4.0,
+              left: 8,
+              right: 8,
+            ),
+            child: Stack(
+              children: [
+                if (widget.size != null)
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: ProgressBar(
+                        size: Size(widget.size!.width - 16 - 16, 16),
+                        progress: progress ?? 0),
+                  ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 4.0, horizontal: 8.0),
+                  child: Center(
+                    child: SettingsMenuButton(
+                      title: widget.chapter.title,
+                      onTap: widget.onTap,
+                      subTitle: (words == null)
+                          ? "This chapter is missing"
+                          : words.words.isEmpty
+                              ? "This chapter is empty"
+                              : (words.successCount > 0)
+                                  ? "Can read ${words.successCount} of ${words.totalCount} words"
+                                  : "${words.totalCount} words",
+                    ),
+                  ),
                 ),
-              SettingsMenuButton(
-                title: widget.chapter.title,
-                onTap: widget.onTap,
-                subTitle: (words == null)
-                    ? "This chapter is missing"
-                    : words.words.isEmpty
-                        ? "This chapter is empty"
-                        : (words.successCount > 0)
-                            ? "Can read ${words.successCount} of ${words.totalCount} words"
-                            : "${words.totalCount} words",
-              ),
-            ],
+              ],
+            ),
           ),
         ));
   }

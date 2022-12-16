@@ -27,7 +27,7 @@ class SettingsMenuButton extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
-      contentPadding: const EdgeInsets.all(8),
+      contentPadding: const EdgeInsets.all(0),
       trailing: Icon(iconData),
     );
   }

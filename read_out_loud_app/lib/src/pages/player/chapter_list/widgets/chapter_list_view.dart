@@ -41,6 +41,7 @@ class ListItemsState extends ConsumerState<ChapterListView> {
   }
 
   void addItems(Size tileSize) async {
+    print(" tileSize $tileSize");
     items.clear();
     ref.read(isAnimatingProvider.notifier).isAnimating = true;
 
@@ -86,6 +87,8 @@ class ListItemsState extends ConsumerState<ChapterListView> {
       children: [
         Expanded(
           child: AnimatedList(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
               key: _listKey,
               initialItemCount: items.length,
               itemBuilder: (context, index, animation) {
