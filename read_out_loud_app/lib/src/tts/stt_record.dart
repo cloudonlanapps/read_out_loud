@@ -173,14 +173,14 @@ class STTRecordNotifier extends StateNotifier<STTRecord> {
     );
   }
 
-  void stopListening() async {
+  Future<void> stopListening() async {
     state.logEvent('stop');
     state.speechToText.stop();
     state = state.copyWith(level: 0.0);
     await ref.read(ttsSpeakerProvider.notifier).unmute();
   }
 
-  void cancelListening() async {
+  Future<void> cancelListening() async {
     state.logEvent('cancel');
     state.speechToText.cancel();
     state = state.copyWith(level: 0.0);

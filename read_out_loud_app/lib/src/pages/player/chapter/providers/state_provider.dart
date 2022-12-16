@@ -49,6 +49,14 @@ class PlayWordStateNotifier extends StateNotifier<PlayState> {
       await ref.read(sttRecordProvider.notifier).startListening();
     }
   }
+
+  sttStop() async {
+    if (state == PlayState.listening) {
+      newState = PlayState.idle;
+      //await ref.read(ttsSpeakerProvider.notifier).mute();
+      await ref.read(sttRecordProvider.notifier).stopListening();
+    }
+  }
 }
 
 final playWordStateProvider =

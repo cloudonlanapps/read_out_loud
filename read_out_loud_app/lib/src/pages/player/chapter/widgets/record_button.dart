@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
@@ -21,6 +22,7 @@ class RecordButton extends ConsumerStatefulWidget {
 }
 
 class _RecordButtonState extends ConsumerState<RecordButton> {
+  late Timer timer;
   @override
   Widget build(BuildContext context) {
     Size size = widget.size;
@@ -66,6 +68,11 @@ class _RecordButtonState extends ConsumerState<RecordButton> {
                             : () {
                                 if (!kIsWeb &&
                                     (Platform.isAndroid || Platform.isIOS)) {
+                                  timer = Timer(const Duration(seconds: 3), () {
+                                    ref
+                                        .read(playWordStateProvider.notifier)
+                                        .sttStop();
+                                  });
                                   ref
                                       .read(playWordStateProvider.notifier)
                                       .sttListen();
