@@ -40,6 +40,7 @@ class TopMenu extends ConsumerWidget {
           icon: introOff
               ? FontAwesomeIcons.volumeHigh
               : FontAwesomeIcons.volumeXmark,
+          title: "Guide with Audio",
           scale: 0.8,
           onTap: () {
             ref.read(introEnableProvider.notifier).enable = !introOff;
