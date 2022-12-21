@@ -70,36 +70,39 @@ class STTRecord {
     }
   }
 
-  Future<STTRecord> init(
-      {required void Function(SpeechRecognitionError error) onError,
-      required void Function(String status) onStatus}) async {
+  Future<STTRecord> init({
+    required void Function(SpeechRecognitionError error) onError,
+    required void Function(String status) onStatus,
+  }) async {
     logEvent('Initialize');
     try {
-      var hasSpeech = await speechToText.initialize(
+      final hasSpeech = await speechToText.initialize(
         onError: onError,
         onStatus: onStatus,
         debugLogging: logEvents,
       );
       if (!hasSpeech) {
-        throw Exception("initialize returned false");
+        throw Exception('initialize returned false');
       }
 
-      var localeNames = await speechToText.locales();
+      final localeNames = await speechToText.locales();
 
-      var systemLocale = await speechToText.systemLocale();
-      String currentLocaleId = systemLocale?.localeId ?? '';
+      final systemLocale = await speechToText.systemLocale();
+      final currentLocaleId = systemLocale?.localeId ?? '';
 
       // Get the list of languages installed on the supporting platform so they
       // can be displayed in the UI for selection by the user.
 
       return copyWith(
-          hasSpeech: hasSpeech,
-          currentLocaleId: currentLocaleId,
-          localeNames: localeNames);
-    } catch (e) {
+        hasSpeech: hasSpeech,
+        currentLocaleId: currentLocaleId,
+        localeNames: localeNames,
+      );
+    } on Exception catch (e) {
       return copyWith(
-          lastError: 'Speech recognition failed: ${e.toString()}',
-          hasSpeech: false);
+        lastError: 'Speech recognition failed: ${e.toString()}',
+        hasSpeech: false,
+      );
     }
   }
 }
@@ -109,7 +112,7 @@ class STTRecordNotifier extends StateNotifier<STTRecord> {
   STTRecordNotifier(this.ref) : super(STTRecord(sttConfig: STTConfig())) {
     //init();
   }
-  init() async {
+  Future<void> init() async {
     state = await state.init(onError: errorListener, onStatus: statusListener);
   }
 
@@ -119,18 +122,19 @@ class STTRecordNotifier extends StateNotifier<STTRecord> {
     state = state.copyWith(level: temp);
   }
 
-  void switchLang(selectedVal) {
+  void switchLang(String selectedVal) {
     state = state.copyWith(currentLocaleId: selectedVal);
-    state.logEvent("selectedVal = $selectedVal");
+    state.logEvent('selectedVal = $selectedVal');
   }
 
-  void switchLogging(bool? val) {
-    state = state.copyWith(logEvents: val);
+  void switchLogging({bool? logEvents}) {
+    state = state.copyWith(logEvents: logEvents);
   }
 
   void errorListener(SpeechRecognitionError error) {
     state.logEvent(
-        'Received error status: $error, listening: ${state.speechToText.isListening}');
+      'Received error status: $error, listening: ${state.speechToText.isListening}',
+    );
 
     state = state.copyWith(lastError: '${error.errorMsg} - ${error.permanent}');
   }
@@ -139,7 +143,8 @@ class STTRecordNotifier extends StateNotifier<STTRecord> {
     state = state.copyWith(lastStatus: status);
 
     state.logEvent(
-        'Received listener status: $status, listening: ${state.speechToText.isListening}');
+      'Received listener status: $status, listening: ${state.speechToText.isListening}',
+    );
   }
 
   // This is called each time the users wants to start a new speech
@@ -164,7 +169,6 @@ class STTRecordNotifier extends StateNotifier<STTRecord> {
       onResult: resultListener,
       listenFor: Duration(seconds: listenFor ?? 30),
       pauseFor: Duration(seconds: pauseFor ?? 3),
-      partialResults: true,
       localeId: state.currentLocaleId,
       onSoundLevelChange: soundLevelListener,
       cancelOnError: true,
@@ -175,15 +179,15 @@ class STTRecordNotifier extends StateNotifier<STTRecord> {
 
   Future<void> stopListening() async {
     state.logEvent('stop');
-    state.speechToText.stop();
-    state = state.copyWith(level: 0.0);
+    await state.speechToText.stop();
+    state = state.copyWith(level: 0);
     await ref.read(ttsSpeakerProvider.notifier).unmute();
   }
 
   Future<void> cancelListening() async {
     state.logEvent('cancel');
-    state.speechToText.cancel();
-    state = state.copyWith(level: 0.0);
+    await state.speechToText.cancel();
+    state = state.copyWith(level: 0);
     await ref.read(ttsSpeakerProvider.notifier).unmute();
   }
 

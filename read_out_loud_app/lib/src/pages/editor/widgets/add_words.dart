@@ -5,21 +5,20 @@ import 'package:services/services.dart';
 import '../../../custom_widgets/menu3.dart';
 
 class AddWords extends StatelessWidget {
+  const AddWords({
+    required this.controller,
+    required this.onMultiWords,
+    required this.onClearController,
+    required this.focusNode,
+    required this.onTextChanged,
+    super.key,
+  });
   final Future<bool> Function(List<String>) onMultiWords;
   final Function() onClearController;
   final Function() onTextChanged;
 
   final TextEditingController controller;
   final FocusNode focusNode;
-
-  const AddWords({
-    super.key,
-    required this.controller,
-    required this.onMultiWords,
-    required this.onClearController,
-    required this.focusNode,
-    required this.onTextChanged,
-  });
 
   @override
   Widget build(BuildContext context) {
@@ -34,18 +33,20 @@ class AddWords extends StatelessWidget {
                 null
               else
                 TextButton(
-                    onPressed: onClearController,
-                    child: const Text("Clear", textAlign: TextAlign.start)),
+                  onPressed: onClearController,
+                  child: const Text('Clear', textAlign: TextAlign.start),
+                ),
               null,
               TextButton(
-                  onPressed: () async {
-                    final text = await ClipboardManager.paste();
-                    final words = text
-                        .replaceAll(RegExp(r"[^a-zA-Z\s\r\n\,]"), "")
-                        .split(RegExp(r"[\s\r\n]"));
-                    await onMultiWords(words);
-                  },
-                  child: const Text("Paste", textAlign: TextAlign.end)),
+                onPressed: () async {
+                  final text = await ClipboardManager.paste();
+                  final words = text
+                      .replaceAll(RegExp(r'[^a-zA-Z\s\r\n\,]'), '')
+                      .split(RegExp(r'[\s\r\n]'));
+                  await onMultiWords(words);
+                },
+                child: const Text('Paste', textAlign: TextAlign.end),
+              ),
             ],
           ),
         ),
@@ -53,15 +54,14 @@ class AddWords extends StatelessWidget {
           child: TextFormField(
             focusNode: focusNode,
             inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp(r"[a-zA-Z\r\n]")),
+              FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\r\n]')),
             ],
             expands: true,
             decoration: AppTextFieldTheme.inputDecoration(
-                label: "Enter Words, one word per line"),
+              label: 'Enter Words, one word per line',
+            ),
             controller: controller,
-            minLines: null,
             maxLines: null,
-            textAlign: TextAlign.start,
             textAlignVertical: TextAlignVertical.top,
             textInputAction: TextInputAction.newline,
             onChanged: (_) => onTextChanged(),

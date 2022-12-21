@@ -12,14 +12,14 @@ import 'main.dart';
 
 class MainPage implements AppRoute {
   @override
-  String get name => "main";
+  String get name => 'main';
 
   @override
-  String get path => "/$name";
+  String get path => '/$name';
 
   @override
   Widget Function(BuildContext context, GoRouterState state) get builder =>
-      (BuildContext context, GoRouterState state) {
+      (context, state) {
         return PageView(
           filename: 'index.json',
           onSettings: () {
@@ -33,32 +33,37 @@ class MainPage implements AppRoute {
 }
 
 class PageView extends StatelessWidget {
+  const PageView({
+    required this.filename,
+    required this.onSettings,
+    required this.onPlay,
+    super.key,
+  });
   final String? filename;
   final Function() onSettings;
   final Function() onPlay;
 
-  const PageView(
-      {super.key,
-      required this.filename,
-      required this.onSettings,
-      required this.onPlay});
-
   @override
   Widget build(BuildContext context) {
     return ResponsiveScreen(
-        contentBuilder: (context, size) =>
-            MainContent(filename: filename, onPlay: onPlay),
-        topMenuBuilder: (context, size) =>
-            Menu3(height: size.height, children: [
-              null,
-              null,
-              Center(
-                child: CustomMenuButton(
-                    menuItem: CustomMenuItem(
-                        icon: Icons.settings,
-                        onTap: onSettings,
-                        title: "Settings")),
+      contentBuilder: (context, size) =>
+          MainContent(filename: filename, onPlay: onPlay),
+      topMenuBuilder: (context, size) => Menu3(
+        height: size.height,
+        children: [
+          null,
+          null,
+          Center(
+            child: CustomMenuButton(
+              menuItem: CustomMenuItem(
+                icon: Icons.settings,
+                onTap: onSettings,
+                title: 'Settings',
               ),
-            ]));
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -1,13 +1,25 @@
 import 'dart:convert';
 
-class Chapter {
-  final String title;
-  final String filename;
+import 'package:flutter/material.dart';
 
-  Chapter({
+@immutable
+class Chapter {
+  const Chapter({
     required this.title,
     required this.filename,
   });
+
+  factory Chapter.fromJson(String source) =>
+      Chapter.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  factory Chapter.fromMap(Map<String, dynamic> map) {
+    return Chapter(
+      title: map['title'] as String,
+      filename: map['filename'] as String,
+    );
+  }
+  final String title;
+  final String filename;
 
   Chapter copyWith({
     String? title,
@@ -27,24 +39,16 @@ class Chapter {
     };
   }
 
-  factory Chapter.fromMap(Map<String, dynamic> map) {
-    return Chapter(
-      title: map['title'] as String,
-      filename: map['filename'] as String,
-    );
-  }
-
   String toJson() => json.encode(toMap());
-
-  factory Chapter.fromJson(String source) =>
-      Chapter.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() => 'Item(title: $title, filename: $filename)';
 
   @override
   bool operator ==(covariant Chapter other) {
-    if (identical(this, other)) return true;
+    if (identical(this, other)) {
+      return true;
+    }
 
     return other.title == title && other.filename == filename;
   }

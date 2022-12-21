@@ -3,13 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 
 class MainContent extends ConsumerWidget {
-  final String? filename;
-  final Function() onPlay;
   const MainContent({
-    super.key,
     required this.filename,
     required this.onPlay,
+    super.key,
   });
+  final String? filename;
+  final Function() onPlay;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -18,7 +18,7 @@ class MainContent extends ConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Hero(
-            tag: "Start",
+            tag: 'Start',
             child: Text(
               'Ready to Play?',
               textAlign: TextAlign.center,
@@ -26,14 +26,16 @@ class MainContent extends ConsumerWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 16.0),
+            padding: const EdgeInsets.only(top: 16),
             child: InkWell(
               onTap: onPlay,
               child: SizedBox(
-                  width: 200,
-                  height: 200,
-                  child: Lottie.asset(
-                      "assets/Lotties/59928-press-start-button.json")),
+                width: 200,
+                height: 200,
+                child: Lottie.asset(
+                  'assets/Lotties/59928-press-start-button.json',
+                ),
+              ),
             ),
           )
         ],

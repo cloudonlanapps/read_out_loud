@@ -6,20 +6,21 @@ import 'screen_background.dart';
 import 'view_config.dart';
 
 class RouteManager extends StatefulWidget {
+  const RouteManager({
+    required this.appName,
+    required this.pageRoutes,
+    this.defaultIndex = 0,
+    this.locale,
+    this.builder,
+    this.viewConfig,
+    super.key,
+  });
   final String appName;
   final List<AppRoute> pageRoutes;
   final int defaultIndex;
   final Locale? locale;
   final Widget Function(BuildContext, Widget?)? builder;
   final ViewConfig? viewConfig;
-  const RouteManager(
-      {super.key,
-      required this.appName,
-      required this.pageRoutes,
-      this.defaultIndex = 0,
-      this.locale,
-      this.builder,
-      this.viewConfig});
 
   @override
   State<RouteManager> createState() => _RouteManagerState();
@@ -38,19 +39,23 @@ class _RouteManagerState extends State<RouteManager> {
     final router = GoRouter(
       routes: <GoRoute>[
         ...widget.pageRoutes
-            .map((e) => GoRoute(
+            .map(
+              (e) => GoRoute(
                 path: e.path,
                 name: e.name,
                 pageBuilder: (context, state) => CustomTransitionPage<void>(
-                    key: state.pageKey,
-                    transitionsBuilder: transitionBuilder,
-                    child: ScreenBackground(
-                      viewConfig: ViewConfig(),
-                      builder: ((context) => e.builder(context, state)),
-                    ))))
+                  key: state.pageKey,
+                  transitionsBuilder: transitionBuilder,
+                  child: ScreenBackground(
+                    viewConfig: ViewConfig(),
+                    builder: (context) => e.builder(context, state),
+                  ),
+                ),
+              ),
+            )
             .toList()
       ],
-      redirect: (context, state) async => await redirector(state),
+      redirect: (context, state) async => redirector(state),
     );
     return MaterialApp.router(
       useInheritedMediaQuery: true,
@@ -62,21 +67,34 @@ class _RouteManagerState extends State<RouteManager> {
       routerConfig: router,
       title: widget.appName,
       theme: ThemeData(
-          textTheme: const TextTheme(
-        displayLarge: TextStyle(
-            color: Colors.black, fontWeight: FontWeight.bold, fontSize: 36),
-        displayMedium: TextStyle(
-            color: Colors.black, fontWeight: FontWeight.bold, fontSize: 32),
-        displaySmall: TextStyle(
-            color: Colors.black, fontWeight: FontWeight.bold, fontSize: 28),
-        bodyLarge: TextStyle(
-            color: Colors.black, fontWeight: FontWeight.bold, fontSize: 24),
-        bodyMedium: TextStyle(color: Colors.blueGrey, fontSize: 20),
-        bodySmall: TextStyle(color: Colors.blueGrey, fontSize: 16),
-        labelLarge: TextStyle(color: Colors.black, fontSize: 16),
-        labelMedium: TextStyle(color: Colors.black, fontSize: 14),
-        labelSmall: TextStyle(color: Colors.black, fontSize: 12),
-      )),
+        textTheme: const TextTheme(
+          displayLarge: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 36,
+          ),
+          displayMedium: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 32,
+          ),
+          displaySmall: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 28,
+          ),
+          bodyLarge: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+          ),
+          bodyMedium: TextStyle(color: Colors.blueGrey, fontSize: 20),
+          bodySmall: TextStyle(color: Colors.blueGrey, fontSize: 16),
+          labelLarge: TextStyle(color: Colors.black, fontSize: 16),
+          labelMedium: TextStyle(color: Colors.black, fontSize: 14),
+          labelSmall: TextStyle(color: Colors.black, fontSize: 12),
+        ),
+      ),
     );
   }
 
@@ -87,35 +105,37 @@ class _RouteManagerState extends State<RouteManager> {
     return null;
   }
 
-  Widget transitionBuilder(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation, Widget child) {
+  Widget transitionBuilder(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
     switch (viewConfig.scheme) {
-      case "slide":
+      case 'slide':
         return SlideTransition(
-          position:
-              Tween(begin: const Offset(1.0, 0.0), end: const Offset(0.0, 0.0))
-                  .animate(animation),
+          position: Tween(begin: const Offset(1, 0), end: Offset.zero)
+              .animate(animation),
           child: child,
         );
-      case "scale":
+      case 'scale':
         return ScaleTransition(
           scale: animation,
           child: child,
         );
-      case "size":
+      case 'size':
         return Align(
           child: SizeTransition(
             sizeFactor: animation,
-            axisAlignment: 0.0,
             child: child,
           ),
         );
-      case "rotation":
+      case 'rotation':
         return RotationTransition(
           turns: animation,
           child: child,
         );
-      case "fade":
+      case 'fade':
       default:
         return FadeTransition(opacity: animation, child: child);
     }

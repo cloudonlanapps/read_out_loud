@@ -12,20 +12,20 @@ import 'main.dart';
 
 class AdvancedSettingsPage implements AppRoute {
   @override
-  String get name => "advanced_settings";
+  String get name => 'advanced_settings';
 
   @override
-  String get path => "/$name";
+  String get path => '/$name';
 
   @override
   Widget Function(BuildContext context, GoRouterState state) get builder =>
-      (BuildContext context, GoRouterState state) {
+      (context, state) {
         return PageView(
           filename: 'index.json',
           onClose: () {
             try {
               context.pop();
-            } catch (e) {
+            } on Exception {
               context.goNamed(MainPage().name);
             }
           },
@@ -34,14 +34,13 @@ class AdvancedSettingsPage implements AppRoute {
 }
 
 class PageView extends ConsumerWidget {
-  final String? filename;
-  final Function() onClose;
-
   const PageView({
-    super.key,
     required this.filename,
     required this.onClose,
+    super.key,
   });
+  final String? filename;
+  final Function() onClose;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -54,7 +53,7 @@ class PageView extends ConsumerWidget {
           onClose();
         },
         size: size,
-        title: "Audio Settings",
+        title: 'Audio Settings',
       ),
     );
   }

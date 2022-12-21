@@ -7,15 +7,17 @@ import 'view_config.dart';
 class ScreenBackground extends StatelessWidget {
   final ViewConfig viewConfig;
   final Widget Function(BuildContext context) builder;
-  const ScreenBackground(
-      {super.key, required this.builder, required this.viewConfig});
+  const ScreenBackground({
+    required this.builder,
+    required this.viewConfig,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
+    final size = MediaQuery.of(context).size;
 
-    //TODO: final padding = MediaQuery.of(context).size.shortestSide * 0.01;
-    final double borderRadius = viewConfig.borderRadius ?? 15;
+    final borderRadius = viewConfig.borderRadius ?? 15;
 
     /// Flutter starts quicker in release mode and the native platform
     /// reports the actual resolution with a delay. So the very first frame
@@ -33,8 +35,10 @@ class ScreenBackground extends StatelessWidget {
 
     if (MediaQuery.of(context).size.width < 10 ||
         MediaQuery.of(context).size.height < 10) {
-      return Scaffold(
-        body: Container(),
+      return const Scaffold(
+        body: Center(
+          child: Text('Insufficent screen space'),
+        ),
       );
     }
     return Scaffold(
@@ -47,14 +51,14 @@ class ScreenBackground extends StatelessWidget {
             borderRadius: borderRadius,
           ),
           SafeArea(
-            minimum: const EdgeInsets.all(0),
-            child: Container(
-                decoration: BoxDecoration(
-                  //color: Colors.white,
-                  borderRadius: BorderRadius.circular(borderRadius),
-                  border: viewConfig.showContentBorder ? Border.all() : null,
-                ),
-                child: builder(context)),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                //color: Colors.white,
+                borderRadius: BorderRadius.circular(borderRadius),
+                border: viewConfig.showContentBorder ? Border.all() : null,
+              ),
+              child: builder(context),
+            ),
           ),
         ],
       ),

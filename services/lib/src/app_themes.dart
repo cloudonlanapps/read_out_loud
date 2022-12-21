@@ -3,15 +3,16 @@ import 'package:flutter/material.dart';
 enum CustChipStyle { normal, added, reported, deleted, succeeded }
 
 class AppChipTheme {
-  BuildContext context;
-  CustChipStyle chipStyles;
-
-  AppChipTheme._(this.context, this.chipStyles);
-
-  factory AppChipTheme.of(BuildContext context,
-      {required CustChipStyle chipStyles}) {
+  factory AppChipTheme.of(
+    BuildContext context, {
+    required CustChipStyle chipStyles,
+  }) {
     return AppChipTheme._(context, chipStyles);
   }
+
+  AppChipTheme._(this.context, this.chipStyles);
+  BuildContext context;
+  CustChipStyle chipStyles;
   ChipThemeData get normal => ChipThemeData(
         labelStyle: textStyle,
         deleteIconColor: color,
@@ -47,22 +48,22 @@ class AppTextFieldTheme {
         enabledBorder: OutlineInputBorder(
           borderSide:
               const BorderSide(width: 2, color: Colors.blueGrey), //<-- SEE HERE
-          borderRadius: BorderRadius.circular(5.0),
+          borderRadius: BorderRadius.circular(5),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide:
               const BorderSide(width: 2, color: Colors.blueGrey), //<-- SEE HERE
-          borderRadius: BorderRadius.circular(5.0),
+          borderRadius: BorderRadius.circular(5),
         ),
         errorBorder: OutlineInputBorder(
           borderSide:
               const BorderSide(width: 2, color: Colors.red), //<-- SEE HERE
-          borderRadius: BorderRadius.circular(5.0),
+          borderRadius: BorderRadius.circular(5),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderSide:
               const BorderSide(width: 2, color: Colors.red), //<-- SEE HERE
-          borderRadius: BorderRadius.circular(5.0),
+          borderRadius: BorderRadius.circular(5),
         ),
       );
 }

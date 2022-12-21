@@ -1,8 +1,7 @@
 import 'dart:io';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:archive/archive_io.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../helpers/content_storage.dart';
 import '../models/chapter.dart';
@@ -10,73 +9,75 @@ import '../models/repository.dart';
 import 'words.dart';
 
 class RepositoryNotifier extends StateNotifier<AsyncValue<Repository>> {
-  Ref ref;
-  String filename;
   RepositoryNotifier(this.ref, this.filename)
       : super(const AsyncValue.loading()) {
     load();
   }
+  Ref ref;
+  String filename;
 
-  _guard(Future<Repository> Function() func) async {
+  Future<void> _guard(Future<Repository> Function() func) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(func);
   }
 
   Future<void> load() async =>
-      await _guard(() async => await Repository.loadFromFile(filename));
+      _guard(() async => Repository.loadFromFile(filename));
 
   Future<void> addChapter(Repository repository, Chapter chapter) async =>
-      await _guard(() async {
+      _guard(() async {
         await ref.read(wordsProvider(chapter.filename).notifier).reload();
-        return await repository.add(chapter, filename: filename);
+        return repository.add(chapter, filename: filename);
       });
 
   Future<void> removeChapter(Repository repository, Chapter chapter) async =>
-      await _guard(() async {
+      _guard(() async {
         await ContentStorage.delete(chapter.filename);
         await ref.read(wordsProvider(chapter.filename).notifier).reload();
 
-        return await repository.remove(chapter, filename: filename);
+        return repository.remove(chapter, filename: filename);
       });
   Future<void> reset(Repository repository) async {
-    final List<String> currentFiles = repository.files;
-    for (var file in currentFiles) {
+    final currentFiles = repository.files;
+    for (final file in currentFiles) {
       await ContentStorage.delete(file);
       await ref.read(wordsProvider(file).notifier).reload();
     }
-    await ContentStorage.delete("index.json");
+    await ContentStorage.delete('index.json');
     await load();
     return;
   }
 
   //log(string) => print(string);
-  log(string) {}
+  void log(String string) {}
 
-  Future<bool> loadFromZip(
-      {required Repository repository,
-      required String path,
-      required String zipFileName,
-      required bool overwrite}) async {
+  Future<bool> loadFromZip({
+    required Repository repository,
+    required String path,
+    required String zipFileName,
+    required bool overwrite,
+  }) async {
+    var repositoryLocal = repository;
     final inputStream = InputFileStream(zipFileName);
     final archive = ZipDecoder().decodeBuffer(inputStream);
 
-    if (!archive.files.map((e) => e.name).contains("index.json")) {
+    if (!archive.files.map((e) => e.name).contains('index.json')) {
       return false;
     }
     final indexFile = archive.files.where((e) => e.name == 'index.json').first;
     final outputStream = OutputFileStream('$path/index.new.json');
     indexFile.writeContent(outputStream);
-    outputStream.close();
+    await outputStream.close();
     final indexJSON = await File('$path/index.new.json').readAsString();
-    Repository newRepository = Repository.fromJson(indexJSON);
-    bool needSave = false;
+    final newRepository = Repository.fromJson(indexJSON);
+    var needSave = false;
     for (final file in archive.files.where((e) => e.name != 'index.json')) {
       if (file.isFile) {
-        bool overwriting = false;
-        log("$file: ");
+        var overwriting = false;
+        log('$file: ');
         if (File('$path/$file').existsSync()) {
           if (!overwrite) {
-            log("$file: Skip ,as overwrite = $overwrite");
+            log('$file: Skip ,as overwrite = $overwrite');
             continue;
           }
           overwriting = true;
@@ -85,39 +86,39 @@ class RepositoryNotifier extends StateNotifier<AsyncValue<Repository>> {
           //delete the file as it exists
           await ContentStorage.delete('$path/$file');
           try {
-            Chapter ch = repository.chapters
+            final ch = repositoryLocal.chapters
                 .where((element) => element.filename == file.name)
                 .first;
-            log("$file: deleting ${ch.filename}");
+            log('$file: deleting ${ch.filename}');
 
             needSave = true;
-            repository = await repository.remove(ch);
-          } catch (e) {
+            repositoryLocal = await repositoryLocal.remove(ch);
+          } on Exception {
             // ignore if the file don't exists
           }
         }
 
         {
-          Chapter ch = newRepository.chapters
+          final ch = newRepository.chapters
               .where((element) => element.filename == file.name)
               .first;
           final outputStream = OutputFileStream('$path/$file');
-          log("$file: creating $file");
+          log('$file: creating $file');
           file.writeContent(outputStream);
-          outputStream.close();
+          await outputStream.close();
           needSave = true;
-          repository = await repository.add(ch);
+          repositoryLocal = await repositoryLocal.add(ch);
         }
         await ref.read(wordsProvider(file.name).notifier).reload();
       }
     }
     if (needSave) {
-      log("saving index.json");
-      await repository.save('index.json');
-      log("reload index.json");
+      log('saving index.json');
+      await repositoryLocal.save('index.json');
+      log('reload index.json');
       await load();
     } else {
-      log("nothing  new to update");
+      log('nothing  new to update');
     }
     return true;
   }
@@ -158,5 +159,5 @@ final repositoryProvider = StateNotifierProvider.family<RepositoryNotifier,
 });
 
 final repositoryPathProvider = FutureProvider<String>((ref) async {
-  return await ContentStorage.path;
+  return ContentStorage.path;
 });

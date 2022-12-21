@@ -7,14 +7,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:route_manager/route_manager.dart';
 
-import 'src/pages/settings/settings_about/page.dart';
-import 'src/pages/settings/settings_audio/page.dart';
-import 'src/pages/player/chapter/page.dart';
-import 'src/pages/player/chapter_list/page.dart';
 import 'src/pages/editor/page.dart';
 import 'src/pages/main/page.dart';
-import 'src/pages/settings/settings_home/page.dart';
+import 'src/pages/player/chapter/page.dart';
+import 'src/pages/player/chapter_list/page.dart';
+import 'src/pages/settings/settings_about/page.dart';
+import 'src/pages/settings/settings_audio/page.dart';
 import 'src/pages/settings/settings_chapters/page.dart';
+import 'src/pages/settings/settings_home/page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,24 +38,28 @@ void main() {
   ]);
 
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  var enableDevicePreview = false;
+  if (Platform.isMacOS) {
+    enableDevicePreview = !kReleaseMode;
+  }
   return runApp(
     DevicePreview(
-      enabled: Platform.isMacOS ? !kReleaseMode : false,
+      enabled: enableDevicePreview,
       builder: (context) => ProviderScope(
-          child: RouteManager(
-        appName: "Read Out Loud",
-        pageRoutes: [
-          /* 0 */ MainPage(),
-          /* 1 */ ContentListPage(),
-          /* 2 */ SettingsPage(),
-          /* 3 */ ChapterPage(),
-          /* 4 */ SettingsChapterPage(),
-          /* 5 */ AdvancedSettingsPage(),
-          /* 6 */ EditorPage(),
-          /* 7 */ SettingsAboutPage(),
-        ],
-        defaultIndex: 0,
-      )),
+        child: RouteManager(
+          appName: 'Read Out Loud',
+          pageRoutes: [
+            /* 0 */ MainPage(),
+            /* 1 */ ContentListPage(),
+            /* 2 */ SettingsPage(),
+            /* 3 */ ChapterPage(),
+            /* 4 */ SettingsChapterPage(),
+            /* 5 */ AdvancedSettingsPage(),
+            /* 6 */ EditorPage(),
+            /* 7 */ SettingsAboutPage(),
+          ],
+        ),
+      ),
     ),
   );
 }

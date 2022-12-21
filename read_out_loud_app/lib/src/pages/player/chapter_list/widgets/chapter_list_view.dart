@@ -10,8 +10,11 @@ import '../../chapter/page.dart';
 import '../providers/state_provider.dart';
 
 class ChapterListView extends ConsumerStatefulWidget {
+  const ChapterListView({
+    required this.chapters,
+    super.key,
+  });
   final List<Chapter> chapters;
-  const ChapterListView({super.key, required this.chapters});
   @override
   ConsumerState<ChapterListView> createState() => ListItemsState();
 }
@@ -21,13 +24,15 @@ class ListItemsState extends ConsumerState<ChapterListView> {
   final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   final List<Widget> items = [];
   final Tween<Offset> _offset =
-      Tween(begin: const Offset(-1, 0), end: const Offset(0, 0));
+      Tween(begin: const Offset(-1, 0), end: Offset.zero);
   bool itemSelected = false;
 
   @override
   void initState() {
-    Size tileSize = Size(ref.read(contentPageProvider).tileWidth,
-        ref.read(contentPageProvider).tileHeight);
+    final tileSize = Size(
+      ref.read(contentPageProvider).tileWidth,
+      ref.read(contentPageProvider).tileHeight,
+    );
     WidgetsBinding.instance.addPostFrameCallback((_) {
       addItems(tileSize);
     });
@@ -40,12 +45,11 @@ class ListItemsState extends ConsumerState<ChapterListView> {
     super.dispose();
   }
 
-  void addItems(Size tileSize) async {
-    print(" tileSize $tileSize");
+  Future<void> addItems(Size tileSize) async {
     items.clear();
     ref.read(isAnimatingProvider.notifier).isAnimating = true;
 
-    for (var item in widget.chapters) {
+    for (final item in widget.chapters) {
       if (_listKey.currentState == null) {
         return;
       } else {
@@ -70,12 +74,14 @@ class ListItemsState extends ConsumerState<ChapterListView> {
     );
   }
 
-  onSelectItem(Chapter chapter) {
+  void onSelectItem(Chapter chapter) {
     setState(() {
       itemSelected = true;
     });
-    context.goNamed(ChapterPage().name,
-        queryParams: {"filename": chapter.filename});
+    context.goNamed(
+      ChapterPage().name,
+      queryParams: {'filename': chapter.filename},
+    );
   }
 
   @override
@@ -87,16 +93,17 @@ class ListItemsState extends ConsumerState<ChapterListView> {
       children: [
         Expanded(
           child: AnimatedList(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              key: _listKey,
-              initialItemCount: items.length,
-              itemBuilder: (context, index, animation) {
-                return SlideTransition(
-                  position: animation.drive(_offset),
-                  child: items[index],
-                );
-              }),
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            key: _listKey,
+            initialItemCount: items.length,
+            itemBuilder: (context, index, animation) {
+              return SlideTransition(
+                position: animation.drive(_offset),
+                child: items[index],
+              );
+            },
+          ),
         ),
       ],
     );

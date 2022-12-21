@@ -14,20 +14,20 @@ import 'main.dart';
 
 class SettingsChapterPage implements AppRoute {
   @override
-  String get name => "settings-chapter";
+  String get name => 'settings-chapter';
 
   @override
-  String get path => "/$name";
+  String get path => '/$name';
 
   @override
   Widget Function(BuildContext context, GoRouterState state) get builder =>
-      (BuildContext context, GoRouterState state) {
+      (context, state) {
         return PageView(
           filename: 'index.json',
           onClose: () {
             try {
               context.pop();
-            } catch (e) {
+            } on Exception {
               context.goNamed(MainPage().name);
             }
           },
@@ -36,39 +36,39 @@ class SettingsChapterPage implements AppRoute {
 }
 
 class PageView extends ConsumerWidget {
+  const PageView({
+    required this.filename,
+    required this.onClose,
+    super.key,
+  });
   final String filename;
   final Function() onClose;
 
-  const PageView({
-    super.key,
-    required this.filename,
-    required this.onClose,
-  });
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    AsyncValue<Repository> asyncValue = ref.watch(repositoryProvider(filename));
+    final asyncValue = ref.watch(repositoryProvider(filename));
     return asyncValue.when(
-        data: (Repository repository) => ResponsiveScreen(
-              contentBuilder: (context, size) =>
-                  MainContent(repository: repository),
-              topMenuBuilder: (context, size) => TitleMenu(
-                title: "Chapters",
-                action: onClose,
-                size: size,
-                rightWidget: Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: CustomMenuButton(
-                    menuItem: CustomMenuItem(
-                        alignment: Alignment.centerRight,
-                        icon: Icons.add,
-                        onTap: () => context.pushNamed(EditorPage().name),
-                        title: "New"),
-                  ),
-                ),
+      data: (repository) => ResponsiveScreen(
+        contentBuilder: (context, size) => MainContent(repository: repository),
+        topMenuBuilder: (context, size) => TitleMenu(
+          title: 'Chapters',
+          action: onClose,
+          size: size,
+          rightWidget: Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: CustomMenuButton(
+              menuItem: CustomMenuItem(
+                alignment: Alignment.centerRight,
+                icon: Icons.add,
+                onTap: () => context.pushNamed(EditorPage().name),
+                title: 'New',
               ),
             ),
-        error: (error, stackTrace) => Container(),
-        loading: () => const CircularProgressIndicator());
+          ),
+        ),
+      ),
+      error: (error, stackTrace) => Container(),
+      loading: () => const CircularProgressIndicator(),
+    );
   }
 }

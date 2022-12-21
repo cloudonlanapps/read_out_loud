@@ -3,8 +3,8 @@ import 'package:services/services.dart';
 
 class IntroWidget extends StatelessWidget {
   const IntroWidget({
-    Key? key,
     required this.introText,
+    Key? key,
   }) : super(key: key);
 
   final String introText;

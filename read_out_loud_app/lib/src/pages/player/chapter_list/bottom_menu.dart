@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:manage_content/manage_content.dart';
-import 'package:services/services.dart';
 
 import '../../../custom_widgets/custom_menu.dart';
 
@@ -12,34 +10,43 @@ class BottomMenu extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ListPaginate<Chapter> listProvider = ref.watch(contentPageProvider);
-    final bool isAnimating = ref.watch(isAnimatingProvider);
+    final listProvider = ref.watch(contentPageProvider);
+    final isAnimating = ref.watch(isAnimatingProvider);
 
-    if (listProvider.numPages == 0) return Container();
-    return CustomMenu(menuItems: [
-      (listProvider.isFirst || isAnimating)
-          ? null
-          : CustomMenuItem(
-              alignment: Alignment.bottomCenter,
-              icon: Icons.arrow_circle_left,
-              onTap: () async {
-                await ref.read(contentPageProvider.notifier).prev();
-              },
-              title: 'Prev'),
-      CustomMenuItem(
+    if (listProvider.numPages == 0) {
+      return Container();
+    }
+    return CustomMenu(
+      menuItems: [
+        if (listProvider.isFirst || isAnimating)
+          null
+        else
+          CustomMenuItem(
+            alignment: Alignment.bottomCenter,
+            icon: Icons.arrow_circle_left,
+            onTap: () async {
+              ref.read(contentPageProvider.notifier).prev();
+            },
+            title: 'Prev',
+          ),
+        CustomMenuItem(
           alignment: Alignment.bottomCenter,
           icon: Icons.density_medium,
           onTap: () {},
-          title: "${listProvider.currentPage + 1}/${listProvider.numPages}"),
-      (listProvider.isLast || isAnimating)
-          ? null
-          : CustomMenuItem(
-              alignment: Alignment.bottomCenter,
-              icon: Icons.arrow_circle_right,
-              onTap: () async {
-                await ref.read(contentPageProvider.notifier).next();
-              },
-              title: 'Next')
-    ]);
+          title: '${listProvider.currentPage + 1}/${listProvider.numPages}',
+        ),
+        if (listProvider.isLast || isAnimating)
+          null
+        else
+          CustomMenuItem(
+            alignment: Alignment.bottomCenter,
+            icon: Icons.arrow_circle_right,
+            onTap: () async {
+              ref.read(contentPageProvider.notifier).next();
+            },
+            title: 'Next',
+          )
+      ],
+    );
   }
 }

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class Blink extends StatefulWidget {
+  const Blink({
+    required this.child,
+    Key? key,
+    this.blinkDuration = Duration.zero,
+  }) : super(key: key);
   final Duration blinkDuration;
   final Widget child;
-  const Blink({
-    Key? key,
-    this.blinkDuration = const Duration(seconds: 0),
-    required this.child,
-  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _BlinkerState();

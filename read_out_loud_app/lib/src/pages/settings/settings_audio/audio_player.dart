@@ -22,10 +22,10 @@ enum TtsState {
 class AudioPlayerConfigState extends ConsumerState<AudioPlayer>
     with WidgetsBindingObserver {
   late TextEditingController textEditingController;
-  var isKeyboardVisible = false;
+  bool isKeyboardVisible = false;
 
   @override
-  initState() {
+  void initState() {
     WidgetsBinding.instance.addObserver(this);
     textEditingController =
         TextEditingController(text: ref.read(ttsSpeakerProvider).sampleText);
@@ -52,7 +52,7 @@ class AudioPlayerConfigState extends ConsumerState<AudioPlayer>
 
   @override
   Widget build(BuildContext context) {
-    final TTSSpeaker ttsSpeaker = ref.watch(ttsSpeakerProvider);
+    final ttsSpeaker = ref.watch(ttsSpeakerProvider);
 
     return Padding(
       padding: const EdgeInsets.only(top: 8, bottom: 8, left: 8, right: 8),
@@ -63,51 +63,55 @@ class AudioPlayerConfigState extends ConsumerState<AudioPlayer>
               mainAxisSize: MainAxisSize.min,
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  padding: const EdgeInsets.symmetric(vertical: 8),
                   child: SizedBox(
                     height: 65,
                     child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          CustomMenuButton(
-                            menuItem: CustomMenuItem(
-                                alignment: Alignment.bottomCenter,
-                                icon: Icons.play_arrow,
-                                color: Colors.greenAccent,
-                                onTap: () async {
-                                  await ref
-                                      .read(ttsSpeakerProvider.notifier)
-                                      .play(textEditingController.text,
-                                          onComplete: () {}, onCancel: () {});
-                                },
-                                title: 'Play'),
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        CustomMenuButton(
+                          menuItem: CustomMenuItem(
+                            alignment: Alignment.bottomCenter,
+                            icon: Icons.play_arrow,
+                            color: Colors.greenAccent,
+                            onTap: () async {
+                              await ref.read(ttsSpeakerProvider.notifier).play(
+                                    textEditingController.text,
+                                    onComplete: () {},
+                                    onCancel: () {},
+                                  );
+                            },
+                            title: 'Play',
                           ),
-                          const SizedBox(
-                            width: 32,
+                        ),
+                        const SizedBox(
+                          width: 32,
+                        ),
+                        CustomMenuButton(
+                          menuItem: CustomMenuItem(
+                            alignment: Alignment.bottomCenter,
+                            icon: Icons.stop,
+                            color: Colors.redAccent,
+                            onTap: () async {
+                              await ref
+                                  .read(ttsSpeakerProvider.notifier)
+                                  .stop();
+                            },
+                            title: 'Stop',
                           ),
-                          CustomMenuButton(
-                            menuItem: CustomMenuItem(
-                                alignment: Alignment.bottomCenter,
-                                icon: Icons.stop,
-                                color: Colors.redAccent,
-                                onTap: () async {
-                                  await ref
-                                      .read(ttsSpeakerProvider.notifier)
-                                      .stop();
-                                },
-                                title: 'Stop'),
-                          ),
-                          const SizedBox(
-                            width: 16,
-                          ),
-                        ]),
+                        ),
+                        const SizedBox(
+                          width: 16,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 TextFormField(
                   decoration:
-                      AppTextFieldTheme.inputDecoration(label: "Sample text"),
+                      AppTextFieldTheme.inputDecoration(label: 'Sample text'),
                   controller: textEditingController,
-                  style: Theme.of(context).textTheme.bodyMedium!,
+                  style: Theme.of(context).textTheme.bodyMedium,
                   minLines: 2,
                   maxLines: 2,
                   textInputAction: TextInputAction.done,
@@ -115,10 +119,12 @@ class AudioPlayerConfigState extends ConsumerState<AudioPlayer>
                     setState(() {});
                   },
                 ),
-                Menu3(height: 65, children: [
-                  null,
-                  null,
-                  TextButton(
+                Menu3(
+                  height: 65,
+                  children: [
+                    null,
+                    null,
+                    TextButton(
                       onPressed:
                           (textEditingController.text == ttsSpeaker.sampleText)
                               ? null
@@ -128,11 +134,16 @@ class AudioPlayerConfigState extends ConsumerState<AudioPlayer>
                                         ttsSpeaker.sampleText;
                                   });
                                 },
-                      child: const Text("Restore sample text"))
-                ]),
+                      child: const Text('Restore sample text'),
+                    )
+                  ],
+                ),
                 Padding(
                   padding: const EdgeInsets.only(
-                      top: 0, bottom: 8, left: 8, right: 8),
+                    bottom: 8,
+                    left: 8,
+                    right: 8,
+                  ),
                   child: Container(),
                 ),
                 const SizedBox(
@@ -147,7 +158,7 @@ class AudioPlayerConfigState extends ConsumerState<AudioPlayer>
               left: 0,
               right: 0,
               child: Padding(
-                padding: EdgeInsets.only(top: 0, bottom: 8, left: 8, right: 8),
+                padding: EdgeInsets.only(bottom: 8, left: 8, right: 8),
                 child: AudioParameters(),
               ),
             )

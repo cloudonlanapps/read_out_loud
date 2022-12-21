@@ -24,8 +24,8 @@ class TTSSpeaker {
   final bool? isCurrentLanguageInstalled;
 
   TTSSpeaker({
-    this.sampleText = "The quick brown fox jumps over the lazy dog.",
     required this.isAndroid,
+    this.sampleText = 'The quick brown fox jumps over the lazy dog.',
     this.engine,
     this.language = 'en-US',
     this.volume = 0.5,
@@ -68,10 +68,10 @@ class TTSSpeaker {
     );
   }
 
-  get isPlaying => ttsState == TTSState.playing;
-  get isStopped => ttsState == TTSState.stopped;
+  bool get isPlaying => ttsState == TTSState.playing;
+  bool get isStopped => ttsState == TTSState.stopped;
 
-  init() {
+  void init() {
     _setAwaitOptions();
     flutterTts.setLanguage(language);
 
@@ -82,14 +82,14 @@ class TTSSpeaker {
   }
 
   Future _getDefaultEngine() async {
-    var engine = await flutterTts.getDefaultEngine;
+    final engine = await flutterTts.getDefaultEngine;
     if (engine != null) {
       // print(engine);
     }
   }
 
   Future _getDefaultVoice() async {
-    var voice = await flutterTts.getDefaultVoice;
+    final voice = await flutterTts.getDefaultVoice;
     if (voice != null) {
       // print(voice);
     }
@@ -100,20 +100,20 @@ class TTSSpeaker {
   }
 
   Future<List<String>> getLanguages() async {
-    final List<dynamic> languages = await flutterTts.getLanguages;
-    List<String> installedLanguages = [];
-    for (final language
-        in languages.where((e) => (e as String).startsWith('en'))) {
+    final languages = await flutterTts.getLanguages;
+    final installedLanguages = <String>[];
+    for (final language in languages
+        .where((e) => (e as String).startsWith('en')) as List<String>) {
       await flutterTts.isLanguageInstalled(language).then((value) {
-        if ((value as bool)) {
-          installedLanguages.add(language as String);
+        if (value as bool) {
+          installedLanguages.add(language);
         }
       });
     }
     return installedLanguages.map((e) => e).toList()..sort();
   }
 
-  Future<dynamic> getEngines() async => await flutterTts.getEngines;
+  Future<dynamic> getEngines() async => flutterTts.getEngines;
 }
 
 class TTSSpeakerNotifier extends StateNotifier<TTSSpeaker> {
@@ -123,13 +123,16 @@ class TTSSpeakerNotifier extends StateNotifier<TTSSpeaker> {
     state.flutterTts.setErrorHandler(setErrorHandler);
   }
 
-  updateState(TTSState newState) {
+  void updateState(TTSState newState) {
     state = state.copyWith(ttsState: newState);
   }
 
   // Return only if
-  Future play(String text,
-      {Function()? onComplete, Function()? onCancel}) async {
+  Future play(
+    String text, {
+    Function()? onComplete,
+    Function()? onCancel,
+  }) async {
     if (state.isMuted) {
       onCancel?.call();
       cancelling = false;
@@ -168,7 +171,7 @@ class TTSSpeakerNotifier extends StateNotifier<TTSSpeaker> {
     if (!state.isMuted) {
       cancelling = true;
       if (!state.isStopped) {
-        var result = await state.flutterTts.stop();
+        final result = await state.flutterTts.stop();
         if (result == 1) {
           updateState(TTSState.stopped);
         }
@@ -183,7 +186,7 @@ class TTSSpeakerNotifier extends StateNotifier<TTSSpeaker> {
     //print("Error reported from flutterTTS $msg");
   }
 
-  mute() async {
+  Future<void> mute() async {
     if (state.isMuted) {
       return;
     }
@@ -193,7 +196,7 @@ class TTSSpeakerNotifier extends StateNotifier<TTSSpeaker> {
     state = state.copyWith(isMuted: true);
   }
 
-  unmute() async {
+  Future<void> unmute() async {
     if (!state.isMuted) {
       return;
     }
@@ -204,14 +207,21 @@ class TTSSpeakerNotifier extends StateNotifier<TTSSpeaker> {
   set pitch(double value) => state = state.copyWith(pitch: value);
   set rate(double value) => state = state.copyWith(rate: value);
 
-  set isCurrentLanguageInstalled(bool val) =>
+  set isCurrentLanguageInstalled(bool? val) =>
       state = state.copyWith(isCurrentLanguageInstalled: val);
   set language(String val) => state = state.copyWith(language: val);
-  set engine(dynamic val) => state = state.copyWith(engine: val);
+  set engine(String? val) => state = state.copyWith(engine: val);
 
-  restoreDefault() {
-    state =
-        state.copyWith(volume: 0.5, pitch: 1.0, rate: 0.5, language: 'en-US');
+  double get volume => state.volume;
+  double get pitch => state.pitch;
+  double get rate => state.rate;
+
+  bool? get isCurrentLanguageInstalled => state.isCurrentLanguageInstalled;
+  String get language => state.language;
+  String? get engine => state.engine;
+
+  void restoreDefault() {
+    state = state.copyWith(volume: 0.5, pitch: 1, rate: 0.5, language: 'en-US');
   }
 }
 

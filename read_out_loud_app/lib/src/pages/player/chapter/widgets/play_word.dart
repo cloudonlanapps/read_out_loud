@@ -4,34 +4,35 @@ import 'package:manage_content/manage_content.dart';
 import 'package:read_out_loud_app/src/tts/stt_record.dart';
 
 import '../../../../custom_widgets/sizedbox_decorated.dart';
+import '../providers/state_provider.dart';
 import 'intro_widget.dart';
 import 'main_word.dart';
 import 'record_button.dart';
 import 'score.dart';
-import '../providers/state_provider.dart';
 import 'stt_result.dart';
 
 class PlayWord extends ConsumerStatefulWidget {
+  const PlayWord({
+    required this.word,
+    required this.size,
+    required this.words,
+    required this.contentListConfig,
+    super.key,
+  });
   final ContentListConfig contentListConfig;
   final Word word;
   final Size size;
   final Words words;
-  const PlayWord(
-      {super.key,
-      required this.word,
-      required this.size,
-      required this.words,
-      required this.contentListConfig});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _PlayWordState();
 }
 
 class _PlayWordState extends ConsumerState<PlayWord> {
-  final String introText = "Can you read this word for me?";
+  final String introText = 'Can you read this word for me?';
   @override
   void initState() {
-    ref.read(playWordStateProvider.notifier).newState = PlayState.idle;
+    ref.read(playWordStateProvider.notifier).currState = PlayState.idle;
     if (!widget.word.succeeded && ref.read(introEnableProvider)) {
       WidgetsBinding.instance.addPostFrameCallback((_) => speak());
     }
@@ -42,9 +43,9 @@ class _PlayWordState extends ConsumerState<PlayWord> {
   Widget build(BuildContext context) {
     final playState = ref.watch(playWordStateProvider);
     listener();
-    double part = widget.size.height / 13;
+    final part = widget.size.height / 13;
     if (part < 35) {
-      return const Center(child: Text("Too small screen to play"));
+      return const Center(child: Text('Too small screen to play'));
     }
 
     return Stack(
@@ -63,20 +64,20 @@ class _PlayWordState extends ConsumerState<PlayWord> {
               //mainAxisSize: MainAxisSize.min,
               children: [
                 SizedBoxDecorated(
-                    height: part * 2,
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: FittedBox(
-                        fit: BoxFit.fitHeight,
-                        child: Score(words: widget.words),
-                      ),
-                    )),
+                  height: part * 2,
+                  child: Align(
+                    child: FittedBox(
+                      fit: BoxFit.fitHeight,
+                      child: Score(words: widget.words),
+                    ),
+                  ),
+                ),
                 SizedBoxDecorated(
                   height: part * 4,
                 ),
                 Container(
                   height: part * 2,
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Stack(
                     children: [
                       MainWord(
@@ -87,9 +88,10 @@ class _PlayWordState extends ConsumerState<PlayWord> {
                       ),
                       if (widget.word.attempts > 0)
                         Positioned(
-                            right: 10,
-                            top: 10,
-                            child: Text(widget.word.attempts.toString()))
+                          right: 10,
+                          top: 10,
+                          child: Text(widget.word.attempts.toString()),
+                        )
                     ],
                   ),
                 ),
@@ -98,28 +100,32 @@ class _PlayWordState extends ConsumerState<PlayWord> {
                     height: part * 4,
                     width: widget.size.width,
                     child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: IntroWidget(introText: introText)),
+                      alignment: Alignment.bottomCenter,
+                      child: IntroWidget(introText: introText),
+                    ),
                   )
                 else ...[
                   SizedBoxDecorated(
-                      height: part * 2,
-                      width: widget.size.width,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: STTResult(
-                          highlight: widget.word.original,
-                        ),
-                      )),
+                    height: part * 2,
+                    width: widget.size.width,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: STTResult(
+                        highlight: widget.word.original,
+                      ),
+                    ),
+                  ),
                   SizedBoxDecorated(
-                      height: part * 2,
-                      width: widget.size.width,
-                      child: Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: RecordButton(
-                            succeeded: widget.word.succeeded,
-                            size: Size(widget.size.width, part * 2)),
-                      )),
+                    height: part * 2,
+                    width: widget.size.width,
+                    child: Padding(
+                      padding: const EdgeInsets.all(15),
+                      child: RecordButton(
+                        succeeded: widget.word.succeeded,
+                        size: Size(widget.size.width, part * 2),
+                      ),
+                    ),
+                  ),
                 ],
               ],
             ),
@@ -129,21 +135,21 @@ class _PlayWordState extends ConsumerState<PlayWord> {
     );
   }
 
-  speak() => ref
+  Future<void> speak() => ref
       .read(playWordStateProvider.notifier)
       .speak(text: introText, playState: PlayState.intro);
 
-  listener() {
-    ref.listen(sttRecordProvider, (STTRecord? prev, STTRecord curr) {
+  void listener() {
+    ref.listen(sttRecordProvider, (prev, curr) {
       if (curr.lastStatus != prev?.lastStatus) {
         // print("Listener: status changed to ${curr.lastStatus}");
-        if (["doneNoResult", "done"].contains(curr.lastStatus)) {
+        if (['doneNoResult', 'done'].contains(curr.lastStatus)) {
           ref.read(sttRecordProvider.notifier).stopListening();
-          ref.read(playWordStateProvider.notifier).newState = PlayState.idle;
+          ref.read(playWordStateProvider.notifier).currState = PlayState.idle;
           if (curr.lastWords.isNotEmpty) {
-            List<String> textBlocks =
+            final textBlocks =
                 curr.lastWords.toLowerCase().highlight(widget.word.original);
-            bool succeeded = ref
+            final succeeded = ref
                     .read(wordsProvider(widget.contentListConfig.filename))
                     ?.currentWord
                     ?.succeeded ??
@@ -154,13 +160,15 @@ class _PlayWordState extends ConsumerState<PlayWord> {
 
               ref
                   .read(
-                      wordsProvider(widget.contentListConfig.filename).notifier)
+                    wordsProvider(widget.contentListConfig.filename).notifier,
+                  )
                   .success(widget.word);
               ref.read(playWordStateProvider.notifier).speak(text: 'Well Done');
             } else if (!succeeded) {
               ref
                   .read(
-                      wordsProvider(widget.contentListConfig.filename).notifier)
+                    wordsProvider(widget.contentListConfig.filename).notifier,
+                  )
                   .attempted(widget.word);
               ref.read(playWordStateProvider.notifier).speak(text: 'Try again');
             } else {
@@ -171,9 +179,9 @@ class _PlayWordState extends ConsumerState<PlayWord> {
           // Done, to clear level
 
         }
-        if (["listening"].contains(curr.lastStatus)) {
+        if (['listening'].contains(curr.lastStatus)) {
           //ref.read(ttsSpeakerProvider.notifier).mute();
-          ref.read(playWordStateProvider.notifier).newState =
+          ref.read(playWordStateProvider.notifier).currState =
               PlayState.listening;
         }
       }

@@ -12,45 +12,49 @@ class WordsNotifier extends StateNotifier<Words?> {
     load();
   }
 
-  load() async {
+  Future<void> load() async {
     try {
       state = await Words.loadFromFile(filename);
-    } catch (e) {
+    } on Exception {
       state = null;
     }
   }
 
-  reload() async {
+  Future<void> reload() async {
     state = null;
     try {
       state = await Words.loadFromFile(filename);
-    } catch (e) {
+    } on Exception {
       state = null;
     }
   }
 
-  updateState(Words words) async {
+  Future<void> updateState(Words words) async {
     await words.save(filename);
     state = words;
   }
 
-  prev() async {
-    if (state == null) return;
+  Future<void> prev() async {
+    if (state == null) {
+      return;
+    }
     final words = state!;
     if (!words.isFirst) {
       await updateState(words.copyWith(index: words.index - 1));
     }
   }
 
-  next() async {
-    if (state == null) return;
+  Future<void> next() async {
+    if (state == null) {
+      return;
+    }
     final words = state!;
     if (!words.isLast) {
       await updateState(words.copyWith(index: words.index + 1));
     }
   }
 
-  attempted(Word word) async {
+  Future<void> attempted(Word word) async {
     final wordList = state!.words;
     wordList[wordList.indexOf(word)] =
         word.copyWith(attempts: word.attempts + 1);
@@ -58,7 +62,7 @@ class WordsNotifier extends StateNotifier<Words?> {
     await updateState(state!.copyWith(words: wordList));
   }
 
-  success(Word word) async {
+  Future<void> success(Word word) async {
     final wordList = state!.words;
     if (word.succeeded) {
       wordList[wordList.indexOf(word)] = word.copyWith(succeeded: true);
@@ -69,24 +73,29 @@ class WordsNotifier extends StateNotifier<Words?> {
     await updateState(state!.copyWith(words: wordList));
   }
 
-  reportCurrentWord() async {
+  Future<void> reportCurrentWord() async {
     if (state != null) {
       await updateState(state!.reportCurrentWord());
     }
   }
 
-  clearProgress() async {
+  Future<void> clearProgress() async {
     if (state != null) {
       await updateState(state!.clearProgress());
     }
   }
 
-  Future<void> updateWords(
-      {required List<Word> wordListToRemove,
-      required List<String> newWordStrings}) async {
+  Future<void> updateWords({
+    required List<Word> wordListToRemove,
+    required List<String> newWordStrings,
+  }) async {
     if (state != null) {
-      await updateState(state!.updateWords(
-          wordListToRemove: wordListToRemove, newWordStrings: newWordStrings));
+      await updateState(
+        state!.updateWords(
+          wordListToRemove: wordListToRemove,
+          newWordStrings: newWordStrings,
+        ),
+      );
     }
   }
 }

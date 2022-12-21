@@ -12,20 +12,20 @@ import 'main.dart';
 
 class SettingsAboutPage implements AppRoute {
   @override
-  String get name => "settings-about";
+  String get name => 'settings-about';
 
   @override
-  String get path => "/$name";
+  String get path => '/$name';
 
   @override
   Widget Function(BuildContext context, GoRouterState state) get builder =>
-      (BuildContext context, GoRouterState state) {
+      (context, state) {
         return PageView(
           filename: 'index.json',
           onClose: () {
             try {
               context.pop();
-            } catch (e) {
+            } on Exception {
               context.goNamed(MainPage().name);
             }
           },
@@ -34,31 +34,31 @@ class SettingsAboutPage implements AppRoute {
 }
 
 class PageView extends ConsumerWidget {
+  const PageView({
+    required this.filename,
+    required this.onClose,
+    super.key,
+  });
   final String filename;
   final Function() onClose;
 
-  const PageView({
-    super.key,
-    required this.filename,
-    required this.onClose,
-  });
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    AsyncValue<Repository> asyncValue = ref.watch(repositoryProvider(filename));
+    final asyncValue = ref.watch(repositoryProvider(filename));
     return asyncValue.when(
-        data: (Repository repository) => ResponsiveScreen(
-              contentBuilder: (context, size) => MainContent(
-                repository: repository,
-                filename: filename,
-              ),
-              topMenuBuilder: (context, size) => TitleMenu(
-                action: onClose,
-                size: size,
-                title: "About",
-              ),
-            ),
-        error: (error, stackTrace) => Container(),
-        loading: () => const CircularProgressIndicator());
+      data: (repository) => ResponsiveScreen(
+        contentBuilder: (context, size) => MainContent(
+          repository: repository,
+          filename: filename,
+        ),
+        topMenuBuilder: (context, size) => TitleMenu(
+          action: onClose,
+          size: size,
+          title: 'About',
+        ),
+      ),
+      error: (error, stackTrace) => Container(),
+      loading: () => const CircularProgressIndicator(),
+    );
   }
 }

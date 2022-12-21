@@ -5,16 +5,16 @@ import 'widgets/chapter_create.dart';
 import 'widgets/chapter_update.dart';
 
 class MainContent extends StatelessWidget {
+  const MainContent({
+    required this.repository,
+    required this.onClose,
+    this.index,
+    super.key,
+  });
   final Repository repository;
 
   final int? index;
   final Function() onClose;
-  const MainContent({
-    super.key,
-    required this.repository,
-    this.index,
-    required this.onClose,
-  });
 
   @override
   Widget build(BuildContext context) {
@@ -34,14 +34,15 @@ class MainContent extends StatelessWidget {
           : FutureBuilder(
               future:
                   ContentStorage.hasAsset(repository.chapters[index!].filename),
-              builder: (BuildContext build, AsyncSnapshot snapshot) {
-                bool readOnly = !snapshot.hasData || snapshot.data as bool;
+              builder: (build, snapshot) {
+                final readOnly = !snapshot.hasData || (snapshot.data ?? false);
 
                 return ChapterUpdate(
-                    key: ObjectKey(repository.chapters[index!]),
-                    wordsFilename: repository.chapters[index!].filename,
-                    readOnly: readOnly,
-                    onClose: onClose);
+                  key: ObjectKey(repository.chapters[index!]),
+                  wordsFilename: repository.chapters[index!].filename,
+                  readOnly: readOnly,
+                  onClose: onClose,
+                );
               },
             ),
     );

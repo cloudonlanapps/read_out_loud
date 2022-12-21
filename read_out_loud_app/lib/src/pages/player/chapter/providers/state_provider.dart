@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:read_out_loud_app/src/tts/stt_record.dart';
 
@@ -5,15 +6,18 @@ import '../../../../tts/tts_speaker.dart';
 
 enum PlayState { idle, intro, listening, reading }
 
+@immutable
 class ContentListConfig {
-  final String filename;
-  ContentListConfig({
+  const ContentListConfig({
     required this.filename,
   });
+  final String filename;
 
   @override
   bool operator ==(covariant ContentListConfig other) {
-    if (identical(this, other)) return true;
+    if (identical(this, other)) {
+      return true;
+    }
 
     return other.filename == filename;
   }
@@ -23,36 +27,42 @@ class ContentListConfig {
 }
 
 class PlayWordStateNotifier extends StateNotifier<PlayState> {
-  Ref ref;
   PlayWordStateNotifier(this.ref) : super(PlayState.idle);
+  Ref ref;
 
-  set newState(PlayState val) {
+  set currState(PlayState val) {
     // print("State changed to $val");
     state = val;
   }
 
-  speak({required String text, PlayState? playState}) async {
-    if ((state != PlayState.idle)) return;
-    ref.read(playWordStateProvider.notifier).newState =
+  PlayState get currState => state;
+
+  Future<void> speak({required String text, PlayState? playState}) async {
+    if (state != PlayState.idle) {
+      return;
+    }
+    ref.read(playWordStateProvider.notifier).currState =
         playState ?? PlayState.reading;
-    await ref.read(ttsSpeakerProvider.notifier).play(text,
-        onComplete: () =>
-            ref.read(playWordStateProvider.notifier).newState = PlayState.idle,
-        onCancel: () =>
-            ref.read(playWordStateProvider.notifier).newState = PlayState.idle);
+    await ref.read(ttsSpeakerProvider.notifier).play(
+          text,
+          onComplete: () => ref.read(playWordStateProvider.notifier).currState =
+              PlayState.idle,
+          onCancel: () => ref.read(playWordStateProvider.notifier).currState =
+              PlayState.idle,
+        );
   }
 
-  sttListen() async {
+  Future<void> sttListen() async {
     if (state == PlayState.idle) {
-      newState = PlayState.listening;
+      currState = PlayState.listening;
       //await ref.read(ttsSpeakerProvider.notifier).mute();
       await ref.read(sttRecordProvider.notifier).startListening();
     }
   }
 
-  sttStop() async {
+  Future<void> sttStop() async {
     if (state == PlayState.listening) {
-      newState = PlayState.idle;
+      currState = PlayState.idle;
       //await ref.read(ttsSpeakerProvider.notifier).mute();
       await ref.read(sttRecordProvider.notifier).stopListening();
     }
@@ -67,7 +77,8 @@ final playWordStateProvider =
 class IntroEnableNotifier extends StateNotifier<bool> {
   IntroEnableNotifier() : super(true);
 
-  set enable(bool val) => state = val;
+  set enabled(bool val) => state = val;
+  bool get enabled => state;
 }
 
 final introEnableProvider =

@@ -10,22 +10,22 @@ import 'main.dart';
 
 class EditorPage implements AppRoute {
   @override
-  String get name => "editor";
+  String get name => 'editor';
 
   @override
-  String get path => "/$name";
+  String get path => '/$name';
 
   @override
   Widget Function(BuildContext context, GoRouterState state) get builder =>
-      (BuildContext context, GoRouterState state) {
-        final String? indexString = state.queryParams['index'];
+      (context, state) {
+        final indexString = state.queryParams['index'];
         return _EditorPage(
           filename: 'index.json',
           index: indexString == null ? null : int.parse(indexString),
           onClose: () {
             try {
               context.pop();
-            } catch (e) {
+            } on Exception {
               context.goNamed(MainPage().name);
             }
           },
@@ -34,23 +34,27 @@ class EditorPage implements AppRoute {
 }
 
 class _EditorPage extends ConsumerWidget {
+  const _EditorPage({
+    required this.filename,
+    required this.onClose,
+    this.index,
+  });
   final String filename;
   final int? index;
   final Function() onClose;
-  const _EditorPage(
-      {required this.filename, this.index, required this.onClose});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final asyncValue = ref.watch(repositoryProvider(filename));
 
     return asyncValue.when(
-        data: (Repository repository) => MainContent(
-              repository: repository,
-              onClose: onClose,
-              index: index,
-            ),
-        error: (error, stackTrace) => Container(),
-        loading: () => const CircularProgressIndicator());
+      data: (repository) => MainContent(
+        repository: repository,
+        onClose: onClose,
+        index: index,
+      ),
+      error: (error, stackTrace) => Container(),
+      loading: () => const CircularProgressIndicator(),
+    );
   }
 }

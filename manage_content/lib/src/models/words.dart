@@ -8,17 +8,18 @@ import 'word.dart';
 
 enum WordFilter { all, excludeReported }
 
+@immutable
 class Words {
   final List<Word> _words;
   final String title;
   final int index;
   final WordFilter wordFilter;
-  Words(
-      {required List<Word> words,
-      required this.title,
-      int? index,
-      this.wordFilter = WordFilter.excludeReported})
-      : index = ((index != null) &&
+  Words({
+    required List<Word> words,
+    required this.title,
+    int? index,
+    this.wordFilter = WordFilter.excludeReported,
+  })  : index = ((index != null) &&
                 (index >= 0) &&
                 (index <
                     words
@@ -71,7 +72,9 @@ class Words {
 
   @override
   bool operator ==(covariant Words other) {
-    if (identical(this, other)) return true;
+    if (identical(this, other)) {
+      return true;
+    }
 
     return listEquals(other._words, _words) &&
         other.title == title &&
@@ -84,20 +87,17 @@ class Words {
   Word? get currentWord =>
       (words.length > index && index >= 0) ? words[index] : null;
 
-  bool get isFirst => (index == 0);
+  bool get isFirst => index == 0;
 
-  bool get isLast => (index == words.length - 1);
+  bool get isLast => index == words.length - 1;
 
   int get successCount =>
-      words.where((Word e) => e.succeeded == true).toList().length;
+      words.where((e) => e.succeeded == true).toList().length;
 
-  int get reportCount =>
-      _words.where((Word e) => e.report == true).toList().length;
+  int get reportCount => _words.where((e) => e.report == true).toList().length;
 
-  List<String> get reported => _words
-      .where((Word e) => e.report == true)
-      .map((e) => e.original)
-      .toList();
+  List<String> get reported =>
+      _words.where((e) => e.report == true).map((e) => e.original).toList();
 
   int get totalCount => words.length;
 
@@ -130,45 +130,49 @@ class Words {
   static Word getWordByString(Words words, String string) {
     try {
       return words._words.where((element) => element.original == string).first;
-    } catch (e) {
+    } on Exception {
       return Word.fromString(string);
     }
   }
 
-  updateWords(
-      {required List<Word> wordListToRemove,
-      required List<String> newWordStrings}) {
+  Words updateWords({
+    required List<Word> wordListToRemove,
+    required List<String> newWordStrings,
+  }) {
     final afterDelete = copyWith(
-        words: _words
-            .where((element) => !wordListToRemove.contains(element))
-            .toList());
+      words: _words
+          .where((element) => !wordListToRemove.contains(element))
+          .toList(),
+    );
 
-    List<String> allWordsOriginal = {
+    final allWordsOriginal = {
       ...afterDelete._words.map((e) => e.original).toList(),
       ...newWordStrings
     }.toList();
 
     return afterDelete.copyWith(
-        words: allWordsOriginal
-            .map((e) => getWordByString(afterDelete, e))
-            .toList());
+      words:
+          allWordsOriginal.map((e) => getWordByString(afterDelete, e)).toList(),
+    );
   }
 
   Words newTitle(String title) {
     return copyWith(title: title);
   }
 
-  static Future<Words> loadFromFile(filename) async {
-    String json = await ContentStorage.loadString(filename);
+  static Future<Words> loadFromFile(String filename) async {
+    final json = await ContentStorage.loadString(filename);
 
     try {
       return Words.fromJson(json);
-    } catch (e) {
-      throw Exception("Error parsing $filename ${e.toString()}");
+    } on Exception catch (e) {
+      throw Exception('Error parsing $filename ${e.toString()}');
     }
   }
 
-  save(String? filename) async {
-    if (filename != null) await ContentStorage.saveString(filename, toJson());
+  Future<void> save(String? filename) async {
+    if (filename != null) {
+      await ContentStorage.saveString(filename, toJson());
+    }
   }
 }

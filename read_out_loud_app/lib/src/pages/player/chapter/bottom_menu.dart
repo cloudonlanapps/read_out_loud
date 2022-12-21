@@ -7,36 +7,43 @@ import '../../../custom_widgets/custom_menu.dart';
 import 'providers/state_provider.dart';
 
 class BottomMenu extends ConsumerWidget {
+  const BottomMenu({
+    required this.contentListConfig,
+    required this.size,
+    super.key,
+  });
   final Size size;
   final ContentListConfig contentListConfig;
-  const BottomMenu(
-      {super.key, required this.contentListConfig, required this.size});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Words? words = ref.watch(wordsProvider(contentListConfig.filename));
-    final PlayState playState = ref.watch(playWordStateProvider);
+    final words = ref.watch(wordsProvider(contentListConfig.filename));
+    final playState = ref.watch(playWordStateProvider);
     if (words == null) {
       return Container();
     }
 
-    return CustomMenu(menuItems: [
-      (words.isFirst)
-          ? null
-          : CustomMenuItem(
-              alignment: Alignment.bottomCenter,
-              icon: Icons.arrow_circle_left,
-              onTap: playState != PlayState.idle
-                  ? null
-                  : () async {
-                      ref.read(sttRecordProvider.notifier).clearWord();
-                      await ref
-                          .read(wordsProvider(contentListConfig.filename)
-                              .notifier)
-                          .prev();
-                    },
-              title: 'Prev'),
-      /* if ([PlayState.intro, PlayState.reading].contains(playState))
+    return CustomMenu(
+      menuItems: [
+        if (words.isFirst)
+          null
+        else
+          CustomMenuItem(
+            alignment: Alignment.bottomCenter,
+            icon: Icons.arrow_circle_left,
+            onTap: playState != PlayState.idle
+                ? null
+                : () async {
+                    ref.read(sttRecordProvider.notifier).clearWord();
+                    await ref
+                        .read(
+                          wordsProvider(contentListConfig.filename).notifier,
+                        )
+                        .prev();
+                  },
+            title: 'Prev',
+          ),
+        /* if ([PlayState.intro, PlayState.reading].contains(playState))
         CustomMenuItem(
             alignment: Alignment.bottomCenter,
             icon: Icons.stop,
@@ -45,22 +52,26 @@ class BottomMenu extends ConsumerWidget {
             },
             title: 'Stop')
       else */
-      null,
-      (words.isLast)
-          ? null
-          : CustomMenuItem(
-              alignment: Alignment.bottomCenter,
-              icon: Icons.arrow_circle_right,
-              onTap: playState != PlayState.idle
-                  ? null
-                  : () async {
-                      ref.read(sttRecordProvider.notifier).clearWord();
-                      await ref
-                          .read(wordsProvider(contentListConfig.filename)
-                              .notifier)
-                          .next();
-                    },
-              title: 'Next')
-    ]);
+        null,
+        if (words.isLast)
+          null
+        else
+          CustomMenuItem(
+            alignment: Alignment.bottomCenter,
+            icon: Icons.arrow_circle_right,
+            onTap: playState != PlayState.idle
+                ? null
+                : () async {
+                    ref.read(sttRecordProvider.notifier).clearWord();
+                    await ref
+                        .read(
+                          wordsProvider(contentListConfig.filename).notifier,
+                        )
+                        .next();
+                  },
+            title: 'Next',
+          )
+      ],
+    );
   }
 }

@@ -7,14 +7,14 @@ import 'package:services/services.dart';
 class ContentPageNotifier extends StateNotifier<ListPaginate<Chapter>> {
   ContentPageNotifier(ListPaginate<Chapter> contentPage) : super(contentPage);
 
-  prev() => state = state.prev();
+  ListPaginate<Chapter> prev() => state = state.prev();
 
-  next() => state = state.next();
+  ListPaginate<Chapter> next() => state = state.next();
 }
 
 final contentPageProvider =
     StateNotifierProvider<ContentPageNotifier, ListPaginate<Chapter>>((ref) {
-  throw Exception("Override with appropriate value");
+  throw Exception('Override with appropriate value');
 });
 
 class IsAnimatingNotifier extends StateNotifier<bool> {
@@ -23,6 +23,8 @@ class IsAnimatingNotifier extends StateNotifier<bool> {
   set isAnimating(bool val) {
     state = val;
   }
+
+  bool get isAnimating => state;
 }
 
 final isAnimatingProvider =

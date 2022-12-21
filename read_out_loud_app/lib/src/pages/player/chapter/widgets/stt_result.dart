@@ -9,15 +9,19 @@ extension Highlight on String {
     if ((hightlightWord.isEmpty) || isEmpty) {
       return [this];
     } else {
-      List<String> words = split(' ');
-      final index = words.lastIndexWhere((element) =>
-          element.toLowerCase().contains(hightlightWord.toLowerCase()));
-      if (index < 0) return [this];
+      final words = split(' ');
+      final index = words.lastIndexWhere(
+        (element) =>
+            element.toLowerCase().contains(hightlightWord.toLowerCase()),
+      );
+      if (index < 0) {
+        return [this];
+      }
       var before = words.sublist(0, index).join(' ');
       if (before.isNotEmpty) {
         before = '$before ';
       }
-      var after = words.sublist(index + 1).join('');
+      var after = words.sublist(index + 1).join();
       if (after.isNotEmpty) {
         after = ' $after';
       }
@@ -27,35 +31,40 @@ extension Highlight on String {
 }
 
 class STTResult extends ConsumerWidget {
-  final String highlight;
   const STTResult({
     this.highlight = '',
     Key? key,
   }) : super(key: key);
+  final String highlight;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    TextStyle normalStyle = TextStyles.chapterTitle(context);
-    TextStyle highlightStyle = TextStyles.chapterTitle(context).copyWith(
+    final normalStyle = TextStyles.chapterTitle(context);
+    final highlightStyle = TextStyles.chapterTitle(context).copyWith(
       fontWeight: FontWeight.bold,
       color: Colors.lightGreen,
     );
 
-    STTRecord sttRecord = ref.watch(sttRecordProvider);
-    if (sttRecord.lastWords.isEmpty) return Container();
-    List<String> textBlocks =
-        sttRecord.lastWords.toLowerCase().highlight(highlight);
+    final sttRecord = ref.watch(sttRecordProvider);
+    if (sttRecord.lastWords.isEmpty) {
+      return Container();
+    }
+    final textBlocks = sttRecord.lastWords.toLowerCase().highlight(highlight);
     {
-      return Text.rich(TextSpan(children: [
-        TextSpan(text: "You said: ", style: normalStyle),
-        if (textBlocks.length == 1)
-          TextSpan(text: textBlocks[0], style: normalStyle)
-        else ...[
-          TextSpan(text: textBlocks[0], style: normalStyle),
-          TextSpan(text: textBlocks[1], style: highlightStyle),
-          TextSpan(text: textBlocks[2], style: normalStyle)
-        ]
-      ]));
+      return Text.rich(
+        TextSpan(
+          children: [
+            TextSpan(text: 'You said: ', style: normalStyle),
+            if (textBlocks.length == 1)
+              TextSpan(text: textBlocks[0], style: normalStyle)
+            else ...[
+              TextSpan(text: textBlocks[0], style: normalStyle),
+              TextSpan(text: textBlocks[1], style: highlightStyle),
+              TextSpan(text: textBlocks[2], style: normalStyle)
+            ]
+          ],
+        ),
+      );
     }
   }
 }

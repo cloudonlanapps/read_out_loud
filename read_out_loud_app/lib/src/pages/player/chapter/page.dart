@@ -12,18 +12,18 @@ import 'top_menu.dart';
 
 class ChapterPage implements AppRoute {
   @override
-  String get name => "chapter";
+  String get name => 'chapter';
 
   @override
-  String get path => "/$name";
+  String get path => '/$name';
 
   @override
   Widget Function(BuildContext context, GoRouterState state) get builder =>
-      (BuildContext context, GoRouterState state) {
+      (context, state) {
         if (state.queryParams['filename'] == null) {
-          throw Exception("WordsPage is invoked without providing a filename");
+          throw Exception('WordsPage is invoked without providing a filename');
         }
-        ContentListConfig contentListConfig =
+        final contentListConfig =
             ContentListConfig(filename: state.queryParams['filename']!);
         return PageView(
           contentListConfig: contentListConfig,
@@ -35,14 +35,13 @@ class ChapterPage implements AppRoute {
 }
 
 class PageView extends StatelessWidget {
-  final ContentListConfig contentListConfig;
-  final Function() onClose;
-
   const PageView({
-    super.key,
     required this.contentListConfig,
     required this.onClose,
+    super.key,
   });
+  final ContentListConfig contentListConfig;
+  final Function() onClose;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +49,10 @@ class PageView extends StatelessWidget {
       contentBuilder: (context, size) =>
           MainContent(contentListConfig: contentListConfig, size: size),
       topMenuBuilder: (context, size) => TopMenu(
-          contentListConfig: contentListConfig, onClose: onClose, size: size),
+        contentListConfig: contentListConfig,
+        onClose: onClose,
+        size: size,
+      ),
       bottomMenubuilder: (context, size) =>
           BottomMenu(contentListConfig: contentListConfig, size: size),
     );

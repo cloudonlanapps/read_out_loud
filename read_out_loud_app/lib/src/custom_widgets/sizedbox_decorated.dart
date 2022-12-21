@@ -3,18 +3,25 @@ import 'package:flutter/material.dart';
 const bool _gDebug = false;
 
 class SizedBoxDecorated extends StatelessWidget {
+  const SizedBoxDecorated({
+    this.width,
+    this.height,
+    this.child,
+    this.debug = false,
+    super.key,
+  });
+
+  SizedBoxDecorated.fromSize({
+    required Size size,
+    this.child,
+    this.debug = false,
+    super.key,
+  })  : width = size.width,
+        height = size.height;
   final double? width;
   final double? height;
   final Widget? child;
   final bool debug;
-
-  SizedBoxDecorated.fromSize(
-      {super.key, required Size size, this.child, this.debug = false})
-      : width = size.width,
-        height = size.height;
-
-  const SizedBoxDecorated(
-      {super.key, this.width, this.height, this.child, this.debug = false});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +37,7 @@ class SizedBoxDecorated extends StatelessWidget {
                   Positioned(
                     bottom: 4,
                     right: 4,
-                    child: Text("${width}x$height"),
+                    child: Text('${width}x$height'),
                   ),
                 ],
               ),

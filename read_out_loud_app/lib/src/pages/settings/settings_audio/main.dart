@@ -4,9 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'audio_player.dart';
 
 class MainContent extends ConsumerWidget {
+  const MainContent({
+    required this.filename,
+    required this.size,
+    super.key,
+  });
   final Size size;
   final String? filename;
-  const MainContent({super.key, required this.filename, required this.size});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

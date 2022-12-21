@@ -10,14 +10,14 @@ import 'main.dart';
 
 class SettingsPage implements AppRoute {
   @override
-  String get name => "settings";
+  String get name => 'settings';
 
   @override
-  String get path => "/$name";
+  String get path => '/$name';
 
   @override
   Widget Function(BuildContext context, GoRouterState state) get builder =>
-      (BuildContext context, GoRouterState state) {
+      (context, state) {
         return PageView(
           filename: 'index.json',
           onClose: () {
@@ -28,14 +28,13 @@ class SettingsPage implements AppRoute {
 }
 
 class PageView extends StatelessWidget {
-  final String? filename;
-  final Function() onClose;
-
   const PageView({
-    super.key,
     required this.filename,
     required this.onClose,
+    super.key,
   });
+  final String? filename;
+  final Function() onClose;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +44,7 @@ class PageView extends StatelessWidget {
       topMenuBuilder: (context, size) => TitleMenu(
         action: onClose,
         size: size,
-        title: "Settings",
+        title: 'Settings',
       ),
     );
   }

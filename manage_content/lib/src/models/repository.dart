@@ -5,13 +5,15 @@ import 'dart:io';
 
 import 'package:archive/archive_io.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
 
 import '../helpers/content_storage.dart';
 import 'chapter.dart';
 
+@immutable
 class Repository {
   final List<Chapter> chapters;
-  Repository({
+  const Repository({
     required this.chapters,
   });
 
@@ -49,30 +51,36 @@ class Repository {
 
   @override
   bool operator ==(covariant Repository other) {
-    Function eq = const ListEquality().equals;
-    if (identical(this, other)) return true;
+    if (identical(this, other)) {
+      return true;
+    }
 
-    return eq(other.chapters, chapters);
+    return const ListEquality().equals(other.chapters, chapters);
   }
 
   @override
   int get hashCode => chapters.hashCode;
 
-  add(Chapter newChapter, {String? filename}) async {
+  Future<Repository> add(Chapter newChapter, {String? filename}) async {
     final updated = copyWith(chapters: [...chapters, newChapter]);
     await updated.save(filename);
     return updated;
   }
 
-  remove(Chapter chapter, {String? filename}) async {
+  Future<Repository> remove(Chapter chapter, {String? filename}) async {
     final updated = copyWith(
-        chapters: chapters.where((element) => element != chapter).toList());
+      chapters: chapters.where((element) => element != chapter).toList(),
+    );
     await updated.save(filename);
     return updated;
   }
 
-  update(int index, Chapter chapter, {String? filename}) async {
-    List<Chapter> chaptersLocal = chapters;
+  Future<Repository> update(
+    int index,
+    Chapter chapter, {
+    String? filename,
+  }) async {
+    final chaptersLocal = chapters;
     chaptersLocal[index] = chapter;
     final updated = copyWith(chapters: chaptersLocal);
     await updated.save(filename);
@@ -81,13 +89,15 @@ class Repository {
 
   bool get isEmpty => chapters.isEmpty;
 
-  static Future<Repository> loadFromFile(filename) async {
-    String json = await ContentStorage.loadString(filename);
+  static Future<Repository> loadFromFile(String filename) async {
+    final json = await ContentStorage.loadString(filename);
     return Repository.fromJson(json);
   }
 
-  save(String? filename) async {
-    if (filename != null) await ContentStorage.saveString(filename, toJson());
+  Future<void> save(String? filename) async {
+    if (filename != null) {
+      await ContentStorage.saveString(filename, toJson());
+    }
   }
 
   List<String> get files {
@@ -103,19 +113,18 @@ class Repository {
       if (File(zipFile).existsSync()) {
         await File(zipFile).delete();
       }
-      var encoder = ZipFileEncoder();
-      encoder.create(zipFile);
-      for (String file in [
+      final encoder = ZipFileEncoder()..create(zipFile);
+      for (final file in [
         ...files,
-        "index.json",
+        'index.json',
       ]) {
-        if (File("$dir/$file").existsSync()) {
-          await encoder.addFile(File("$dir/$file"));
+        if (File('$dir/$file').existsSync()) {
+          await encoder.addFile(File('$dir/$file'));
         }
       }
       encoder.close();
       return zipFile;
-    } catch (e) {
+    } on Exception {
       return null;
     }
   }

@@ -9,9 +9,13 @@ import '../../../../custom_widgets/blink.dart';
 //import 'state_provider.dart';
 
 class MainWord extends ConsumerWidget {
+  const MainWord({
+    required this.word,
+    this.onTap,
+    super.key,
+  });
   final Word word;
   final Function()? onTap;
-  const MainWord({super.key, required this.word, this.onTap});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,50 +25,53 @@ class MainWord extends ConsumerWidget {
         InkWell(
           onTap: onTap,
           child: DottedBorder(
-              //dashPattern: const [6, 3, 2, 3],
-              borderType: BorderType.RRect,
-              radius: const Radius.circular(12),
-              child: Container(
-                  decoration: BoxDecoration(
-                    color: word.succeeded
-                        ? Colors.amberAccent.shade100
-                        : Colors.amber.shade100,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(),
-                  ),
-                  width: double.infinity,
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-                    child: FittedBox(
-                      child: Text(
-                        word.original,
-                        textAlign: TextAlign.center,
-                        style: TextStyles.chapterTitle(context).copyWith(
-                            color: word.succeeded
-                                ? const Color.fromARGB(255, 39, 242, 46)
-                                : Colors.blueGrey,
-                            fontWeight: FontWeight.bold),
-                      ),
+            //dashPattern: const [6, 3, 2, 3],
+            borderType: BorderType.RRect,
+            radius: const Radius.circular(12),
+            child: Container(
+              decoration: BoxDecoration(
+                color: word.succeeded
+                    ? Colors.amberAccent.shade100
+                    : Colors.amber.shade100,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(),
+              ),
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                child: FittedBox(
+                  child: Text(
+                    word.original,
+                    textAlign: TextAlign.center,
+                    style: TextStyles.chapterTitle(context).copyWith(
+                      color: word.succeeded
+                          ? const Color.fromARGB(255, 39, 242, 46)
+                          : Colors.blueGrey,
+                      fontWeight: FontWeight.bold,
                     ),
-                  ))),
+                  ),
+                ),
+              ),
+            ),
+          ),
         ),
         if (word.succeeded)
           Positioned(
-              top: 0,
-              bottom: 0,
-              right: 40,
-              child: Blink(
-                blinkDuration: const Duration(seconds: 1),
-                child: Transform.translate(
-                  offset: const Offset(30, 0),
-                  child: const Icon(
-                    Icons.done,
-                    size: 40,
-                    color: Colors.blue,
-                  ),
+            top: 0,
+            bottom: 0,
+            right: 40,
+            child: Blink(
+              blinkDuration: const Duration(seconds: 1),
+              child: Transform.translate(
+                offset: const Offset(30, 0),
+                child: const Icon(
+                  Icons.done,
+                  size: 40,
+                  color: Colors.blue,
                 ),
-              ))
+              ),
+            ),
+          )
       ],
     );
   }

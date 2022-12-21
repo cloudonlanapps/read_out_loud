@@ -9,13 +9,17 @@ import 'package:lottie/lottie.dart';
 import 'package:read_out_loud_app/src/custom_widgets/custom_menu.dart';
 import 'package:read_out_loud_app/src/tts/stt_record.dart';
 
+import '../../../../custom_widgets/app_snackbar.dart';
 import '../providers/state_provider.dart';
 
 class RecordButton extends ConsumerStatefulWidget {
+  const RecordButton({
+    required this.succeeded,
+    required this.size,
+    Key? key,
+  }) : super(key: key);
   final Size size;
   final bool succeeded;
-  const RecordButton({Key? key, required this.succeeded, required this.size})
-      : super(key: key);
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _RecordButtonState();
@@ -25,10 +29,10 @@ class _RecordButtonState extends ConsumerState<RecordButton> {
   late Timer timer;
   @override
   Widget build(BuildContext context) {
-    Size size = widget.size;
+    final size = widget.size;
     final sttRecord = ref.watch(sttRecordProvider);
     final playState = ref.watch(playWordStateProvider);
-    double square = max(50, min(size.width, size.height));
+    final double square = max(50, min(size.width, size.height));
     return Center(
       child: SizedBox(
         width: square,
@@ -37,20 +41,22 @@ class _RecordButtonState extends ConsumerState<RecordButton> {
           children: [
             if (playState == PlayState.listening)
               AspectRatio(
-                aspectRatio: 1.0,
-                child: Container(
+                aspectRatio: 1,
+                child: DecoratedBox(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(square / 2),
                     border: Border.all(),
                     boxShadow: [
                       BoxShadow(
-                          blurRadius: .26,
-                          spreadRadius: sttRecord.level * 2,
-                          color: Colors.red.withOpacity(.1)),
+                        blurRadius: .26,
+                        spreadRadius: sttRecord.level * 2,
+                        color: Colors.red.withOpacity(.1),
+                      ),
                       BoxShadow(
-                          blurRadius: .26,
-                          spreadRadius: sttRecord.level * 1.5,
-                          color: Colors.blue.withOpacity(.1))
+                        blurRadius: .26,
+                        spreadRadius: sttRecord.level * 1.5,
+                        color: Colors.blue.withOpacity(.1),
+                      )
                       //max(1.0, sttRecord.level)*,
                     ],
                   ),
@@ -58,26 +64,29 @@ class _RecordButtonState extends ConsumerState<RecordButton> {
                     padding: EdgeInsets.all(square * 0.05),
                     child: FittedBox(
                       child: CustomMenuButton(
-                          menuItem: CustomMenuItem(
-                              icon: Icons.mic,
-                              title: widget.succeeded
-                                  ? "Try again? "
-                                  : "Tap to Speak",
-                              onTap: () {})),
+                        menuItem: CustomMenuItem(
+                          icon: Icons.mic,
+                          title:
+                              widget.succeeded ? 'Try again? ' : 'Tap to Speak',
+                          onTap: () {},
+                        ),
+                      ),
                     ),
                   ),
                 ),
               )
             else ...[
               AspectRatio(
-                aspectRatio: 1.0,
-                child: Container(
+                aspectRatio: 1,
+                child: DecoratedBox(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(square / 2),
                     border: Border.all(),
                     boxShadow: [
                       BoxShadow(
-                          blurRadius: .26, color: Colors.blue.withOpacity(.1))
+                        blurRadius: .26,
+                        color: Colors.blue.withOpacity(.1),
+                      )
                       //max(1.0, sttRecord.level)*,
                     ],
                   ),
@@ -85,36 +94,37 @@ class _RecordButtonState extends ConsumerState<RecordButton> {
                     padding: EdgeInsets.all(square * 0.05),
                     child: FittedBox(
                       child: CustomMenuButton(
-                          menuItem: CustomMenuItem(
-                              icon: Icons.mic,
-                              title: widget.succeeded
-                                  ? "Try again? "
-                                  : "Tap to Speak",
-                              onTap: (PlayState.idle != playState)
-                                  ? null
-                                  : () {
-                                      if (!kIsWeb &&
-                                          (Platform.isAndroid ||
-                                              Platform.isIOS)) {
-                                        timer = Timer(
-                                            const Duration(seconds: 3), () {
-                                          ref
-                                              .read(playWordStateProvider
-                                                  .notifier)
-                                              .sttStop();
-                                        });
-                                        ref
-                                            .read(
-                                                playWordStateProvider.notifier)
-                                            .sttListen();
-                                      } else {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar((const SnackBar(
-                                          content: Text(
-                                              "This platform don't support Speech to Text"),
-                                        )));
-                                      }
-                                    })),
+                        menuItem: CustomMenuItem(
+                          icon: Icons.mic,
+                          title:
+                              widget.succeeded ? 'Try again? ' : 'Tap to Speak',
+                          onTap: (PlayState.idle != playState)
+                              ? null
+                              : () {
+                                  if (!kIsWeb &&
+                                      (Platform.isAndroid || Platform.isIOS)) {
+                                    timer =
+                                        Timer(const Duration(seconds: 3), () {
+                                      ref
+                                          .read(
+                                            playWordStateProvider.notifier,
+                                          )
+                                          .sttStop();
+                                    });
+                                    ref
+                                        .read(
+                                          playWordStateProvider.notifier,
+                                        )
+                                        .sttListen();
+                                  } else {
+                                    AppSnackBar.show(
+                                      context,
+                                      "This platform don't support Speech to Text",
+                                    );
+                                  }
+                                },
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -126,7 +136,8 @@ class _RecordButtonState extends ConsumerState<RecordButton> {
                     size: Size(size.height, size.height),
                     child: FittedBox(
                       child: Lottie.asset(
-                          "assets/Lotties/42193-hand-pointing-icon.json"),
+                        'assets/Lotties/42193-hand-pointing-icon.json',
+                      ),
                     ),
                   ),
                 ),

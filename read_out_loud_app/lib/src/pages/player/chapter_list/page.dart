@@ -16,14 +16,14 @@ import 'providers/state_provider.dart';
 
 class ContentListPage implements AppRoute {
   @override
-  String get name => "chapter_list";
+  String get name => 'chapter_list';
 
   @override
-  String get path => "/$name";
+  String get path => '/$name';
 
   @override
   Widget Function(BuildContext context, GoRouterState state) get builder =>
-      (BuildContext context, GoRouterState state) {
+      (context, state) {
         return PageView(
           filename: 'index.json',
           onClose: () {
@@ -34,53 +34,55 @@ class ContentListPage implements AppRoute {
 }
 
 class PageView extends ConsumerWidget {
+  const PageView({
+    required this.filename,
+    required this.onClose,
+    super.key,
+  });
   final String filename;
   final Function() onClose;
 
-  const PageView({
-    super.key,
-    required this.filename,
-    required this.onClose,
-  });
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    AsyncValue<Repository> asyncValue = ref.watch(repositoryProvider(filename));
+    final asyncValue = ref.watch(repositoryProvider(filename));
     return asyncValue.when(
-        data: (Repository repository) => LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) {
-                print(
-                    "Size Total: ${constraints.maxWidth}, ${constraints.maxHeight}");
-                print(
-                    "Height Available: ${ResponsiveScreen.contentHeight(size: Size(constraints.maxWidth, constraints.maxHeight), isBottom: true, isTop: true)}");
-                final Size mainContentSize = Size(
-                    constraints.maxWidth,
-                    ResponsiveScreen.contentHeight(
-                        size: Size(constraints.maxWidth, constraints.maxHeight),
-                        isBottom: true,
-                        isTop: true));
-                return ProviderScope(
-                  overrides: [
-                    contentPageProvider.overrideWith((ref) =>
-                        ContentPageNotifier(ListPaginate<Chapter>(
-                            width: mainContentSize.width,
-                            height: mainContentSize.height,
-                            items: repository.chapters,
-                            minTileSize: 100)))
-                  ],
-                  child: ResponsiveScreen(
-                    contentBuilder: (context, size) => const MainContent(),
-                    topMenuBuilder: (context, size) => TitleMenu(
-                      action: onClose,
-                      size: size,
-                      title: 'Select One',
-                    ),
-                    bottomMenubuilder: (context, size) => const BottomMenu(),
-                  ),
-                );
-              },
+      data: (repository) => LayoutBuilder(
+        builder: (context, constraints) {
+          final mainContentSize = Size(
+            constraints.maxWidth,
+            ResponsiveScreen.contentHeight(
+              size: Size(constraints.maxWidth, constraints.maxHeight),
+              isBottom: true,
+              isTop: true,
             ),
-        error: (error, stackTrace) => Container(),
-        loading: () => const CircularProgressIndicator());
+          );
+          return ProviderScope(
+            overrides: [
+              contentPageProvider.overrideWith(
+                (ref) => ContentPageNotifier(
+                  ListPaginate<Chapter>(
+                    width: mainContentSize.width,
+                    height: mainContentSize.height,
+                    items: repository.chapters,
+                    minTileSize: 100,
+                  ),
+                ),
+              )
+            ],
+            child: ResponsiveScreen(
+              contentBuilder: (context, size) => const MainContent(),
+              topMenuBuilder: (context, size) => TitleMenu(
+                action: onClose,
+                size: size,
+                title: 'Select One',
+              ),
+              bottomMenubuilder: (context, size) => const BottomMenu(),
+            ),
+          );
+        },
+      ),
+      error: (error, stackTrace) => Container(),
+      loading: () => const CircularProgressIndicator(),
+    );
   }
 }
