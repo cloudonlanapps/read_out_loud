@@ -18,11 +18,14 @@ import 'src/pages/settings/settings_home/page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  /* AdaptiveDialog.instance.updateConfiguration(
+  /* 
+  TODO(anandas): _applicationIconImage,
+  AdaptiveDialog.instance.updateConfiguration(
     macOS: AdaptiveDialogMacOSConfiguration(
       applicationIcon: ClipRRect(
         borderRadius: BorderRadius.circular(16),
-        child: TODO: _applicationIconImage,
+        
+        child: 
       ),
     ),
   ); 

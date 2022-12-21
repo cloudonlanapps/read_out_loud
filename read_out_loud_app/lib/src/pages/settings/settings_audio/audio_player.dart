@@ -20,7 +20,9 @@ enum TtsState {
 }
 
 class AudioPlayerConfigState extends ConsumerState<AudioPlayer>
-    with WidgetsBindingObserver {
+    // ignore: prefer_mixin
+    with
+        WidgetsBindingObserver {
   late TextEditingController textEditingController;
   bool isKeyboardVisible = false;
 

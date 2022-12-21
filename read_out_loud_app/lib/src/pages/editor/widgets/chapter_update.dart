@@ -25,7 +25,9 @@ class ChapterUpdate extends ConsumerStatefulWidget {
 }
 
 class ChapterUpdateState extends ConsumerState<ChapterUpdate>
-    with WidgetsBindingObserver {
+    // ignore: prefer_mixin
+    with
+        WidgetsBindingObserver {
   final _formKey = GlobalKey<FormState>();
 
   late final TextEditingController wordsController;

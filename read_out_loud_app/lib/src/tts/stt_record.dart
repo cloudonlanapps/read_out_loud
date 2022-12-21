@@ -65,8 +65,7 @@ class STTRecord {
   void logEvent(String eventDescription) {
     if (logEvents) {
       //var eventTime = DateTime.now().toIso8601String();
-      // ignore: todo
-      //TODO Logger print('$eventTime $eventDescription');
+      // TODO(anandas): Implement event logging
     }
   }
 
